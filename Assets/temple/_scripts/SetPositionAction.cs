@@ -1,0 +1,21 @@
+﻿using UnityEngine;
+using System.Collections;
+
+public class SetPositionAction : ScriptAction
+{
+
+    public GameObject actor;
+    public GameObject mark;
+    public Vector3 offset;
+
+    // Use this for initialization
+    public override void Start()
+    {
+        actor.transform.position = new Vector3(mark.transform.position.x, actor.transform.position.y, mark.transform.position.z);
+
+        actor.transform.rotation = mark.transform.rotation;
+
+        queue.completeAction();
+    }
+
+}
