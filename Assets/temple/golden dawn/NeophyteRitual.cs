@@ -65,9 +65,9 @@ public class NeophyteRitual : ScriptActionQueue
         queueVoiceAction(knock, hierophant, 1);
 
         addToQueue(new CircleMoveAction { actor = kerux, waitAfter = 0, centerMarkName = "Altar", targetMarkName = "Kerux Proclaim", radiusMarkName="Circumabulation", speed = 2, degreeEnd = 90 });
-        queueMoveAction("SW", kerux, 0);
-        queueMoveAction("NW", kerux, 0);
-        queueMoveAction("NE", kerux, 0);
+        //queueMoveAction("SW", kerux, 0);
+        //queueMoveAction("NW", kerux, 0);
+        //queueMoveAction("NE", kerux, 0);
         queueMoveAction("Kerux Proclaim", kerux);
 
         queueVoiceAction(001, kerux, 1);
