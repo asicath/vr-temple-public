@@ -5,6 +5,7 @@ public class MoveAction : ScriptAction {
 
     public GameObject actor;
     public GameObject mark;
+    public string markName;
 
     public float speed;
 
@@ -16,7 +17,7 @@ public class MoveAction : ScriptAction {
     // Use this for initialization
     public override void Start()
     {
-        
+        mark = getMark(markName);
         
     }
 
@@ -55,7 +56,7 @@ public class MoveAction : ScriptAction {
 
             if (angleDelta.magnitude > 180) direction *= -1;
 
-            var rotationAmount = 50 * Time.deltaTime;
+            var rotationAmount = 100 * Time.deltaTime;
 
             if (angleDelta.magnitude > rotationAmount)
             {

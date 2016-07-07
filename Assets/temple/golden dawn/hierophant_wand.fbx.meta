@@ -21,6 +21,8 @@ ModelImporter:
     100026: Torus.003
     100028: Torus.004
     100030: Torus.005
+    100032: Gold Parts
+    100034: Red Parts
     400000: Cube.000
     400002: Cube.001
     400004: Cube.002
@@ -37,6 +39,8 @@ ModelImporter:
     400026: Torus.003
     400028: Torus.004
     400030: Torus.005
+    400032: Gold Parts
+    400034: Red Parts
     2300000: Cube.000
     2300002: Cube.001
     2300004: Cube.002
@@ -52,6 +56,8 @@ ModelImporter:
     2300024: Torus.003
     2300026: Torus.004
     2300028: Torus.005
+    2300030: Gold Parts
+    2300032: Red Parts
     3300000: Cube.000
     3300002: Cube.001
     3300004: Cube.002
@@ -67,6 +73,8 @@ ModelImporter:
     3300024: Torus.003
     3300026: Torus.004
     3300028: Torus.005
+    3300030: Gold Parts
+    3300032: Red Parts
     4300000: Cube.007
     4300002: Cube.006
     4300004: Cube.005
@@ -82,6 +90,8 @@ ModelImporter:
     4300024: Torus.004
     4300026: Torus.003
     4300028: Cylinder
+    4300030: Gold Parts
+    4300032: Red Parts
   materials:
     importMaterials: 1
     materialName: 0

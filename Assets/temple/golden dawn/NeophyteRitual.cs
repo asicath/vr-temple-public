@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
+using System.Linq;
 
 public class NeophyteRitual : ScriptActionQueue
 {
@@ -26,6 +27,8 @@ public class NeophyteRitual : ScriptActionQueue
     // Use this for initialization
     void Start()
     {
+        hideMarks();
+
         var ground = transform.Find("Ground");
         marks = ground.transform.FindChild("Marks");
 
@@ -49,25 +52,32 @@ public class NeophyteRitual : ScriptActionQueue
         addThrone(thronePrefab, "Stolistes Start");
         addThrone(thronePrefab, "Dadouchos Start");
 
-        addThrone(thronePrefab, "Imperator Throne");
-        addThrone(thronePrefab, "Cancellarius Throne");
-        addThrone(thronePrefab, "Past Hierophant Throne");
-        addThrone(thronePrefab, "Praemonstrator Throne");
+        addThrone(thronePrefab, "Imperator Start");
+        addThrone(thronePrefab, "Cancellarius Start");
+        addThrone(thronePrefab, "Past Hierophant Start");
+        addThrone(thronePrefab, "Praemonstrator Start");
 
-        addActor(imperatorPrefab, "Imperator Throne");
-        addActor(cancellariusPrefab, "Cancellarius Throne");
-        addActor(pastHierophantPrefab, "Past Hierophant Throne");
-        addActor(praemonstratorPrefab, "Praemonstrator Throne");
+        addActor(imperatorPrefab, "Imperator Start");
+        addActor(cancellariusPrefab, "Cancellarius Start");
+        addActor(pastHierophantPrefab, "Past Hierophant Start");
+        addActor(praemonstratorPrefab, "Praemonstrator Start");
 
         queueVoiceAction(knock, hierophant, 1);
-        queueMoveAction("SW1_E", kerux, 0);
+
+        addToQueue(new CircleMoveAction { actor = kerux, waitAfter = 0, centerMarkName = "Altar", targetMarkName = "Kerux Proclaim", radiusMarkName="Circumabulation", speed = 2, degreeEnd = 90 });
+        queueMoveAction("SW", kerux, 0);
+        queueMoveAction("NW", kerux, 0);
+        queueMoveAction("NE", kerux, 0);
         queueMoveAction("Kerux Proclaim", kerux);
 
         queueVoiceAction(001, kerux, 1);
-        queueMoveAction("NE1", kerux, 0);
+        queueMoveAction("SE", kerux, 0);
+        queueMoveAction("SW", kerux, 0);
         queueMoveAction("Kerux Start", kerux);
 
         queueVoiceAction(knock, hierophant, 1);
+        queueMoveAction("Hierophant Start Throne Stand", hierophant);
+
         queueVoiceAction(knock, hierophant, 1);
         queueVoiceAction(002, hierophant, 1);
 
@@ -77,10 +87,23 @@ public class NeophyteRitual : ScriptActionQueue
         queueMoveAction("Kerux Start", kerux);
         queueVoiceAction(003, kerux, 1);
 
+
         queueVoiceAction(004, hierophant, 1);
+        // hiereus stands and goes to the door
+        queueMoveAction("Hiereus Start Throne Stand", hiereus);
+        queueMoveAction("NW", hiereus, 0);
+        queueMoveAction("NE", hiereus, 0);
+        queueMoveAction("SE", hiereus, 0);
+        queueMoveAction("SW", hiereus, 0);
+        queueMoveAction("Gaurding Door", hiereus, 0);
         queueVoiceAction(005, hiereus, 1);
 
         queueVoiceAction(006, hiereus, 1);
+        queueMoveAction("SW", hiereus, 0);
+        queueMoveAction("Hiereus Start Throne Stand", hiereus);
+        queueMoveAction("Hiereus Start", hiereus);
+
+
         queueVoiceAction(007, hierophant, 1);
         queueVoiceAction(008, hierophant, 1);
         queueVoiceAction(009, hiereus, 1);
@@ -143,7 +166,7 @@ public class NeophyteRitual : ScriptActionQueue
         var actor = Instantiate(prefab);
         actor.transform.parent = this.transform;
         
-        addToQueue(new SetPositionAction { mark = getMark(markName), actor = actor, waitAfter = 0 });
+        addToQueue(new SetPositionAction { markName = markName, actor = actor, waitAfter = 0 });
         return actor;
     }
 
@@ -152,13 +175,20 @@ public class NeophyteRitual : ScriptActionQueue
         var actor = Instantiate(prefab);
         actor.transform.parent = this.transform;
 
-        addToQueue(new SetPositionAction { mark = getMark(markName), actor = actor, waitAfter = 0, offset = new Vector3(0, 0, -0.05f) });
+        actor.name = markName + " Throne";
+
+        addToQueue(new SetPositionAction { markName = markName, actor = actor, waitAfter = 0, offset = new Vector3(0, 0, -0.05f) });
         return actor;
     }
 
-    private GameObject getMark(string name)
+    private void hideMarks()
     {
-        return marks.FindChild(name).gameObject;
+        var marks = GameObject.FindGameObjectsWithTag("Mark");
+        foreach (var mark in marks)
+        {
+            var mr = mark.GetComponentInChildren<MeshRenderer>();
+            Destroy(mr.gameObject);
+        }
     }
 
     private void queueVoiceAction(int clipId, GameObject actor)
@@ -176,15 +206,14 @@ public class NeophyteRitual : ScriptActionQueue
         addToQueue(new VoiceAction { clip = clip, actor = actor, waitAfter = waitAfter });
     }
 
-
     private void queueMoveAction(string markName, GameObject actor)
     {
-        addToQueue(new MoveAction { mark = getMark(markName), actor = kerux, speed = 1.0f, waitAfter = 1f });
+        addToQueue(new MoveAction { markName = markName, actor = actor, speed = 3.0f, waitAfter = 1f });
     }
 
     private void queueMoveAction(string markName, GameObject actor, float waitAfter)
     {
-        addToQueue(new MoveAction { mark = getMark(markName), actor = kerux, speed = 1.0f, waitAfter = waitAfter });
+        addToQueue(new MoveAction { markName = markName, actor = actor, speed = 3.0f, waitAfter = waitAfter });
     }
 
 }
