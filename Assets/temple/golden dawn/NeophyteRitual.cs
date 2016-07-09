@@ -64,16 +64,11 @@ public class NeophyteRitual : ScriptActionQueue
 
         queueVoiceAction(knock, hierophant, 1);
 
-        addToQueue(new CircleMoveAction { actor = kerux, waitAfter = 0, centerMarkName = "Altar", targetMarkName = "Kerux Proclaim", radiusMarkName="Circumabulation", speed = 2, degreeEnd = 90 });
-        //queueMoveAction("SW", kerux, 0);
-        //queueMoveAction("NW", kerux, 0);
-        //queueMoveAction("NE", kerux, 0);
-        queueMoveAction("Kerux Proclaim", kerux);
+        queueCircleMoveAction("Kerux Proclaim", kerux, 1);
 
         queueVoiceAction(001, kerux, 1);
-        queueMoveAction("SE", kerux, 0);
-        queueMoveAction("SW", kerux, 0);
-        queueMoveAction("Kerux Start", kerux);
+
+        queueCircleMoveAction("Kerux Start", kerux, 1);
 
         queueVoiceAction(knock, hierophant, 1);
         queueMoveAction("Hierophant Start Throne Stand", hierophant);
@@ -208,12 +203,25 @@ public class NeophyteRitual : ScriptActionQueue
 
     private void queueMoveAction(string markName, GameObject actor)
     {
-        addToQueue(new MoveAction { markName = markName, actor = actor, speed = 3.0f, waitAfter = 1f });
+        addToQueue(new MoveAction { markName = markName, actor = actor, speed = 2.0f, waitAfter = 1f });
     }
 
     private void queueMoveAction(string markName, GameObject actor, float waitAfter)
     {
-        addToQueue(new MoveAction { markName = markName, actor = actor, speed = 3.0f, waitAfter = waitAfter });
+        addToQueue(new MoveAction { markName = markName, actor = actor, speed = 2.0f, waitAfter = waitAfter });
     }
+
+
+    private void queueCircleMoveAction(string targetMarkName, GameObject actor, float waitAfter)
+    {
+        queueCircleMoveAction(targetMarkName, actor, 2, waitAfter);
+    }
+
+    private void queueCircleMoveAction(string targetMarkName, GameObject actor, float speed, float waitAfter)
+    {
+        addToQueue(new CircleMoveAction { actor = actor, waitAfter = waitAfter, centerMarkName = "Altar", targetMarkName = targetMarkName, radiusMarkName = "Circumabulation", speed = speed });
+    }
+
+
 
 }
