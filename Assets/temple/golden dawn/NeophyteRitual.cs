@@ -74,8 +74,19 @@ public class NeophyteRitual : MonoBehaviour
 
         queueCircleMoveAction("Kerux Start", kerux, 1);
 
-        queueVoiceAction(knock, hierophant, 1);
-        queueMoveAction("Hierophant Start Throne Stand", hierophant);
+        //queueVoiceAction(knock, hierophant, 1);
+        fastForwardTo = queueVoiceAction(knock, hierophant, 1);
+
+        queue.addToQueue(new AllAction
+        {
+            actions = new ScriptAction[] {
+                createMoveAction("Hierophant Start Throne Stand", hierophant),
+                createMoveAction("Hegemon Start Throne Stand", hegemon),
+                createMoveAction("Hiereus Start Throne Stand", hiereus),
+                createMoveAction("Stolistes Start Throne Stand", stolistes),
+                createMoveAction("Dadouchos Start Throne Stand", dadouchos)
+            }
+        });
 
         queueVoiceAction(knock, hierophant, 1);
         queueVoiceAction(002, hierophant, 1);
@@ -221,12 +232,15 @@ public class NeophyteRitual : MonoBehaviour
 
     private ScriptAction queueMoveAction(string markName, GameObject actor)
     {
-        return queue.addToQueue(new MoveAction { markName = markName, actor = actor, speed = 2.0f, waitAfter = 1f });
+        return queue.addToQueue(createMoveAction(markName, actor));
     }
-
     private ScriptAction queueMoveAction(string markName, GameObject actor, float waitAfter)
     {
-        return queue.addToQueue(new MoveAction { markName = markName, actor = actor, speed = 2.0f, waitAfter = waitAfter });
+        return queue.addToQueue(createMoveAction(markName, actor, waitAfter));
+    }
+    private ScriptAction createMoveAction(string markName, GameObject actor, float waitAfter = 1f)
+    {
+        return new MoveAction { markName = markName, actor = actor, speed = 2.0f, waitAfter = waitAfter };
     }
 
 
