@@ -6,6 +6,8 @@ using System.Linq;
 public class NeophyteRitual : MonoBehaviour
 {
 
+    public ScriptAction fastForwardTo;
+
     public AudioClip knock;
     public AudioClip[] clips;
     
@@ -153,11 +155,21 @@ public class NeophyteRitual : MonoBehaviour
         queueVoiceAction(050, hegemon, 1);
         queueVoiceAction(051, hierophant, 1);
         queueVoiceAction(052, hiereus, 1);
+
+
     }
 
     void Update()
     {
+
         queue.Update();
+
+        if (fastForwardTo != null)
+        {
+            queue.fastForwardTo(fastForwardTo);
+            fastForwardTo = null;
+        }
+        
     }
 
 
@@ -191,40 +203,41 @@ public class NeophyteRitual : MonoBehaviour
         }
     }
 
-    private void queueVoiceAction(int clipId, GameObject actor)
+
+    private ScriptAction queueVoiceAction(int clipId, GameObject actor)
     {
-        queueVoiceAction(getClip(clipId), actor, 1f);
+        return queueVoiceAction(getClip(clipId), actor, 1f);
     }
 
-    private void queueVoiceAction(int clipId, GameObject actor, float waitAfter)
+    private ScriptAction queueVoiceAction(int clipId, GameObject actor, float waitAfter)
     {
-        queueVoiceAction(getClip(clipId), actor, waitAfter);
+        return queueVoiceAction(getClip(clipId), actor, waitAfter);
     }
 
-    private void queueVoiceAction(AudioClip clip, GameObject actor, float waitAfter)
+    private ScriptAction queueVoiceAction(AudioClip clip, GameObject actor, float waitAfter)
     {
-        queue.addToQueue(new VoiceAction { clip = clip, actor = actor, waitAfter = waitAfter });
+        return queue.addToQueue(new VoiceAction { clip = clip, actor = actor, waitAfter = waitAfter });
     }
 
-    private void queueMoveAction(string markName, GameObject actor)
+    private ScriptAction queueMoveAction(string markName, GameObject actor)
     {
-        queue.addToQueue(new MoveAction { markName = markName, actor = actor, speed = 2.0f, waitAfter = 1f });
+        return queue.addToQueue(new MoveAction { markName = markName, actor = actor, speed = 2.0f, waitAfter = 1f });
     }
 
-    private void queueMoveAction(string markName, GameObject actor, float waitAfter)
+    private ScriptAction queueMoveAction(string markName, GameObject actor, float waitAfter)
     {
-        queue.addToQueue(new MoveAction { markName = markName, actor = actor, speed = 2.0f, waitAfter = waitAfter });
+        return queue.addToQueue(new MoveAction { markName = markName, actor = actor, speed = 2.0f, waitAfter = waitAfter });
     }
 
 
-    private void queueCircleMoveAction(string targetMarkName, GameObject actor, float waitAfter)
+    private ScriptAction queueCircleMoveAction(string targetMarkName, GameObject actor, float waitAfter)
     {
-        queueCircleMoveAction(targetMarkName, actor, 2, waitAfter);
+        return queueCircleMoveAction(targetMarkName, actor, 2, waitAfter);
     }
 
-    private void queueCircleMoveAction(string targetMarkName, GameObject actor, float speed, float waitAfter)
+    private ScriptAction queueCircleMoveAction(string targetMarkName, GameObject actor, float speed, float waitAfter)
     {
-        queue.addToQueue(new CircleMoveAction { actor = actor, waitAfter = waitAfter, centerMarkName = "Altar", targetMarkName = targetMarkName, radiusMarkName = "Circumabulation", speed = speed });
+        return queue.addToQueue(new CircleMoveAction { actor = actor, waitAfter = waitAfter, centerMarkName = "Altar", targetMarkName = targetMarkName, radiusMarkName = "Circumabulation", speed = speed });
     }
 
 

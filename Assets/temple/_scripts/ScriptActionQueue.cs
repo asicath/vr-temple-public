@@ -7,7 +7,7 @@ public class ScriptActionQueue {
     private float waiting = 0;
     private bool isRunning = false;
 
-    public void addToQueue(ScriptAction action)
+    public ScriptAction addToQueue(ScriptAction action)
     {
         if (top == null)
         {
@@ -19,6 +19,7 @@ public class ScriptActionQueue {
             bottom = action;
         }
 
+        return action;
     }
 
     private void startNextAction()
@@ -78,6 +79,44 @@ public class ScriptActionQueue {
             endRunningAction();
         }
             
+    }
+
+    public void fastForwardTo(ScriptAction action)
+    {
+
+        while (top != action && top != null)
+        {
+            if (isRunning)
+            {
+                isRunning = false;
+
+                if (waiting > 0)
+                {
+                    waiting = 0;
+                }
+                else
+                {
+                    top.Instant();
+                }
+            }
+            else
+            {
+                top.Instant();
+            }
+
+            if (top == bottom)
+            {
+                top = null;
+                bottom = null;
+            }
+            else
+            {
+                // move to the next
+                top = top.nextAction;
+            }
+        }
+
+
     }
 
 }
