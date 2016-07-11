@@ -22,7 +22,7 @@ public class VoiceAction : ScriptAction {
 
     public override void Instant()
     {
-        audioSource.Stop();
+        if (audioSource != null) audioSource.Stop();
     }
 
 }

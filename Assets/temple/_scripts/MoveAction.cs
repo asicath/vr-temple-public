@@ -77,6 +77,7 @@ public class MoveAction : ScriptAction {
 
     public override void Instant()
     {
+        mark = getMark(markName);
         actor.transform.position = new Vector3(mark.transform.position.x, actor.transform.position.y, mark.transform.position.z);
         actor.transform.rotation = mark.transform.rotation;
     }

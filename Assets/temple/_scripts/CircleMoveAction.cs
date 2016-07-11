@@ -90,7 +90,6 @@ public class CircleMoveAction : ScriptAction
         {
             // set the rotation without incident
             actor.transform.rotation = Quaternion.Euler(shouldFace);
-            Debug.Log("rotation complete");
         }
         
 
@@ -109,7 +108,6 @@ public class CircleMoveAction : ScriptAction
         }
         else
         {
-            //Debug.Log("move complete");
             actor.transform.position = new Vector3(mark.transform.position.x, actor.transform.position.y, mark.transform.position.z);
             return true;
         }
@@ -215,6 +213,7 @@ public class CircleMoveAction : ScriptAction
 
     public override void Instant()
     {
+        target = getMark(targetMarkName);
         actor.transform.position = new Vector3(target.transform.position.x, actor.transform.position.y, target.transform.position.z);
         actor.transform.rotation = target.transform.rotation;
     }
