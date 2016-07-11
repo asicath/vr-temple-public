@@ -6,15 +6,20 @@ public delegate void VoidFunction();
 
 public class ScriptAction {
 
-    public ScriptActionQueue queue;
+    public ScriptAction nextAction;
     public float waitAfter;
 
     public virtual void Start() { }
     public virtual void Update() { }
+
+    // called to get the result of this action or end it for fast forwarding
+    public virtual void Instant() { }
 
     protected static GameObject getMark(string name)
     {
         var marks = GameObject.FindGameObjectsWithTag("Mark");
         return marks.Where(o => o.name == name).FirstOrDefault();
     }
+
+    public VoidFunction onComplete;
 }

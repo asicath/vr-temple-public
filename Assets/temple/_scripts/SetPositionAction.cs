@@ -13,12 +13,14 @@ public class SetPositionAction : ScriptAction
     public override void Start()
     {
         mark = getMark(markName);
+        Instant();
+        onComplete();
+    }
 
+    public override void Instant()
+    {
         actor.transform.position = new Vector3(mark.transform.position.x, actor.transform.position.y, mark.transform.position.z);
-
         actor.transform.rotation = mark.transform.rotation;
-
-        queue.completeAction();
     }
 
 }

@@ -27,12 +27,12 @@ GameObject:
   - 64: {fileID: 6498052}
   - 23: {fileID: 2305102}
   m_Layer: 0
-  m_Name: Plane
+  m_Name: Crowley Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &142864
 GameObject:
   m_ObjectHideFlags: 0

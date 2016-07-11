@@ -26,9 +26,6 @@ public class MoveAction : ScriptAction {
 
         if (!beforeRotateComplete)
         {
-
-
-
             beforeRotateComplete = true;
         }
 
@@ -73,9 +70,15 @@ public class MoveAction : ScriptAction {
         if (moveComplete && rotateComplete)
         {
             // and complete the action
-            queue.completeAction();
+            onComplete();
         }
 
+    }
+
+    public override void Instant()
+    {
+        actor.transform.position = new Vector3(mark.transform.position.x, actor.transform.position.y, mark.transform.position.z);
+        actor.transform.rotation = mark.transform.rotation;
     }
 
 }

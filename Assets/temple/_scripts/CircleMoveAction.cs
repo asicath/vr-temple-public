@@ -206,11 +206,17 @@ public class CircleMoveAction : ScriptAction
         else
         {
             // and complete the action
-            queue.completeAction();
+            onComplete();
         }
 
 
 
+    }
+
+    public override void Instant()
+    {
+        actor.transform.position = new Vector3(target.transform.position.x, actor.transform.position.y, target.transform.position.z);
+        actor.transform.rotation = target.transform.rotation;
     }
 
 }

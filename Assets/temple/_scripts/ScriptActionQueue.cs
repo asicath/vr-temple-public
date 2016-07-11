@@ -1,51 +1,77 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public class ScriptActionQueue : TimeoutQueue {
+public class ScriptActionQueue {
 
-    private Queue<ScriptAction> actions = new Queue<ScriptAction>();
-    private ScriptAction running;
-    private bool waiting = false;
-
-	// Use this for initialization
-	void Start () {
-	    
-	}
+    private ScriptAction top, bottom;
+    private float waiting = 0;
+    private bool isRunning = false;
 
     public void addToQueue(ScriptAction action)
     {
-        action.queue = this;
-        actions.Enqueue(action);
+        if (top == null)
+        {
+            top = action;
+            bottom = action;
+        }
+        else {
+            bottom.nextAction = action;
+            bottom = action;
+        }
+
     }
 
     private void startNextAction()
     {
-        if (actions.Count > 0)
+        if (top != null)
         {
-            running = actions.Dequeue();
-            running.Start();
+            // pop the top action
+            top.onComplete = completeAction;
+            isRunning = true;
+            top.Start();
         }
     }
 
     private void endRunningAction()
     {
-        waiting = false;
-        running = null;
+        waiting = 0;
+        isRunning = false;
+
+        if (top == bottom)
+        {
+            top = null;
+            bottom = null;
+        }
+        else
+        {
+            // move to the next
+            top = top.nextAction;
+        }
+
+        
         startNextAction();
     }
 	
 	// Update is called once per frame
-	void Update () {
-        if (running == null) startNextAction();
-        else if (!waiting) running.Update();
+	public void Update () {
+        if (!isRunning) startNextAction();
+        else if (waiting > 0)
+        {
+            waiting -= Time.deltaTime;
+            if (waiting <= 0)
+            {
+                waiting = 0;
+                endRunningAction();
+            }
+        }
+        else top.Update();
     }
 
     public void completeAction()
     {
-        if (running.waitAfter != 0)
+        if (top.waitAfter != 0)
         {
-            waiting = true;
-            setTimeout(running.waitAfter, endRunningAction);
+            waiting = top.waitAfter;
         }
         else
         {
