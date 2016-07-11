@@ -21,7 +21,7 @@ public class MoveAction : ScriptAction {
         
     }
 
-    public override void Update()
+    public override void UpdateAction()
     {
 
         if (!beforeRotateComplete)
@@ -70,7 +70,7 @@ public class MoveAction : ScriptAction {
         if (moveComplete && rotateComplete)
         {
             // and complete the action
-            onComplete();
+            complete();
         }
 
     }

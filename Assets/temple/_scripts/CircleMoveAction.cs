@@ -115,7 +115,7 @@ public class CircleMoveAction : ScriptAction
         }
     }
 
-    public override void Update()
+    public override void UpdateAction()
     {
 
         if (!moveToCircleComplete)
@@ -206,7 +206,7 @@ public class CircleMoveAction : ScriptAction
         else
         {
             // and complete the action
-            onComplete();
+            complete();
         }
 
 

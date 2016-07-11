@@ -9,8 +9,30 @@ public class ScriptAction {
     public ScriptAction nextAction;
     public float waitAfter;
 
+    private float waiting = 0;
+
     public virtual void Start() { }
-    public virtual void Update() { }
+
+    public virtual void UpdateAction() { }
+
+    public void Update()
+    {
+
+        if (waiting > 0)
+        {
+            waiting -= Time.deltaTime;
+            if (waiting <= 0)
+            {
+                waiting = 0;
+                onComplete();
+            }
+        }
+        else
+        {
+            UpdateAction();
+        }
+        
+    }
 
     // called to get the result of this action or end it for fast forwarding
     public virtual void Instant() { }
@@ -22,4 +44,19 @@ public class ScriptAction {
     }
 
     public VoidFunction onComplete;
+
+    /// <summary>
+    /// Called by implementing classes when their action is done
+    /// </summary>
+    protected void complete()
+    {
+        if (waitAfter != 0)
+        {
+            waiting = waitAfter;
+        }
+        else
+        {
+            onComplete();
+        }
+    }
 }

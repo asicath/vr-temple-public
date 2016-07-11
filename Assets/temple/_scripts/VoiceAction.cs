@@ -16,8 +16,8 @@ public class VoiceAction : ScriptAction {
     }
 	
 	// Update is called once per frame
-	public override void Update () {
-        if (!audioSource.isPlaying) onComplete();
+	public override void UpdateAction() {
+        if (!audioSource.isPlaying) complete();
     }
 
     public override void Instant()

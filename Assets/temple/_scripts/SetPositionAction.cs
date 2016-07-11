@@ -14,7 +14,7 @@ public class SetPositionAction : ScriptAction
     {
         mark = getMark(markName);
         Instant();
-        onComplete();
+        complete();
     }
 
     public override void Instant()
