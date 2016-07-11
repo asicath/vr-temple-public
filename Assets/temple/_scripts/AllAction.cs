@@ -36,4 +36,13 @@ public class AllAction : ScriptAction {
         }
             
     }
+
+    public override void Instant()
+    {
+        foreach (var action in actions)
+        {
+            action.Instant();
+        }
+    }
+
 }
