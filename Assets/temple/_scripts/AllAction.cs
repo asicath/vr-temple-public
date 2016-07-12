@@ -9,16 +9,16 @@ public class AllAction : ScriptAction {
     // Use this for initialization
     protected override void StartAction() {
         completed = 0;
-        foreach(var action in actions)
+        foreach (var action in actions)
         {
             action.onComplete = completeChildAction;
-            Debug.Log("set");
             action.Start();
         }
 	}
 
     // Update is called once per frame
     protected override void UpdateAction () {
+        //Debug.Log("updating actions" + actions.Length);
         foreach (var action in actions)
         {
             action.Update();
@@ -27,12 +27,10 @@ public class AllAction : ScriptAction {
 
     public void completeChildAction()
     {
-        Debug.Log("complete");
         completed++;
         if (completed == actions.Length)
         {
             complete();
-            Debug.Log("all complete");
         }
             
     }

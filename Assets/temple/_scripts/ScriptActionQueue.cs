@@ -6,7 +6,7 @@ public class ScriptActionQueue {
     private ScriptAction top, bottom;
     private bool isRunning = false;
 
-    public ScriptAction addToQueue(ScriptAction action)
+    public ScriptAction add(ScriptAction action)
     {
         if (top == null)
         {

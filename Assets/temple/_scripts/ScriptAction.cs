@@ -16,14 +16,15 @@ public class ScriptAction {
     private float waitingAfter;
     private float waitingBefore;
 
+    private bool isComplete = false;
+
     public void Start() {
+        isComplete = false;
         if (waitBefore > 0)
         {
             waitingBefore = waitBefore;
-            Debug.Log(id + " waiting before: " + waitBefore);
         }
         else {
-            Debug.Log(id + " Start without waiting");
             StartAction();
         }
     }
@@ -35,11 +36,9 @@ public class ScriptAction {
     {
         if (waitingBefore > 0)
         {
-            Debug.Log(id + " waiting..." + waitingBefore);
             waitingBefore -= Time.deltaTime;
             if (waitingBefore <= 0)
             {
-                Debug.Log(id + " Start after waiting");
                 waitingBefore = 0;
                 StartAction();
             }
@@ -50,10 +49,11 @@ public class ScriptAction {
             if (waitingAfter <= 0)
             {
                 waitingAfter = 0;
+                isComplete = true;
                 onComplete();
             }
         }
-        else
+        else if (!isComplete)
         {
             UpdateAction();
         }
@@ -82,6 +82,7 @@ public class ScriptAction {
         }
         else
         {
+            isComplete = true;
             onComplete();
         }
     }
