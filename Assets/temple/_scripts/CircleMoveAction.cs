@@ -25,7 +25,7 @@ public class CircleMoveAction : ScriptAction
     private float rotationSpeed = 50;
 
     // Use this for initialization
-    public override void Start()
+    protected override void StartAction()
     {
         center = getMark(centerMarkName);
         target = getMark(targetMarkName);
@@ -113,7 +113,7 @@ public class CircleMoveAction : ScriptAction
         }
     }
 
-    public override void UpdateAction()
+    protected override void UpdateAction()
     {
 
         if (!moveToCircleComplete)

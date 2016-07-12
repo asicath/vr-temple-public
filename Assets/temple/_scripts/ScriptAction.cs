@@ -6,24 +6,50 @@ public delegate void VoidFunction();
 
 public class ScriptAction {
 
+    protected static int idIncr = 0;
+    protected int id = ++idIncr;
+
     public ScriptAction nextAction;
     public float waitAfter;
+    public float waitBefore;
 
-    private float waiting = 0;
+    private float waitingAfter;
+    private float waitingBefore;
 
-    public virtual void Start() { }
+    public void Start() {
+        if (waitBefore > 0)
+        {
+            waitingBefore = waitBefore;
+            Debug.Log(id + " waiting before: " + waitBefore);
+        }
+        else {
+            Debug.Log(id + " Start without waiting");
+            StartAction();
+        }
+    }
 
-    public virtual void UpdateAction() { }
+    protected virtual void StartAction() { }
+    protected virtual void UpdateAction() { }
 
     public void Update()
     {
-
-        if (waiting > 0)
+        if (waitingBefore > 0)
         {
-            waiting -= Time.deltaTime;
-            if (waiting <= 0)
+            Debug.Log(id + " waiting..." + waitingBefore);
+            waitingBefore -= Time.deltaTime;
+            if (waitingBefore <= 0)
             {
-                waiting = 0;
+                Debug.Log(id + " Start after waiting");
+                waitingBefore = 0;
+                StartAction();
+            }
+        }
+        else if (waitingAfter > 0)
+        {
+            waitingAfter -= Time.deltaTime;
+            if (waitingAfter <= 0)
+            {
+                waitingAfter = 0;
                 onComplete();
             }
         }
@@ -52,7 +78,7 @@ public class ScriptAction {
     {
         if (waitAfter != 0)
         {
-            waiting = waitAfter;
+            waitingAfter = waitAfter;
         }
         else
         {

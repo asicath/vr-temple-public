@@ -66,7 +66,7 @@ public class NeophyteRitual : MonoBehaviour
         addActor(pastHierophantPrefab, "Past Hierophant Start");
         addActor(praemonstratorPrefab, "Praemonstrator Start");
 
-        queueVoiceAction(knock, hierophant, 1);
+        queueVoiceAction(knock, hierophant, 1, 2);
 
         queueCircleMoveAction("Kerux Proclaim", kerux, 1);
 
@@ -75,16 +75,16 @@ public class NeophyteRitual : MonoBehaviour
         queueCircleMoveAction("Kerux Start", kerux, 1);
 
         //queueVoiceAction(knock, hierophant, 1);
-        fastForwardTo = queueVoiceAction(knock, hierophant, 1);
+        queueVoiceAction(knock, hierophant, 1);
 
         queue.addToQueue(new AllAction
         {
             actions = new ScriptAction[] {
-                createMoveAction("Hierophant Start Throne Stand", hierophant),
-                createMoveAction("Hegemon Start Throne Stand", hegemon),
-                createMoveAction("Hiereus Start Throne Stand", hiereus),
-                createMoveAction("Stolistes Start Throne Stand", stolistes),
-                createMoveAction("Dadouchos Start Throne Stand", dadouchos)
+                createStandAction("Hierophant Start Throne", hierophant),
+                createStandAction("Hegemon Start Throne", hegemon),
+                createStandAction("Hiereus Start Throne", hiereus),
+                createStandAction("Stolistes Start Throne", stolistes),
+                createStandAction("Dadouchos Start Throne", dadouchos)
             }
         });
 
@@ -215,19 +215,13 @@ public class NeophyteRitual : MonoBehaviour
     }
 
 
-    private ScriptAction queueVoiceAction(int clipId, GameObject actor)
+    private ScriptAction queueVoiceAction(int clipId, GameObject actor, float waitAfter = 1f, float waitBefore = 0)
     {
-        return queueVoiceAction(getClip(clipId), actor, 1f);
+        return queueVoiceAction(getClip(clipId), actor, waitAfter, waitBefore);
     }
-
-    private ScriptAction queueVoiceAction(int clipId, GameObject actor, float waitAfter)
+    private ScriptAction queueVoiceAction(AudioClip clip, GameObject actor, float waitAfter = 1f, float waitBefore = 0)
     {
-        return queueVoiceAction(getClip(clipId), actor, waitAfter);
-    }
-
-    private ScriptAction queueVoiceAction(AudioClip clip, GameObject actor, float waitAfter)
-    {
-        return queue.addToQueue(new VoiceAction { clip = clip, actor = actor, waitAfter = waitAfter });
+        return queue.addToQueue(new VoiceAction { clip = clip, actor = actor, waitAfter = waitAfter, waitBefore = waitBefore });
     }
 
     private ScriptAction queueMoveAction(string markName, GameObject actor)
@@ -241,6 +235,11 @@ public class NeophyteRitual : MonoBehaviour
     private ScriptAction createMoveAction(string markName, GameObject actor, float waitAfter = 1f)
     {
         return new MoveAction { markName = markName, actor = actor, speed = 2.0f, waitAfter = waitAfter };
+    }
+
+    private ScriptAction createStandAction(string markName, GameObject actor, float waitAfter = 1f)
+    {
+        return new MoveAction { markName = markName + " Stand", actor = actor, speed = UnityEngine.Random.RandomRange(0.5f, 1), waitAfter = waitAfter, waitBefore = UnityEngine.Random.RandomRange(0.1f, 1) };
     }
 
 

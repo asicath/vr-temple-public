@@ -6,8 +6,8 @@ public class AllAction : ScriptAction {
     public ScriptAction[] actions;
     private int completed;
 
-	// Use this for initialization
-	public override void Start () {
+    // Use this for initialization
+    protected override void StartAction() {
         completed = 0;
         foreach(var action in actions)
         {
@@ -16,9 +16,9 @@ public class AllAction : ScriptAction {
             action.Start();
         }
 	}
-	
-	// Update is called once per frame
-	public override void UpdateAction () {
+
+    // Update is called once per frame
+    protected override void UpdateAction () {
         foreach (var action in actions)
         {
             action.Update();

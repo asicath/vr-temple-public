@@ -8,15 +8,15 @@ public class VoiceAction : ScriptAction {
 
     private AudioSource audioSource;
 
-	// Use this for initialization
-	public override void Start () {
+    // Use this for initialization
+    protected override void StartAction() {
         audioSource = actor.GetComponent<AudioSource>();
         audioSource.clip = clip;
         audioSource.Play();
     }
-	
-	// Update is called once per frame
-	public override void UpdateAction() {
+
+    // Update is called once per frame
+    protected override void UpdateAction() {
         if (!audioSource.isPlaying) complete();
     }
 

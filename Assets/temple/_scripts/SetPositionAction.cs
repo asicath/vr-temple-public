@@ -10,7 +10,7 @@ public class SetPositionAction : ScriptAction
     public string markName;
 
     // Use this for initialization
-    public override void Start()
+    protected override void StartAction()
     {
         Instant();
         complete();

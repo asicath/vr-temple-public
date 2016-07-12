@@ -15,13 +15,13 @@ public class MoveAction : ScriptAction {
     private bool beforeRotateComplete = false;
 
     // Use this for initialization
-    public override void Start()
+    protected override void StartAction()
     {
         mark = getMark(markName);
         
     }
 
-    public override void UpdateAction()
+    protected override void UpdateAction()
     {
 
         if (!beforeRotateComplete)
