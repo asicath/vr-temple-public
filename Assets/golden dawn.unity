@@ -23,7 +23,7 @@ RenderSettings:
   m_AmbientSkyColor: {r: 1, g: 1, b: 1, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
-  m_AmbientIntensity: 0
+  m_AmbientIntensity: 0.3
   m_AmbientMode: 3
   m_SkyboxMaterial: {fileID: 0}
   m_HaloStrength: 0.5
@@ -2441,7 +2441,7 @@ MonoBehaviour:
   praemonstratorPrefab: {fileID: 166538, guid: acad1797deab7e444af7c280df242026, type: 2}
   doorPrefab: {fileID: 152398, guid: 4c40707452c19ce4fb155d208a1bd8d9, type: 2}
   thronePrefab: {fileID: 179292, guid: e8028534d23327e498836eaf60c10399, type: 2}
-  altarPrefab: {fileID: 187302, guid: 13d4088bb84ca15428a7ef58e507241d, type: 2}
+  altarPrefab: {fileID: 154380, guid: f1900e92ae9b2c344b5f8edfb342d8f5, type: 2}
   blackPillarPrefab: {fileID: 126500, guid: 955a825f08cd04e4bb9bafb900616957, type: 2}
   whitePillarPrefab: {fileID: 132198, guid: d1c789eff7f86c345bbbdda950162e6b, type: 2}
   bannerOfTheEastPrefab: {fileID: 155608, guid: a42c86f8dd1785a46a659e787df78d8d,
