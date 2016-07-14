@@ -38,9 +38,6 @@ public class CircleMoveAction : ScriptAction
 
     private void createEntryPoint()
     {
-        var close = getClosestPointOnCircle(center, radiusMark, actor);
-        var tangent = getTangentPoint(center, radiusMark, actor);
-
 
         // determine entry point
         entry = new GameObject("temp entry");
@@ -50,6 +47,8 @@ public class CircleMoveAction : ScriptAction
         var radius = getDistance(center, radiusMark);
         if (distance > radius)
         {
+            var tangent = getTangentPoint(center, radiusMark, actor);
+
             var currentAngle = getAngle(center, actor);
             var targetAngle = getAngle(center, target);
             var tangentAngle = getAngle(center.transform.position, tangent);
@@ -65,12 +64,35 @@ public class CircleMoveAction : ScriptAction
         }
 
         // default is just to move to the closest point on circle
+        var close = getClosestPointOnCircle(center, radiusMark, actor);
         entry.transform.position = close;
     }
 
     private void createExitPoint()
     {
         exit = new GameObject("temp exit");
+
+        // determine if we can cut out earlier
+        var distance = getDistance(target, center);
+        var radius = getDistance(center, radiusMark);
+        if (distance > radius)
+        {
+            var tangent = getTangentPointCounter(center, radiusMark, target);
+
+            var entryAngle = getAngle(center, entry);
+            var targetAngle = getAngle(center, target);
+            var tangentAngle = getAngle(center.transform.position, tangent);
+
+            if (targetAngle > entryAngle) targetAngle -= Mathf.PI * 2;
+            if (tangentAngle > entryAngle) tangentAngle -= Mathf.PI * 2;
+
+            if (tangentAngle > targetAngle)
+            {
+                exit.transform.position = tangent;
+                return;
+            }
+        }
+
 
         // default if just the closest point
         exit.transform.position = getClosestPointOnCircle(center, radiusMark, target);
@@ -114,6 +136,15 @@ public class CircleMoveAction : ScriptAction
         var d = (o.transform.position - center.transform.position).magnitude;
         var a = Mathf.Acos(radius / d);
         return new Vector3(Mathf.Cos(angle - a) * radius + center.transform.position.x, 0, Mathf.Sin(angle - a) * radius + center.transform.position.z);
+    }
+
+    private static Vector3 getTangentPointCounter(GameObject center, GameObject radiusMark, GameObject o)
+    {
+        var radius = (center.transform.position - radiusMark.transform.position).magnitude;
+        var angle = getAngle(center, o);
+        var d = (o.transform.position - center.transform.position).magnitude;
+        var a = Mathf.Acos(radius / d);
+        return new Vector3(Mathf.Cos(angle + a) * radius + center.transform.position.x, 0, Mathf.Sin(angle + a) * radius + center.transform.position.z);
     }
 
     private float convertAngleToUnity(float angle)
