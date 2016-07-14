@@ -33,31 +33,34 @@ public class CircleMoveAction : ScriptAction
         var radiusMark = getMark(radiusMarkName);
         radius = (center.transform.position - radiusMark.transform.position).magnitude;
 
+
         // determine entry point
-        var angle = getAngle(actor, center, false);
-        Debug.Log(angle);
+        var angle = getAngleX(center, actor, false);
 
         entry = new GameObject("temp entry");
-        //entry.transform.position = new Vector3(Mathf.Cos(angle+Mathf.PI) * radius + center.transform.position.x, 0, Mathf.Sin(angle + Mathf.PI) * radius + center.transform.position.z);
-
         var d = (actor.transform.position - center.transform.position).magnitude;
-        var a = Mathf.Acos(radius / d);
 
-        Debug.Log(a);
-
-        entry.transform.position = new Vector3(Mathf.Cos(angle - a) * radius + center.transform.position.x, 0, Mathf.Sin(angle - a) * radius + center.transform.position.z);
+        if (d < radius)
+        {
+            entry.transform.position = new Vector3(Mathf.Cos(angle + Mathf.PI) * radius + center.transform.position.x, 0, Mathf.Sin(angle + Mathf.PI) * radius + center.transform.position.z);
+        }
+        else
+        {
+            var a = Mathf.Acos(radius / d);
+            entry.transform.position = new Vector3(Mathf.Cos(angle - a) * radius + center.transform.position.x, 0, Mathf.Sin(angle - a) * radius + center.transform.position.z);
+        }
 
     }
 
     /// <summary>
     /// Gets angle in radians
     /// </summary>
-    private static float getAngle(GameObject centerMark, GameObject o, bool noNegatives = true)
+    private static float getAngleX(GameObject centerMark, GameObject o, bool noNegatives = true)
     {
         var c = centerMark.transform.position;
         var p = o.transform.position;
 
-        var a = Mathf.Atan2(c.z - p.z, c.x - p.x);
+        var a = Mathf.Atan2(p.z - c.z, p.x - c.x);
 
         // Lets not deal with negative angles just to make this simple
         if (noNegatives && a < 0) a += Mathf.PI * 2;
@@ -76,7 +79,7 @@ public class CircleMoveAction : ScriptAction
     {
 
         // get the degree from mark to the actor
-        var degrees = convertAngleToUnity(getAngle(mark, actor)) * Mathf.Rad2Deg;
+        var degrees = convertAngleToUnity(getAngleX(actor, mark)) * Mathf.Rad2Deg;
 
         // this is the angle that it should face
         var shouldFace = new Vector3(0, degrees, 0);
@@ -134,8 +137,8 @@ public class CircleMoveAction : ScriptAction
         else if (!moveOnCircleComplete)
         {
             // get current degree
-            var angle = getAngle(center, actor);
-            var targetAngle = getAngle(center, target);
+            var angle = getAngleX(center, actor);
+            var targetAngle = getAngleX(center, target);
 
             // determine how much angle is covered at current speed/circum
             var circumferance = radius * Mathf.PI * 2;
@@ -156,7 +159,7 @@ public class CircleMoveAction : ScriptAction
 
 
             // detemine the ideal rotation
-            var degrees = (convertAngleToUnity(nextAngle) + Mathf.PI * 1.5f) % (Mathf.PI * 2);
+            var degrees = (convertAngleToUnity(nextAngle) + Mathf.PI * 0.5f) % (Mathf.PI * 2);
             var shouldFace = new Vector3(0, degrees * Mathf.Rad2Deg, 0);
 
             // detemine if we need to move a lesser amount
@@ -183,9 +186,7 @@ public class CircleMoveAction : ScriptAction
             
 
             // last move to the new position
-            actor.transform.position = new Vector3(Mathf.Cos(nextAngle + Mathf.PI) * radius + center.transform.position.x, actor.transform.position.y, Mathf.Sin(nextAngle + Mathf.PI) * radius + center.transform.position.z);
-
-            angle = getAngle(center, actor);
+            actor.transform.position = new Vector3(Mathf.Cos(nextAngle) * radius + center.transform.position.x, actor.transform.position.y, Mathf.Sin(nextAngle) * radius + center.transform.position.z);
         }
         else if (!moveFromCircleComplete)
         {
