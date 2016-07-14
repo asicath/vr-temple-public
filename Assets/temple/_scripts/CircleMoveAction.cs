@@ -34,15 +34,25 @@ public class CircleMoveAction : ScriptAction
         radius = (center.transform.position - radiusMark.transform.position).magnitude;
 
         // determine entry point
-        var angle = getAngle(center, actor);
+        var angle = getAngle(actor, center, false);
+        Debug.Log(angle);
+
         entry = new GameObject("temp entry");
-        entry.transform.position = new Vector3(Mathf.Cos(angle+Mathf.PI) * radius + center.transform.position.x, 0, Mathf.Sin(angle + Mathf.PI) * radius + center.transform.position.z);
+        //entry.transform.position = new Vector3(Mathf.Cos(angle+Mathf.PI) * radius + center.transform.position.x, 0, Mathf.Sin(angle + Mathf.PI) * radius + center.transform.position.z);
+
+        var d = (actor.transform.position - center.transform.position).magnitude;
+        var a = Mathf.Acos(radius / d);
+
+        Debug.Log(a);
+
+        entry.transform.position = new Vector3(Mathf.Cos(angle - a) * radius + center.transform.position.x, 0, Mathf.Sin(angle - a) * radius + center.transform.position.z);
+
     }
 
     /// <summary>
     /// Gets angle in radians
     /// </summary>
-    private static float getAngle(GameObject centerMark, GameObject o)
+    private static float getAngle(GameObject centerMark, GameObject o, bool noNegatives = true)
     {
         var c = centerMark.transform.position;
         var p = o.transform.position;
@@ -50,7 +60,7 @@ public class CircleMoveAction : ScriptAction
         var a = Mathf.Atan2(c.z - p.z, c.x - p.x);
 
         // Lets not deal with negative angles just to make this simple
-        if (a < 0) a += Mathf.PI * 2;
+        if (noNegatives && a < 0) a += Mathf.PI * 2;
 
         return a;
     }

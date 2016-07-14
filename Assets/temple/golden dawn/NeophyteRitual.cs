@@ -67,7 +67,7 @@ public class NeophyteRitual : MonoBehaviour
         addActor(praemonstratorPrefab, "Praemonstrator Start");
 
         //var camera = "OVRCameraRig"
-        Camera.main.transform.parent = kerux.transform.FindChild("Head").transform;
+        //Camera.main.transform.parent = kerux.transform.FindChild("Head").transform;
 
         queueVoiceAction(knock, hierophant, 1, 2);
 
