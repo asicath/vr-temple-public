@@ -10,6 +10,7 @@ public class CircleMoveAction : ScriptAction
     private GameObject center;
     private GameObject target;
     private GameObject entry;
+    private GameObject exit;
     private GameObject radiusMark;
     public string centerMarkName;
     public string targetMarkName;
@@ -32,7 +33,7 @@ public class CircleMoveAction : ScriptAction
         radiusMark = getMark(radiusMarkName);
 
         createEntryPoint();
-
+        createExitPoint();
     }
 
     private void createEntryPoint()
@@ -44,9 +45,9 @@ public class CircleMoveAction : ScriptAction
         // determine entry point
         entry = new GameObject("temp entry");
 
+        // determine if we can to move to tangent
         var distance = getDistance(actor, center);
         var radius = getDistance(center, radiusMark);
-
         if (distance > radius)
         {
             var currentAngle = getAngle(center, actor);
@@ -61,11 +62,18 @@ public class CircleMoveAction : ScriptAction
                 entry.transform.position = tangent;
                 return;
             }
-            
         }
 
         // default is just to move to the closest point on circle
         entry.transform.position = close;
+    }
+
+    private void createExitPoint()
+    {
+        exit = new GameObject("temp exit");
+
+        // default if just the closest point
+        exit.transform.position = getClosestPointOnCircle(center, radiusMark, target);
     }
 
     /// <summary>
@@ -178,7 +186,7 @@ public class CircleMoveAction : ScriptAction
         {
             // get current degree
             var angle = getAngle(center, actor);
-            var targetAngle = getAngle(center, target);
+            var targetAngle = getAngle(center, exit);
             var radius = getDistance(center, radiusMark);
 
             // determine how much angle is covered at current speed/circum
