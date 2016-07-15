@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Linq;
 
-public delegate void VoidFunction();
+public delegate void ActionFunction(ScriptAction action);
 
 public class ScriptAction {
 
@@ -16,7 +16,7 @@ public class ScriptAction {
     private float waitingAfter;
     private float waitingBefore;
 
-    private bool isComplete = false;
+    public bool isComplete = false;
 
     public void Start() {
         isComplete = false;
@@ -50,7 +50,7 @@ public class ScriptAction {
             {
                 waitingAfter = 0;
                 isComplete = true;
-                onComplete();
+                onComplete(this);
             }
         }
         else if (!isComplete)
@@ -70,7 +70,7 @@ public class ScriptAction {
         return marks.Where(o => o.name == name).FirstOrDefault();
     }
 
-    public VoidFunction onComplete;
+    public ActionFunction onComplete;
 
     /// <summary>
     /// Called by implementing classes when their action is done
@@ -84,7 +84,14 @@ public class ScriptAction {
         else
         {
             isComplete = true;
-            onComplete();
+            onComplete(this);
         }
+    }
+
+    public ScriptAction then(ScriptAction action)
+    {
+        if (nextAction == null) nextAction = action;
+        else nextAction.then(action);
+        return this;
     }
 }

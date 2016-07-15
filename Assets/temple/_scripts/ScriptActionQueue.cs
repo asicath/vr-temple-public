@@ -61,7 +61,7 @@ public class ScriptActionQueue {
         else top.Update();
     }
 
-    public void completeAction()
+    public void completeAction(ScriptAction action)
     {
         endRunningAction();
     }

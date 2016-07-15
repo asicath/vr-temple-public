@@ -19,15 +19,22 @@ public class AllAction : ScriptAction {
     // Update is called once per frame
     protected override void UpdateAction () {
         //Debug.Log("updating actions" + actions.Length);
-        foreach (var action in actions)
+        for (var i = 0; i < actions.Length; i++)
         {
-            action.Update();
+            actions[i].Update();
+            if (actions[i].isComplete && actions[i].nextAction != null)
+            {
+                actions[i] = actions[i].nextAction;
+                actions[i].onComplete = completeChildAction;
+                actions[i].Start();
+            }
         }
     }
 
-    public void completeChildAction()
+    public void completeChildAction(ScriptAction action)
     {
-        completed++;
+        if (action.nextAction == null) completed++;
+
         if (completed == actions.Length)
         {
             complete();

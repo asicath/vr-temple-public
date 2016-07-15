@@ -67,7 +67,7 @@ public class NeophyteRitual : MonoBehaviour
         addActor(praemonstratorPrefab, "Praemonstrator Start");
 
         //var camera = "OVRCameraRig"
-        //Camera.main.transform.parent = kerux.transform.FindChild("Head").transform;
+        Camera.main.transform.parent = kerux.transform.FindChild("Head").transform;
 
         queueVoiceAction(knock, hierophant, 1, 2);
 
@@ -153,15 +153,22 @@ public class NeophyteRitual : MonoBehaviour
         queueVoiceAction(026, hierophant, 1);
 
         queueVoiceAction(027, hierophant, 1);
-        queue.add(new AllAction { actions = new ScriptAction[] { createCircleMoveAction("East", stolistes), createCircleMoveAction("North", dadouchos) } });
-        queue.add(new AllAction { actions = new ScriptAction[] { createCircleMoveAction("South", stolistes), createCircleMoveAction("East", dadouchos) } });
-        queue.add(new AllAction { actions = new ScriptAction[] { createCircleMoveAction("West", stolistes), createCircleMoveAction("South", dadouchos) } });
-        queue.add(new AllAction { actions = new ScriptAction[] { createCircleMoveAction("North", stolistes), createCircleMoveAction("West", dadouchos) } });
-        queue.add(new AllAction { actions = new ScriptAction[] { createCircleMoveAction("East", stolistes), createCircleMoveAction("North", dadouchos) } });
-        queueVoiceAction(031, stolistes, 1);
-        queue.add(new AllAction { actions = new ScriptAction[] { createCircleMoveAction("Stolistes Start Throne Stand", stolistes), createCircleMoveAction("East", dadouchos) } });
-        queueVoiceAction(035, dadouchos, 1);
-        queue.add(createCircleMoveAction("Dadouchos Start Throne Stand", dadouchos));
+        fastForwardTo = queue.add(all(new ScriptAction[] {
+            createCircleMoveAction("East", stolistes),
+            createCircleMoveAction("North", dadouchos) } ));
+        queue.add(all(new ScriptAction[] { createCircleMoveAction("South", stolistes), createCircleMoveAction("East", dadouchos) } ));
+        queue.add(all(new ScriptAction[] { createCircleMoveAction("West", stolistes), createCircleMoveAction("South", dadouchos) } ));
+        queue.add(all(new ScriptAction[] { createCircleMoveAction("North", stolistes), createCircleMoveAction("West", dadouchos) } ));
+        queue.add(all(new ScriptAction[] { createCircleMoveAction("East", stolistes), createCircleMoveAction("North", dadouchos) } ));
+        
+
+        queue.add(all(new ScriptAction[] {
+            createVoiceAction(031, stolistes, 1)
+                .then(createCircleMoveAction("Stolistes Start Throne Stand", stolistes)),
+            createCircleMoveAction("East", dadouchos, 2)
+                .then(createVoiceAction(035, dadouchos, 1)
+                .then(createCircleMoveAction("Dadouchos Start Throne Stand", dadouchos)))
+        } ));
 
         //fastForwardTo = 
         queueVoiceAction(036, hierophant, 1);
@@ -250,6 +257,16 @@ public class NeophyteRitual : MonoBehaviour
         return queue.add(new VoiceAction { clip = clip, actor = actor, waitAfter = waitAfter, waitBefore = waitBefore });
     }
 
+    private ScriptAction createVoiceAction(int clipId, GameObject actor, float waitAfter = 1f, float waitBefore = 0)
+    {
+        return createVoiceAction(getClip(clipId), actor, waitAfter, waitBefore);
+    }
+    private ScriptAction createVoiceAction(AudioClip clip, GameObject actor, float waitAfter = 1f, float waitBefore = 0)
+    {
+        return new VoiceAction { clip = clip, actor = actor, waitAfter = waitAfter, waitBefore = waitBefore };
+    }
+
+
     private ScriptAction createMoveAction(string markName, GameObject actor, float waitAfter = 1f)
     {
         return new MoveAction { markName = markName, actor = actor, speed = 2.0f, waitAfter = waitAfter };
@@ -261,9 +278,9 @@ public class NeophyteRitual : MonoBehaviour
     }
 
 
-    private ScriptAction createCircleMoveAction(string targetMarkName, GameObject actor, float speed = 2, float waitAfter = 1)
+    private ScriptAction createCircleMoveAction(string targetMarkName, GameObject actor, float waitBefore = 0, float speed = 2, float waitAfter = 1)
     {
-        return new CircleMoveAction { actor = actor, waitAfter = waitAfter, centerMarkName = "Altar", targetMarkName = targetMarkName, radiusMarkName = "Circumabulation", speed = speed };
+        return new CircleMoveAction { actor = actor, waitBefore = waitBefore, waitAfter = waitAfter, centerMarkName = "Altar", targetMarkName = targetMarkName, radiusMarkName = "Circumabulation", speed = speed };
     }
 
     private ScriptAction createCircleMoveToDegreeAction(float targetDegree, GameObject actor, float speed = 2, float waitAfter = 1)
@@ -271,6 +288,9 @@ public class NeophyteRitual : MonoBehaviour
         return new CircleMoveToDegreeAction { actor = actor, waitAfter = waitAfter, centerMarkName = "Altar", targetDegree = targetDegree, radiusMarkName = "Circumabulation", speed = speed };
     }
 
-
+    private AllAction all(ScriptAction[] actions)
+    {
+        return new AllAction { actions = actions };
+    }
 
 }
