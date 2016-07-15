@@ -7,10 +7,10 @@ public class CircleMoveAction : ScriptAction
 
     public GameObject actor;
     public string centerMarkName;
-    public string targetMarkName;
     public string radiusMarkName;
     public float speed;
 
+    public string targetMarkName;
     public float? targetDegree;
 
     private GameObject center;
@@ -159,7 +159,7 @@ public class CircleMoveAction : ScriptAction
 
     private bool rotateToMatch(GameObject mark)
     {
-        var angleDelta = target.transform.rotation.eulerAngles - actor.transform.rotation.eulerAngles;
+        var angleDelta = mark.transform.rotation.eulerAngles - actor.transform.rotation.eulerAngles;
         var direction = angleDelta.normalized;
 
         if (angleDelta.magnitude > 180) direction *= -1;
@@ -174,7 +174,7 @@ public class CircleMoveAction : ScriptAction
         }
         else
         {
-            actor.transform.rotation = target.transform.rotation;
+            actor.transform.rotation = mark.transform.rotation;
             return true;
         }
     }

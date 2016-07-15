@@ -47,6 +47,12 @@ public class AllAction : ScriptAction {
         foreach (var action in actions)
         {
             action.Instant();
+            var next = action.nextAction;
+            while (next != null)
+            {
+                next.Instant();
+                next = next.nextAction;
+            }
         }
     }
 
