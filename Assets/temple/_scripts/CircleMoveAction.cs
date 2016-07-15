@@ -13,6 +13,8 @@ public class CircleMoveAction : ScriptAction
     public string targetMarkName;
     public float? targetDegree;
 
+    public float? entryDegree;
+
     private GameObject center;
     private GameObject target;
     private GameObject entry;
@@ -31,12 +33,32 @@ public class CircleMoveAction : ScriptAction
     // Use this for initialization
     protected override void StartAction()
     {
+        // get circle points
         center = getMark(centerMarkName);
-        target = getMark(targetMarkName);
         radiusMark = getMark(radiusMarkName);
+
+        findTarget();
 
         createEntryPoint();
         createExitPoint();
+    }
+
+    private void findTarget()
+    {
+        // find target
+        if (targetMarkName != null) target = getMark(targetMarkName);
+        else if (targetDegree.HasValue)
+        {
+            float angle = convertAngleFromUnity(targetDegree.Value * Mathf.Deg2Rad);
+            // determine by degree
+            target = new GameObject();
+            target.transform.position = getPositionOnCircle(angle);
+            target.transform.rotation = getRotationForTangent(angle);
+        }
+        else
+        {
+            throw new System.Exception("no target information provided");
+        }
     }
 
     private void createEntryPoint()
@@ -44,6 +66,16 @@ public class CircleMoveAction : ScriptAction
 
         // determine entry point
         entry = new GameObject("temp entry");
+
+        if (entryDegree.HasValue)
+        {
+            float angle = convertAngleFromUnity(entryDegree.Value * Mathf.Deg2Rad);
+            entry.transform.position = getPositionOnCircle(angle);
+            entry.transform.rotation = getRotationForTangent(angle);
+            return;
+        }
+
+
 
         // determine if we can to move to tangent
         var distance = getDistance(actor, center);
@@ -73,6 +105,14 @@ public class CircleMoveAction : ScriptAction
 
     private void createExitPoint()
     {
+        
+        // if we are going for a particular degree, that is the exit point
+        if (targetDegree != null)
+        {
+            exit = target;
+            return;
+        }
+
         exit = new GameObject("temp exit");
 
         // determine if we can cut out earlier
@@ -155,6 +195,13 @@ public class CircleMoveAction : ScriptAction
         var a = angle - Mathf.PI * 0.5f;
         if (a < 0) a += Mathf.PI * 2;
         return Mathf.PI * 2 - a;
+    }
+
+    private float convertAngleFromUnity(float angle)
+    {
+        var a = Mathf.PI * 2 - angle + Mathf.PI * 0.5f;
+        if (a > Mathf.PI * 2) a -= Mathf.PI * 2;
+        return a;
     }
 
     private bool rotateToMatch(GameObject mark)
@@ -269,6 +316,15 @@ public class CircleMoveAction : ScriptAction
         }
     }
 
+    private Quaternion getRotationForTangent(float angle)
+    {
+        // detemine the ideal rotation
+        var degrees = (convertAngleToUnity(angle) + Mathf.PI * 0.5f) % (Mathf.PI * 2);
+        var shouldFace = new Vector3(0, degrees * Mathf.Rad2Deg, 0);
+
+        return Quaternion.Euler(shouldFace);
+    }
+
     private bool setPositionOnCircle()
     {
         // get current degree
@@ -304,6 +360,12 @@ public class CircleMoveAction : ScriptAction
         return isComplete;
     }
 
+    private Vector3 getPositionOnCircle(float angle)
+    {
+        var radius = getDistance(center, radiusMark);
+        return new Vector3(Mathf.Cos(angle) * radius + center.transform.position.x, 0, Mathf.Sin(angle) * radius + center.transform.position.z);
+    }
+
     protected override void UpdateAction()
     {
 
@@ -315,11 +377,11 @@ public class CircleMoveAction : ScriptAction
         {
             moveOnCircleComplete = setPositionOnCircle();
         }
-        else if (!moveFromCircleComplete)
+        else if (!targetDegree.HasValue && !moveFromCircleComplete)
         {
             moveFromCircleComplete = rotateAndMoveToMark(target);
         }
-        else if (!finalRotateComplete)
+        else if (!targetDegree.HasValue && !finalRotateComplete)
         {
             finalRotateComplete = rotateToMatch(target);
         }
@@ -333,7 +395,7 @@ public class CircleMoveAction : ScriptAction
 
     public override void Instant()
     {
-        target = getMark(targetMarkName);
+        findTarget();
         actor.transform.position = new Vector3(target.transform.position.x, actor.transform.position.y, target.transform.position.z);
         actor.transform.rotation = target.transform.rotation;
     }

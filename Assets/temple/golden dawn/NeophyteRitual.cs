@@ -153,14 +153,14 @@ public class NeophyteRitual : MonoBehaviour
         queueVoiceAction(026, hierophant, 1);
 
         queueVoiceAction(027, hierophant, 1);
-        fastForwardTo = queue.add(all(new ScriptAction[] {
+        queue.add(all(new ScriptAction[] {
             createCircleMoveAction("East", stolistes),
             createCircleMoveAction("North", dadouchos) } ));
         queue.add(all(new ScriptAction[] { createCircleMoveAction("South", stolistes), createCircleMoveAction("East", dadouchos) } ));
         queue.add(all(new ScriptAction[] { createCircleMoveAction("West", stolistes), createCircleMoveAction("South", dadouchos) } ));
         queue.add(all(new ScriptAction[] { createCircleMoveAction("North", stolistes), createCircleMoveAction("West", dadouchos) } ));
         queue.add(all(new ScriptAction[] { createCircleMoveAction("East", stolistes), createCircleMoveAction("North", dadouchos) } ));
-        
+
 
         queue.add(all(new ScriptAction[] {
             createVoiceAction(031, stolistes, 1)
@@ -174,7 +174,7 @@ public class NeophyteRitual : MonoBehaviour
         queueVoiceAction(036, hierophant, 1);
 
         queue.add(createCircleMoveToDegreeAction(315, kerux));
-        queue.add(createCircleMoveToDegreeAction(300, hegemon));
+        fastForwardTo = queue.add(createCircleMoveToDegreeAction(300, hegemon, 60));
         queue.add(createCircleMoveToDegreeAction(285, hiereus));
         queue.add(createCircleMoveToDegreeAction(270, stolistes));
         queue.add(createCircleMoveToDegreeAction(255, dadouchos));
@@ -278,14 +278,15 @@ public class NeophyteRitual : MonoBehaviour
     }
 
 
-    private ScriptAction createCircleMoveAction(string targetMarkName, GameObject actor, float waitBefore = 0, float speed = 2, float waitAfter = 1)
+    private CircleMoveAction createCircleMoveAction(string targetMarkName, GameObject actor, float waitBefore = 0, float speed = 2, float waitAfter = 1)
     {
         return new CircleMoveAction { actor = actor, waitBefore = waitBefore, waitAfter = waitAfter, centerMarkName = "Altar", targetMarkName = targetMarkName, radiusMarkName = "Circumabulation", speed = speed };
     }
 
-    private ScriptAction createCircleMoveToDegreeAction(float targetDegree, GameObject actor, float speed = 2, float waitAfter = 1)
+    private CircleMoveAction createCircleMoveToDegreeAction(float targetDegree, GameObject actor, float? entryDegree = null, float speed = 2, float waitAfter = 1)
     {
-        return new CircleMoveToDegreeAction { actor = actor, waitAfter = waitAfter, centerMarkName = "Altar", targetDegree = targetDegree, radiusMarkName = "Circumabulation", speed = speed };
+        return new CircleMoveAction { actor = actor, waitAfter = waitAfter, centerMarkName = "Altar", targetDegree = targetDegree, radiusMarkName = "Circumabulation", speed = speed, entryDegree = entryDegree };
+        //return new CircleMoveToDegreeAction { actor = actor, waitAfter = waitAfter, centerMarkName = "Altar", targetDegree = targetDegree, radiusMarkName = "Circumabulation", speed = speed };
     }
 
     private AllAction all(ScriptAction[] actions)
