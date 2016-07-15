@@ -67,7 +67,7 @@ public class NeophyteRitual : MonoBehaviour
         addActor(praemonstratorPrefab, "Praemonstrator Start");
 
         //var camera = "OVRCameraRig"
-        Camera.main.transform.parent = kerux.transform.FindChild("Head").transform;
+        //Camera.main.transform.parent = kerux.transform.FindChild("Head").transform;
 
         queueVoiceAction(knock, hierophant, 1, 2);
 
@@ -174,10 +174,31 @@ public class NeophyteRitual : MonoBehaviour
         queueVoiceAction(036, hierophant, 1);
 
         queue.add(createCircleMoveToDegreeAction(315, kerux));
-        fastForwardTo = queue.add(createCircleMoveToDegreeAction(300, hegemon, 60));
+        queue.add(createCircleMoveToDegreeAction(300, hegemon, 60));
         queue.add(createCircleMoveToDegreeAction(285, hiereus));
         queue.add(createCircleMoveToDegreeAction(270, stolistes));
-        queue.add(createCircleMoveToDegreeAction(255, dadouchos));
+        fastForwardTo = queue.add(createCircleMoveToDegreeAction(255, dadouchos));
+
+        queue.add(all(new ScriptAction[] {
+            createCircleMoveToDegreeAction(314.9f, kerux, null, 0, 0),
+            createCircleMoveToDegreeAction(299.9f, hegemon, null, 1, 0),
+            createCircleMoveAction("Hiereus Start Throne Stand", hiereus, 2, 0),
+            createCircleMoveToDegreeAction(269.9f, stolistes, null, 3, 0).then(createCircleMoveToDegreeAction(284.9f, stolistes, null, 0, 0)),
+            createCircleMoveToDegreeAction(254.9f, dadouchos, null, 4, 0).then(createCircleMoveToDegreeAction(269.9f, dadouchos, null, 0, 0))
+        }));
+
+        queue.add(all(new ScriptAction[] {
+            createCircleMoveToDegreeAction(314.8f, kerux, null, 0, 0),
+            createCircleMoveToDegreeAction(70, hegemon, null, 1, 0).then(createMoveAction("Hegemon Start Throne Stand", hegemon)),
+            createCircleMoveToDegreeAction(284.8f, stolistes, null, 2, 0).then(createCircleMoveToDegreeAction(299.8f, stolistes, null, 0, 0)),
+            createCircleMoveToDegreeAction(269.8f, dadouchos, null, 3, 0).then(createCircleMoveToDegreeAction(284.8f, dadouchos, null, 0, 0))
+        }));
+
+        queue.add(all(new ScriptAction[] {
+            createCircleMoveAction("Kerux Start", kerux, 0, 0),
+            createCircleMoveAction("Stolistes Start Throne Stand", stolistes, 1, 0),
+            createCircleMoveAction("Dadouchos Start Throne Stand", dadouchos, 2, 0)
+        }));
 
         queueVoiceAction(037, hierophant, 1);
         queueVoiceAction(038, hierophant, 1);
@@ -278,14 +299,14 @@ public class NeophyteRitual : MonoBehaviour
     }
 
 
-    private CircleMoveAction createCircleMoveAction(string targetMarkName, GameObject actor, float waitBefore = 0, float speed = 2, float waitAfter = 1)
+    private CircleMoveAction createCircleMoveAction(string targetMarkName, GameObject actor, float waitBefore = 0, float waitAfter = 1, float speed = 2)
     {
         return new CircleMoveAction { actor = actor, waitBefore = waitBefore, waitAfter = waitAfter, centerMarkName = "Altar", targetMarkName = targetMarkName, radiusMarkName = "Circumabulation", speed = speed };
     }
 
-    private CircleMoveAction createCircleMoveToDegreeAction(float targetDegree, GameObject actor, float? entryDegree = null, float speed = 2, float waitAfter = 1)
+    private CircleMoveAction createCircleMoveToDegreeAction(float targetDegree, GameObject actor, float? entryDegree = null, float waitBefore = 0, float waitAfter = 1, float speed = 2)
     {
-        return new CircleMoveAction { actor = actor, waitAfter = waitAfter, centerMarkName = "Altar", targetDegree = targetDegree, radiusMarkName = "Circumabulation", speed = speed, entryDegree = entryDegree };
+        return new CircleMoveAction { actor = actor, waitBefore = waitBefore, waitAfter = waitAfter, centerMarkName = "Altar", targetDegree = targetDegree, radiusMarkName = "Circumabulation", speed = speed, entryDegree = entryDegree };
         //return new CircleMoveToDegreeAction { actor = actor, waitAfter = waitAfter, centerMarkName = "Altar", targetDegree = targetDegree, radiusMarkName = "Circumabulation", speed = speed };
     }
 

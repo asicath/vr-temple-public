@@ -33,10 +33,6 @@ public class CircleMoveAction : ScriptAction
     // Use this for initialization
     protected override void StartAction()
     {
-        // get circle points
-        center = getMark(centerMarkName);
-        radiusMark = getMark(radiusMarkName);
-
         findTarget();
 
         createEntryPoint();
@@ -45,6 +41,10 @@ public class CircleMoveAction : ScriptAction
 
     private void findTarget()
     {
+        // get circle points
+        center = getMark(centerMarkName);
+        radiusMark = getMark(radiusMarkName);
+
         // find target
         if (targetMarkName != null) target = getMark(targetMarkName);
         else if (targetDegree.HasValue)
