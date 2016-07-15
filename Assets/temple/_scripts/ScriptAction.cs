@@ -65,6 +65,7 @@ public class ScriptAction {
 
     protected static GameObject getMark(string name)
     {
+        if (name == null) return null;
         var marks = GameObject.FindGameObjectsWithTag("Mark");
         return marks.Where(o => o.name == name).FirstOrDefault();
     }

@@ -1,22 +1,23 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class CircleMoveAction : ScriptAction
 {
 
     public GameObject actor;
-    //public float degreeEnd;
+    public string centerMarkName;
+    public string targetMarkName;
+    public string radiusMarkName;
     public float speed;
+
+    public float? targetDegree;
+
     private GameObject center;
     private GameObject target;
     private GameObject entry;
     private GameObject exit;
     private GameObject radiusMark;
-    public string centerMarkName;
-    public string targetMarkName;
-    public string radiusMarkName;
-
-    private float angleDelta;
 
     private bool moveToCircleComplete = false;
     private bool moveOnCircleComplete = false;
@@ -24,6 +25,8 @@ public class CircleMoveAction : ScriptAction
     private bool finalRotateComplete = false;
 
     private float rotationSpeed = 50;
+
+
 
     // Use this for initialization
     protected override void StartAction()
@@ -154,15 +157,36 @@ public class CircleMoveAction : ScriptAction
         return Mathf.PI * 2 - a;
     }
 
-    private bool moveToMark(GameObject mark)
+    private bool rotateToMatch(GameObject mark)
     {
+        var angleDelta = target.transform.rotation.eulerAngles - actor.transform.rotation.eulerAngles;
+        var direction = angleDelta.normalized;
 
+        if (angleDelta.magnitude > 180) direction *= -1;
+
+        var rotationAmount = 100 * Time.deltaTime;
+
+        if (angleDelta.magnitude > rotationAmount)
+        {
+            var angle = actor.transform.rotation.eulerAngles + direction * rotationAmount;
+            actor.transform.rotation = Quaternion.Euler(angle);
+            return false;
+        }
+        else
+        {
+            actor.transform.rotation = target.transform.rotation;
+            return true;
+        }
+    }
+
+    private bool rotateToFaceMark(GameObject mark)
+    {
         // get the degree from mark to the actor
         var degrees = convertAngleToUnity(getAngle(actor, mark)) * Mathf.Rad2Deg;
 
         // this is the angle that it should face
         var shouldFace = new Vector3(0, degrees, 0);
-        
+
         // determine the difference in angles
         var rotationAngleDelta = shouldFace - actor.transform.rotation.eulerAngles;
 
@@ -182,12 +206,12 @@ public class CircleMoveAction : ScriptAction
         {
             // set the rotation without incident
             actor.transform.rotation = Quaternion.Euler(shouldFace);
+            return true;
         }
-        
+    }
 
-
-
-
+    private bool moveToMark(GameObject mark)
+    {
         var d = new Vector3(mark.transform.position.x, 0, mark.transform.position.z) - new Vector3(actor.transform.position.x, 0, actor.transform.position.z);
 
         var moveAmount = speed * Time.deltaTime;
@@ -205,100 +229,105 @@ public class CircleMoveAction : ScriptAction
         }
     }
 
+    private bool rotateAndMoveToMark(GameObject mark)
+    {
+        // first deal with rotation
+        var rotationComplete = rotateToFaceMark(mark);
+        if (!rotationComplete) return false;
+
+        // now move
+        return moveToMark(mark);
+    }
+
+    private bool rotateToTangent(float angle)
+    {
+        // detemine the ideal rotation
+        var degrees = (convertAngleToUnity(angle) + Mathf.PI * 0.5f) % (Mathf.PI * 2);
+        var shouldFace = new Vector3(0, degrees * Mathf.Rad2Deg, 0);
+
+        // detemine if we need to move a lesser amount
+        var rotationAngleDelta = shouldFace - actor.transform.rotation.eulerAngles;
+
+        // determine closest direction
+        var direction = rotationAngleDelta.normalized;
+        if (rotationAngleDelta.magnitude > 180) direction *= -1;
+
+        var rotationAmount = rotationSpeed * Time.deltaTime;
+
+        if (rotationAngleDelta.magnitude > rotationAmount)
+        {
+            //set a smaller angle and exit without moving
+            var a = actor.transform.rotation.eulerAngles + direction * rotationAmount;
+            actor.transform.rotation = Quaternion.Euler(a);
+            return false;
+        }
+        else
+        {
+            // set the rotation without incident
+            actor.transform.rotation = Quaternion.Euler(shouldFace);
+            return true;
+        }
+    }
+
+    private bool setPositionOnCircle()
+    {
+        // get current degree
+        var angle = getAngle(center, actor);
+        var targetAngle = getAngle(center, exit);
+        var radius = getDistance(center, radiusMark);
+
+        // determine how much angle is covered at current speed/circum
+        var circumferance = radius * Mathf.PI * 2;
+        var angleDelta = ((speed * Time.deltaTime) / circumferance) * Mathf.PI * 2;
+        angleDelta *= -1; // make it deosil
+
+        // propose a new angle
+        var nextAngle = angle + angleDelta;
+
+
+        // make sure we are facing the tangent
+        var rotateComplete = rotateToTangent(nextAngle);
+        if (!rotateComplete) return false;
+
+
+        var isComplete = false;
+        // determine if the angle oversteps
+        if (angle == targetAngle || angle > targetAngle && nextAngle <= targetAngle || angle < targetAngle && nextAngle >= targetAngle)
+        {
+            //Debug.Log("moveOnCircleComplete");
+            isComplete = true;
+            nextAngle = targetAngle;
+        }
+
+        // last move to the new position
+        actor.transform.position = new Vector3(Mathf.Cos(nextAngle) * radius + center.transform.position.x, actor.transform.position.y, Mathf.Sin(nextAngle) * radius + center.transform.position.z);
+        return isComplete;
+    }
+
     protected override void UpdateAction()
     {
 
         if (!moveToCircleComplete)
         {
-            moveToCircleComplete = moveToMark(entry);
-            //if (moveToCircleComplete) Destroy(entry);
+            moveToCircleComplete = rotateAndMoveToMark(entry);
         }
         else if (!moveOnCircleComplete)
         {
-            // get current degree
-            var angle = getAngle(center, actor);
-            var targetAngle = getAngle(center, exit);
-            var radius = getDistance(center, radiusMark);
-
-            // determine how much angle is covered at current speed/circum
-            var circumferance = radius * Mathf.PI * 2;
-            var angleDelta = ((speed * Time.deltaTime) / circumferance) * Mathf.PI * 2;
-            angleDelta *= -1; // make it deosil
-
-            // propose a new angle
-            var nextAngle = angle + angleDelta;
-
-            // determine if the angle oversteps
-            if (angle == targetAngle || angle > targetAngle && nextAngle <= targetAngle || angle < targetAngle && nextAngle >= targetAngle)
-            {
-                //Debug.Log("moveOnCircleComplete");
-                moveOnCircleComplete = true;
-                nextAngle = targetAngle;
-            }
-
-
-
-            // detemine the ideal rotation
-            var degrees = (convertAngleToUnity(nextAngle) + Mathf.PI * 0.5f) % (Mathf.PI * 2);
-            var shouldFace = new Vector3(0, degrees * Mathf.Rad2Deg, 0);
-
-            // detemine if we need to move a lesser amount
-            var rotationAngleDelta = shouldFace - actor.transform.rotation.eulerAngles;
-
-            // determine closest direction
-            var direction = rotationAngleDelta.normalized;
-            if (rotationAngleDelta.magnitude > 180) direction *= -1;
-
-            var rotationAmount = rotationSpeed * Time.deltaTime;
-
-            if (rotationAngleDelta.magnitude > rotationAmount)
-            {
-                //set a smaller angle and exit without moving
-                var a = actor.transform.rotation.eulerAngles + direction * rotationAmount;
-                actor.transform.rotation = Quaternion.Euler(a);
-                return;
-            }
-            else
-            {
-                // set the rotation without incident
-                actor.transform.rotation = Quaternion.Euler(shouldFace);
-            }
-            
-
-            // last move to the new position
-            actor.transform.position = new Vector3(Mathf.Cos(nextAngle) * radius + center.transform.position.x, actor.transform.position.y, Mathf.Sin(nextAngle) * radius + center.transform.position.z);
+            moveOnCircleComplete = setPositionOnCircle();
         }
         else if (!moveFromCircleComplete)
         {
-            moveFromCircleComplete = moveToMark(target);
+            moveFromCircleComplete = rotateAndMoveToMark(target);
         }
         else if (!finalRotateComplete)
         {
-            var angleDelta = target.transform.rotation.eulerAngles - actor.transform.rotation.eulerAngles;
-            var direction = angleDelta.normalized;
-
-            if (angleDelta.magnitude > 180) direction *= -1;
-
-            var rotationAmount = 100 * Time.deltaTime;
-
-            if (angleDelta.magnitude > rotationAmount)
-            {
-                var angle = actor.transform.rotation.eulerAngles + direction * rotationAmount;
-                actor.transform.rotation = Quaternion.Euler(angle);
-            }
-            else
-            {
-                actor.transform.rotation = target.transform.rotation;
-                finalRotateComplete = true;
-            }
+            finalRotateComplete = rotateToMatch(target);
         }
         else
         {
             // and complete the action
             complete();
         }
-
-
 
     }
 
