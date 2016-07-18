@@ -2429,16 +2429,16 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 247e34e8ae957ea42a089e9df33e6edb, type: 3}
   - {fileID: 8300000, guid: 9f57e0a0d706ef74db530e4834f69379, type: 3}
   - {fileID: 8300000, guid: e9866f89570c91b45bea1f92df7252b9, type: 3}
-  hierophantPrefab: {fileID: 176466, guid: f0ab152e0ddc9cf4e8e9b8fe604c2f17, type: 2}
-  hiereusPrefab: {fileID: 138162, guid: a079e5c864c24ef49bd1365ce234c956, type: 2}
-  hegemonPrefab: {fileID: 195558, guid: 2a25e0e4ed551c94c845b3a52422c516, type: 2}
-  keruxPrefab: {fileID: 132938, guid: e3cb2dfc696e1b84c9befb6f3fedaa01, type: 2}
-  stolistesPrefab: {fileID: 108384, guid: 29f8ce28bac149f40a241f1d4d560157, type: 2}
-  dadouchosPrefab: {fileID: 169486, guid: 543f82573d36f4043a9cc289d33cdaaa, type: 2}
-  imperatorPrefab: {fileID: 196310, guid: d4cb8527c296f3245869b7b983333fad, type: 2}
-  cancellariusPrefab: {fileID: 166180, guid: 02d184e0a0115454e8394e93e578e0cb, type: 2}
-  pastHierophantPrefab: {fileID: 194752, guid: 45a1064dda2cd7344927a46f1a215ed1, type: 2}
-  praemonstratorPrefab: {fileID: 166538, guid: acad1797deab7e444af7c280df242026, type: 2}
+  hierophantPrefab: {fileID: 139684, guid: e3c3409c2d39a9c4e9ec3e1b378ae1b3, type: 2}
+  hiereusPrefab: {fileID: 138028, guid: 44a9662c5a55e0d40bb390babb3eb0a7, type: 2}
+  hegemonPrefab: {fileID: 110886, guid: fc436a9bc8049aa4ebbb786644fe513c, type: 2}
+  keruxPrefab: {fileID: 175764, guid: 5d6118a4129d6804abbb01cd9a27f294, type: 2}
+  stolistesPrefab: {fileID: 179982, guid: 8b6309fdfc6417f40bffc46918d92f70, type: 2}
+  dadouchosPrefab: {fileID: 113254, guid: c9c990b626a9cea469ef5063e294717d, type: 2}
+  imperatorPrefab: {fileID: 179142, guid: 1a58c89d0cc9e8b4dbd264cb3de9bd0b, type: 2}
+  cancellariusPrefab: {fileID: 142552, guid: 40cfb58566dec234fb9b7b92e4498c85, type: 2}
+  pastHierophantPrefab: {fileID: 104632, guid: 32e6f15975c927a4db97a8758644eb9f, type: 2}
+  praemonstratorPrefab: {fileID: 197574, guid: dee25a96160c18c4f96a425fc03bbd0c, type: 2}
   doorPrefab: {fileID: 152398, guid: 4c40707452c19ce4fb155d208a1bd8d9, type: 2}
   thronePrefab: {fileID: 179292, guid: e8028534d23327e498836eaf60c10399, type: 2}
   altarPrefab: {fileID: 154380, guid: f1900e92ae9b2c344b5f8edfb342d8f5, type: 2}
