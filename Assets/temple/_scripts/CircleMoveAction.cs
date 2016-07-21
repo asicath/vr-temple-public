@@ -53,7 +53,7 @@ public class CircleMoveAction : ScriptAction
         if (targetMarkName != null) target = getMark(targetMarkName);
         else if (targetDegree.HasValue)
         {
-            float angle = convertAngleFromUnity(targetDegree.Value * Mathf.Deg2Rad);
+            float angle = Move.convertAngleFromUnity(targetDegree.Value * Mathf.Deg2Rad);
             // determine by degree
             target = new GameObject();
             target.transform.position = getPositionOnCircle(angle);
@@ -73,7 +73,7 @@ public class CircleMoveAction : ScriptAction
 
         if (entryDegree.HasValue)
         {
-            float angle = convertAngleFromUnity(entryDegree.Value * Mathf.Deg2Rad);
+            float angle = Move.convertAngleFromUnity(entryDegree.Value * Mathf.Deg2Rad);
             entry.transform.position = getPositionOnCircle(angle);
             entry.transform.rotation = getRotationForTangent(angle);
             return;
@@ -82,15 +82,15 @@ public class CircleMoveAction : ScriptAction
 
 
         // determine if we can to move to tangent
-        var distance = getDistance(actor, center);
-        var radius = getDistance(center, radiusMark);
+        var distance = Move.getDistance(actor, center);
+        var radius = Move.getDistance(center, radiusMark);
         if (distance > radius)
         {
-            var tangent = getTangentPoint(center, radiusMark, actor);
+            var tangent = Move.getTangentPoint(center, radiusMark, actor);
 
-            var currentAngle = getAngle(center, actor);
-            var targetAngle = getAngle(center, target);
-            var tangentAngle = getAngle(center.transform.position, tangent);
+            var currentAngle = Move.getAngle(center, actor);
+            var targetAngle = Move.getAngle(center, target);
+            var tangentAngle = Move.getAngle(center.transform.position, tangent);
 
             if (targetAngle > currentAngle) targetAngle -= Mathf.PI * 2;
             if (tangentAngle > currentAngle) tangentAngle -= Mathf.PI * 2;
@@ -103,7 +103,7 @@ public class CircleMoveAction : ScriptAction
         }
 
         // default is just to move to the closest point on circle
-        var close = getClosestPointOnCircle(center, radiusMark, actor);
+        var close = Move.getClosestPointOnCircle(center, radiusMark, actor);
         entry.transform.position = close;
     }
 
@@ -120,15 +120,15 @@ public class CircleMoveAction : ScriptAction
         exit = new GameObject("temp exit");
 
         // determine if we can cut out earlier
-        var distance = getDistance(target, center);
-        var radius = getDistance(center, radiusMark);
+        var distance = Move.getDistance(target, center);
+        var radius = Move.getDistance(center, radiusMark);
         if (distance > radius)
         {
-            var tangent = getTangentPointCounter(center, radiusMark, target);
+            var tangent = Move.getTangentPointCounter(center, radiusMark, target);
 
-            var entryAngle = getAngle(center, entry);
-            var targetAngle = getAngle(center, target);
-            var tangentAngle = getAngle(center.transform.position, tangent);
+            var entryAngle = Move.getAngle(center, entry);
+            var targetAngle = Move.getAngle(center, target);
+            var tangentAngle = Move.getAngle(center.transform.position, tangent);
 
             if (targetAngle > entryAngle) targetAngle -= Mathf.PI * 2;
             if (tangentAngle > entryAngle) tangentAngle -= Mathf.PI * 2;
@@ -142,70 +142,7 @@ public class CircleMoveAction : ScriptAction
 
 
         // default if just the closest point
-        exit.transform.position = getClosestPointOnCircle(center, radiusMark, target);
-    }
-
-    /// <summary>
-    /// Gets angle in radians
-    /// </summary>
-    private static float getAngle(GameObject centerMark, GameObject o)
-    {
-        return getAngle(centerMark.transform.position, o.transform.position);
-    }
-
-    private static float getAngle(Vector3 center, Vector3 position)
-    {
-        var a = Mathf.Atan2(position.z - center.z, position.x - center.x);
-
-        // Lets not deal with negative angles just to make this simple
-        if (a < 0) a += Mathf.PI * 2;
-
-        return a;
-    }
-
-    private static float getDistance(GameObject a, GameObject b)
-    {
-        return (a.transform.position - b.transform.position).magnitude;
-    }
-
-    private static Vector3 getClosestPointOnCircle(GameObject center, GameObject radiusMark, GameObject o)
-    {
-        var radius = (center.transform.position - radiusMark.transform.position).magnitude;
-        var angle = getAngle(center, o);
-        return new Vector3(Mathf.Cos(angle) * radius + center.transform.position.x, 0, Mathf.Sin(angle) * radius + center.transform.position.z);
-    }
-
-    // gets the clockwise tangent point from position o
-    private static Vector3 getTangentPoint(GameObject center, GameObject radiusMark, GameObject o)
-    {
-        var radius = (center.transform.position - radiusMark.transform.position).magnitude;
-        var angle = getAngle(center, o);
-        var d = (o.transform.position - center.transform.position).magnitude;
-        var a = Mathf.Acos(radius / d);
-        return new Vector3(Mathf.Cos(angle - a) * radius + center.transform.position.x, 0, Mathf.Sin(angle - a) * radius + center.transform.position.z);
-    }
-
-    private static Vector3 getTangentPointCounter(GameObject center, GameObject radiusMark, GameObject o)
-    {
-        var radius = (center.transform.position - radiusMark.transform.position).magnitude;
-        var angle = getAngle(center, o);
-        var d = (o.transform.position - center.transform.position).magnitude;
-        var a = Mathf.Acos(radius / d);
-        return new Vector3(Mathf.Cos(angle + a) * radius + center.transform.position.x, 0, Mathf.Sin(angle + a) * radius + center.transform.position.z);
-    }
-
-    private float convertAngleToUnity(float angle)
-    {
-        var a = angle - Mathf.PI * 0.5f;
-        if (a < 0) a += Mathf.PI * 2;
-        return Mathf.PI * 2 - a;
-    }
-
-    private float convertAngleFromUnity(float angle)
-    {
-        var a = Mathf.PI * 2 - angle + Mathf.PI * 0.5f;
-        if (a > Mathf.PI * 2) a -= Mathf.PI * 2;
-        return a;
+        exit.transform.position = Move.getClosestPointOnCircle(center, radiusMark, target);
     }
 
     private bool rotateToMatch(GameObject mark)
@@ -233,7 +170,7 @@ public class CircleMoveAction : ScriptAction
     private bool rotateToFaceMark(GameObject mark)
     {
         // get the degree from mark to the actor
-        var degrees = convertAngleToUnity(getAngle(actor, mark)) * Mathf.Rad2Deg;
+        var degrees = Move.convertAngleToUnity(Move.getAngle(actor, mark)) * Mathf.Rad2Deg;
 
         // this is the angle that it should face
         var shouldFace = new Vector3(0, degrees, 0);
@@ -293,7 +230,7 @@ public class CircleMoveAction : ScriptAction
     private bool rotateToTangent(float angle)
     {
         // detemine the ideal rotation
-        var degrees = (convertAngleToUnity(angle) + Mathf.PI * 0.5f) % (Mathf.PI * 2);
+        var degrees = (Move.convertAngleToUnity(angle) + Mathf.PI * 0.5f) % (Mathf.PI * 2);
         var shouldFace = new Vector3(0, degrees * Mathf.Rad2Deg, 0);
 
         // detemine if we need to move a lesser amount
@@ -323,7 +260,7 @@ public class CircleMoveAction : ScriptAction
     private Quaternion getRotationForTangent(float angle)
     {
         // detemine the ideal rotation
-        var degrees = (convertAngleToUnity(angle) + Mathf.PI * 0.5f) % (Mathf.PI * 2);
+        var degrees = (Move.convertAngleToUnity(angle) + Mathf.PI * 0.5f) % (Mathf.PI * 2);
         var shouldFace = new Vector3(0, degrees * Mathf.Rad2Deg, 0);
 
         return Quaternion.Euler(shouldFace);
@@ -332,9 +269,9 @@ public class CircleMoveAction : ScriptAction
     private bool setPositionOnCircle()
     {
         // get current degree
-        var angle = getAngle(center, actor);
-        var targetAngle = getAngle(center, exit);
-        var radius = getDistance(center, radiusMark);
+        var angle = Move.getAngle(center, actor);
+        var targetAngle = Move.getAngle(center, exit);
+        var radius = Move.getDistance(center, radiusMark);
 
         // determine how much angle is covered at current speed/circum
         var circumferance = radius * Mathf.PI * 2;
@@ -366,7 +303,7 @@ public class CircleMoveAction : ScriptAction
 
     private Vector3 getPositionOnCircle(float angle)
     {
-        var radius = getDistance(center, radiusMark);
+        var radius = Move.getDistance(center, radiusMark);
         return new Vector3(Mathf.Cos(angle) * radius + center.transform.position.x, 0, Mathf.Sin(angle) * radius + center.transform.position.z);
     }
 
