@@ -199,6 +199,9 @@ public static class Move
 
     public static bool rotateAndMoveToMark(GameObject actor, GameObject mark, float speed, float rotationSpeed)
     {
+        // no need to rotate if we are already there
+        if (Move.getDistance(actor, mark) == 0) return true;
+
         // first deal with rotation
         var rotationComplete = Move.rotateToFaceMark(actor, mark, rotationSpeed);
         if (!rotationComplete) return false;
