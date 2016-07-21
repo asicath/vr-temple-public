@@ -151,30 +151,6 @@ public class CircleMoveAction : ScriptAction
         var degrees = (Move.convertAngleToUnity(angle) + Mathf.PI * 0.5f) % (Mathf.PI * 2);
         var shouldFace = new Vector3(0, degrees * Mathf.Rad2Deg, 0);
         return Move.rotateToMatchVector(actor, shouldFace, rotationSpeed);
-        /*
-        // detemine if we need to move a lesser amount
-        var rotationAngleDelta = shouldFace - actor.transform.rotation.eulerAngles;
-
-        // determine closest direction
-        var direction = rotationAngleDelta.normalized;
-        if (rotationAngleDelta.magnitude > 180) direction *= -1;
-
-        var rotationAmount = rotationSpeed * Time.deltaTime;
-
-        if (rotationAngleDelta.magnitude > rotationAmount)
-        {
-            //set a smaller angle and exit without moving
-            var a = actor.transform.rotation.eulerAngles + direction * rotationAmount;
-            Move.setRotation(actor, a);
-            return false;
-        }
-        else
-        {
-            // set the rotation without incident
-            Move.setRotation(actor, shouldFace);
-            return true;
-        }
-        */
     }
 
     private Quaternion getRotationForTangent(float angle)
