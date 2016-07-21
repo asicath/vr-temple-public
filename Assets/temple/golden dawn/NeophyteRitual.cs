@@ -273,7 +273,8 @@ public class NeophyteRitual : MonoBehaviour
             createCircleMoveAction("Kerux Flank Left", dadouchos, 2, 0)
         }));
 
-        fastForwardTo = queue.add(createCircleMoveAroundAction("Behind Candidate", hegemon, "Candidate Center", "Behind Candidate"));
+        // fastForwardTo = 
+        queue.add(createCircleMoveAroundAction("Behind Candidate", hegemon, "Candidate Center", "Behind Candidate"));
         queueVoiceActionR(007, hegemon, 1);
 
         queueVoiceActionR(008, stolistes, 1);

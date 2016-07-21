@@ -145,94 +145,13 @@ public class CircleMoveAction : ScriptAction
         exit.transform.position = Move.getClosestPointOnCircle(center, radiusMark, target);
     }
 
-    private bool rotateToMatch(GameObject mark)
-    {
-        var angleDelta = mark.transform.rotation.eulerAngles - actor.transform.rotation.eulerAngles;
-        var direction = angleDelta.normalized;
-
-        if (angleDelta.magnitude > 180) direction *= -1;
-
-        var rotationAmount = 100 * Time.deltaTime;
-
-        if (angleDelta.magnitude > rotationAmount)
-        {
-            var angle = actor.transform.rotation.eulerAngles + direction * rotationAmount;
-            actor.transform.rotation = Quaternion.Euler(angle);
-            return false;
-        }
-        else
-        {
-            actor.transform.rotation = mark.transform.rotation;
-            return true;
-        }
-    }
-
-    private bool rotateToFaceMark(GameObject mark)
-    {
-        // get the degree from mark to the actor
-        var degrees = Move.convertAngleToUnity(Move.getAngle(actor, mark)) * Mathf.Rad2Deg;
-
-        // this is the angle that it should face
-        var shouldFace = new Vector3(0, degrees, 0);
-
-        // determine the difference in angles
-        var rotationAngleDelta = shouldFace - actor.transform.rotation.eulerAngles;
-
-        var direction = rotationAngleDelta.normalized;
-        if (rotationAngleDelta.magnitude > 180) direction *= -1;
-
-        var rotationAmount = rotationSpeed * Time.deltaTime;
-
-        if (rotationAngleDelta.magnitude > rotationAmount)
-        {
-            //set a smaller angle and exit without moving
-            var a = actor.transform.rotation.eulerAngles + direction * rotationAmount;
-            actor.transform.rotation = Quaternion.Euler(a);
-            return false;
-        }
-        else
-        {
-            // set the rotation without incident
-            actor.transform.rotation = Quaternion.Euler(shouldFace);
-            return true;
-        }
-    }
-
-    private bool moveToMark(GameObject mark)
-    {
-        var d = new Vector3(mark.transform.position.x, 0, mark.transform.position.z) - new Vector3(actor.transform.position.x, 0, actor.transform.position.z);
-
-        var moveAmount = speed * Time.deltaTime;
-
-        if (d.magnitude >= moveAmount)
-        {
-            var n = actor.transform.position + d.normalized * moveAmount;
-            actor.transform.position = new Vector3(n.x, actor.transform.position.y, n.z);
-            return false;
-        }
-        else
-        {
-            actor.transform.position = new Vector3(mark.transform.position.x, actor.transform.position.y, mark.transform.position.z);
-            return true;
-        }
-    }
-
-    private bool rotateAndMoveToMark(GameObject mark)
-    {
-        // first deal with rotation
-        var rotationComplete = rotateToFaceMark(mark);
-        if (!rotationComplete) return false;
-
-        // now move
-        return moveToMark(mark);
-    }
-
-    private bool rotateToTangent(float angle)
+    public static bool rotateToTangent(GameObject actor, float angle, float rotationSpeed)
     {
         // detemine the ideal rotation
         var degrees = (Move.convertAngleToUnity(angle) + Mathf.PI * 0.5f) % (Mathf.PI * 2);
         var shouldFace = new Vector3(0, degrees * Mathf.Rad2Deg, 0);
-
+        return Move.rotateToMatchVector(actor, shouldFace, rotationSpeed);
+        /*
         // detemine if we need to move a lesser amount
         var rotationAngleDelta = shouldFace - actor.transform.rotation.eulerAngles;
 
@@ -246,15 +165,16 @@ public class CircleMoveAction : ScriptAction
         {
             //set a smaller angle and exit without moving
             var a = actor.transform.rotation.eulerAngles + direction * rotationAmount;
-            actor.transform.rotation = Quaternion.Euler(a);
+            Move.setRotation(actor, a);
             return false;
         }
         else
         {
             // set the rotation without incident
-            actor.transform.rotation = Quaternion.Euler(shouldFace);
+            Move.setRotation(actor, shouldFace);
             return true;
         }
+        */
     }
 
     private Quaternion getRotationForTangent(float angle)
@@ -283,7 +203,7 @@ public class CircleMoveAction : ScriptAction
 
 
         // make sure we are facing the tangent
-        var rotateComplete = rotateToTangent(nextAngle);
+        var rotateComplete = rotateToTangent(actor, nextAngle, rotationSpeed);
         if (!rotateComplete) return false;
 
 
@@ -312,7 +232,7 @@ public class CircleMoveAction : ScriptAction
 
         if (!moveToCircleComplete)
         {
-            moveToCircleComplete = rotateAndMoveToMark(entry);
+            moveToCircleComplete = Move.rotateAndMoveToMark(actor, entry, speed, rotationSpeed);
         }
         else if (!moveOnCircleComplete)
         {
@@ -320,11 +240,11 @@ public class CircleMoveAction : ScriptAction
         }
         else if (!targetDegree.HasValue && !moveFromCircleComplete)
         {
-            moveFromCircleComplete = rotateAndMoveToMark(target);
+            moveFromCircleComplete = Move.rotateAndMoveToMark(actor, target, speed, rotationSpeed);
         }
         else if (!targetDegree.HasValue && !finalRotateComplete)
         {
-            finalRotateComplete = rotateToMatch(target);
+            finalRotateComplete = Move.rotateToMatchMark(actor, target, rotationSpeed);
         }
         else
         {

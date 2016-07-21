@@ -25,8 +25,8 @@ public class SetPositionAction : ScriptAction
     {
         mark = getMark(markName);
         actor.SetActive(true);
-        actor.transform.position = new Vector3(mark.transform.position.x, actor.transform.position.y, mark.transform.position.z);
-        actor.transform.rotation = mark.transform.rotation;
+        Move.setPosition(actor, mark);
+        Move.setRotation(actor, mark);
     }
 
 }

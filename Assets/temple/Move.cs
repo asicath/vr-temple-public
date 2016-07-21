@@ -7,6 +7,8 @@ using UnityEngine;
 public static class Move
 {
 
+    #region math functions
+
     public static float convertAngleToUnity(float angle)
     {
         var a = angle - Mathf.PI * 0.5f;
@@ -82,6 +84,131 @@ public static class Move
         var a = Mathf.Acos(radius / d);
         return new Vector3(Mathf.Cos(angle + a) * radius + center.transform.position.x, 0, Mathf.Sin(angle + a) * radius + center.transform.position.z);
     }
+
+    #endregion
+
+    public static void setPosition(GameObject actor, GameObject mark)
+    {
+        actor.transform.position = new Vector3(mark.transform.position.x, actor.transform.position.y, mark.transform.position.z);
+    }
+
+    public static void setRotation(GameObject actor, GameObject mark)
+    {
+        actor.transform.rotation = mark.transform.rotation;
+    }
+
+    public static void setRotation(GameObject actor, Vector3 vector)
+    {
+        actor.transform.rotation = Quaternion.Euler(vector);
+    }
+
+    public static bool moveToMark(GameObject actor, GameObject mark, float speed)
+    {
+        var d = new Vector3(mark.transform.position.x, 0, mark.transform.position.z) - new Vector3(actor.transform.position.x, 0, actor.transform.position.z);
+
+        var remainingDistance = d.magnitude;
+        var maxMoveAmount = speed * Time.deltaTime;
+
+        if (remainingDistance >= maxMoveAmount)
+        {
+            var n = actor.transform.position + d.normalized * maxMoveAmount;
+            actor.transform.position = new Vector3(n.x, actor.transform.position.y, n.z);
+            return false; // not complete yet
+        }
+        else
+        {
+            actor.transform.position = new Vector3(mark.transform.position.x, actor.transform.position.y, mark.transform.position.z);
+            return true; // complete
+        }
+    }
+
+    public static bool rotateToFaceMark(GameObject actor, GameObject mark, float speed)
+    {
+        // get the degree from mark to the actor
+        var degrees = Move.convertAngleToUnity(Move.getAngle(actor, mark)) * Mathf.Rad2Deg;
+
+        // this is the angle that it should face
+        var shouldFace = new Vector3(0, degrees, 0);
+
+        // determine the difference in angles
+        var rotationAngleDelta = shouldFace - actor.transform.rotation.eulerAngles;
+
+        var direction = rotationAngleDelta.normalized;
+        if (rotationAngleDelta.magnitude > 180) direction *= -1;
+
+        var rotationAmount = speed * Time.deltaTime;
+
+        if (rotationAngleDelta.magnitude > rotationAmount)
+        {
+            //set a smaller angle and exit without moving
+            var a = actor.transform.rotation.eulerAngles + direction * rotationAmount;
+            actor.transform.rotation = Quaternion.Euler(a);
+            return false;
+        }
+        else
+        {
+            // set the rotation without incident
+            actor.transform.rotation = Quaternion.Euler(shouldFace);
+            return true;
+        }
+    }
+
+    public static bool rotateToMatchMark(GameObject actor, GameObject mark, float speed)
+    {
+        var angleDelta = mark.transform.rotation.eulerAngles - actor.transform.rotation.eulerAngles;
+        var direction = angleDelta.normalized;
+
+        if (angleDelta.magnitude > 180) direction *= -1;
+
+        var rotationAmount = speed * Time.deltaTime;
+
+        if (angleDelta.magnitude > rotationAmount)
+        {
+            var angle = actor.transform.rotation.eulerAngles + direction * rotationAmount;
+            actor.transform.rotation = Quaternion.Euler(angle);
+            return false;
+        }
+        else
+        {
+            actor.transform.rotation = mark.transform.rotation;
+            return true;
+        }
+    }
+
+    public static bool rotateToMatchVector(GameObject actor, Vector3 vector, float speed)
+    {
+        var angleDelta = vector - actor.transform.rotation.eulerAngles;
+        var direction = angleDelta.normalized;
+
+        if (angleDelta.magnitude > 180) direction *= -1;
+
+        var rotationAmount = speed * Time.deltaTime;
+
+        if (angleDelta.magnitude > rotationAmount)
+        {
+            var angle = actor.transform.rotation.eulerAngles + direction * rotationAmount;
+            actor.transform.rotation = Quaternion.Euler(angle);
+            return false;
+        }
+        else
+        {
+            actor.transform.rotation = Quaternion.Euler(vector);
+            return true;
+        }
+    }
+
+    public static bool rotateAndMoveToMark(GameObject actor, GameObject mark, float speed, float rotationSpeed)
+    {
+        // first deal with rotation
+        var rotationComplete = Move.rotateToFaceMark(actor, mark, rotationSpeed);
+        if (!rotationComplete) return false;
+
+        // now move
+        return Move.moveToMark(actor, mark, speed);
+    }
+
+
+
 
 }
 
