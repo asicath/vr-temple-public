@@ -238,13 +238,20 @@ public class NeophyteRitual : MonoBehaviour
         queueVoiceActionR(001, hierophant, 1);
 
         // hegemon rises and removes his chair from between the pillars
-        fastForwardTo = new HideAction { actor = hegemonChair };
-        queue.add(fastForwardTo);
+        queue.add(new HideAction { actor = hegemonChair });
 
-        
-        queue.add(createCircleMoveDirectedAction("Outside Door", hegemon, 60));
         candidate = addActor(candidatePrefab, "Candidate Start");
 
+        queue.add(new AllAction
+        {
+            actions = new ScriptAction[] {
+                createMoveAction("Kerux Standby", kerux),
+                createCircleMoveDirectedAction("Outside Door", hegemon, 70)
+            }
+        });
+
+        queue.add(createMoveAction("Facing Door", kerux));
+        
         // and goes out followed by the sentinal, who carries the hoodwink and rope
         // hegemon sees that the candidate is properly robed and hood winked and that the rope goes three times about his waist
 
@@ -259,7 +266,16 @@ public class NeophyteRitual : MonoBehaviour
         // S and D stand behind K who is facing the entrance, ready to open the door
         // as soon as candidate is well in the hall, these three officers stand before him in a triangular fashion, and sentinal is behind him.
 
+        
+
+        queue.add(all(new ScriptAction[] {
+            createCircleMoveAction("Kerux Flank Right", stolistes, 1, 0),
+            createCircleMoveAction("Kerux Flank Left", dadouchos, 2, 0)
+        }));
+
+        fastForwardTo = queue.add(createCircleMoveAroundAction("Behind Candidate", hegemon, "Candidate Center", "Behind Candidate"));
         queueVoiceActionR(007, hegemon, 1);
+
         queueVoiceActionR(008, stolistes, 1);
         queueVoiceActionR(009, dadouchos, 1);
         queueVoiceActionR(010, hierophant, 1);
@@ -381,6 +397,11 @@ public class NeophyteRitual : MonoBehaviour
     private CircleMoveAction createCircleMoveAction(string targetMarkName, GameObject actor, float waitBefore = 0, float waitAfter = 1, float speed = 2)
     {
         return new CircleMoveAction { actor = actor, waitBefore = waitBefore, waitAfter = waitAfter, centerMarkName = "Altar", targetMarkName = targetMarkName, radiusMarkName = "Circumabulation", speed = speed };
+    }
+
+    private CircleMoveAction createCircleMoveAroundAction(string targetMarkName, GameObject actor, string centerMarkName, string radiusMarkName, float waitBefore = 0, float waitAfter = 1, float speed = 2)
+    {
+        return new CircleMoveAction { actor = actor, waitBefore = waitBefore, waitAfter = waitAfter, centerMarkName = centerMarkName, targetMarkName = targetMarkName, radiusMarkName = radiusMarkName, speed = speed };
     }
 
     private CircleMoveAction createCircleMoveToDegreeAction(float targetDegree, GameObject actor, float? entryDegree = null, float waitBefore = 0, float waitAfter = 1, float speed = 2)

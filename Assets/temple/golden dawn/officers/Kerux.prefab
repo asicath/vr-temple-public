@@ -118,6 +118,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &115830
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 488470}
+  m_Layer: 0
+  m_Name: Kerux Flank Left
+  m_TagString: Mark
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &115984
 GameObject:
   m_ObjectHideFlags: 1
@@ -510,6 +525,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &198376
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 432982}
+  m_Layer: 0
+  m_Name: Kerux Flank Right
+  m_TagString: Mark
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!4 &404640
 Transform:
   m_ObjectHideFlags: 1
@@ -625,11 +655,26 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
+  - {fileID: 432982}
   - {fileID: 460858}
   - {fileID: 494150}
   - {fileID: 474514}
   - {fileID: 480490}
+  - {fileID: 488470}
   m_Father: {fileID: 0}
+  m_RootOrder: 0
+--- !u!4 &432982
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 198376}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1, y: 0, z: -1}
+  m_LocalScale: {x: 12, y: 0.1, z: 12}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 432138}
   m_RootOrder: 0
 --- !u!4 &438376
 Transform:
@@ -726,7 +771,7 @@ Transform:
   - {fileID: 495194}
   - {fileID: 476990}
   m_Father: {fileID: 432138}
-  m_RootOrder: 0
+  m_RootOrder: 1
 --- !u!4 &461648
 Transform:
   m_ObjectHideFlags: 1
@@ -816,7 +861,7 @@ Transform:
   - {fileID: 408658}
   - {fileID: 481198}
   m_Father: {fileID: 432138}
-  m_RootOrder: 2
+  m_RootOrder: 3
 --- !u!4 &476990
 Transform:
   m_ObjectHideFlags: 1
@@ -842,7 +887,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 432138}
-  m_RootOrder: 3
+  m_RootOrder: 4
 --- !u!4 &481198
 Transform:
   m_ObjectHideFlags: 1
@@ -868,6 +913,19 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 474514}
+  m_RootOrder: 5
+--- !u!4 &488470
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 115830}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1, y: 0, z: -1}
+  m_LocalScale: {x: 12, y: 0.1, z: 12}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 432138}
   m_RootOrder: 5
 --- !u!4 &490274
 Transform:
@@ -915,7 +973,7 @@ Transform:
   - {fileID: 492466}
   - {fileID: 467156}
   m_Father: {fileID: 432138}
-  m_RootOrder: 1
+  m_RootOrder: 2
 --- !u!4 &495194
 Transform:
   m_ObjectHideFlags: 1
