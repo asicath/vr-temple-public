@@ -14,11 +14,16 @@ public class MoveAction : ScriptAction {
     private bool rotateComplete = false;
     private bool beforeRotateComplete = false;
 
+    protected override string getDebugId()
+    {
+        return "move " + actor.name + " to " + markName;
+    }
+
     // Use this for initialization
     protected override void StartAction()
     {
         mark = getMark(markName);
-        
+        Debug.Log("starting move");
     }
 
     protected override void UpdateAction()

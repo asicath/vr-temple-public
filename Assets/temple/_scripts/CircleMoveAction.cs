@@ -28,7 +28,11 @@ public class CircleMoveAction : ScriptAction
 
     private float rotationSpeed = 50;
 
-
+    protected override string getDebugId()
+    {
+        if (targetDegree.HasValue) return "move " + actor.name + " to " + targetDegree.Value;
+        return "move " + actor.name + " to " + targetMarkName;
+    }
 
     // Use this for initialization
     protected override void StartAction()

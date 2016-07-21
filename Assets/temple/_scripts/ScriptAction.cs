@@ -19,6 +19,8 @@ public class ScriptAction {
     public bool isComplete = false;
 
     public void Start() {
+        emitDebugLog("start");
+
         isComplete = false;
         if (waitBefore > 0)
         {
@@ -67,6 +69,7 @@ public class ScriptAction {
     {
         if (name == null) return null;
         var marks = GameObject.FindGameObjectsWithTag("Mark");
+        if (marks.Length == 0) Debug.Log("can't find mark: " + name);
         return marks.Where(o => o.name == name).FirstOrDefault();
     }
 
@@ -77,6 +80,8 @@ public class ScriptAction {
     /// </summary>
     protected void complete()
     {
+        emitDebugLog("complete");
+
         if (waitAfter != 0)
         {
             waitingAfter = waitAfter;
@@ -94,4 +99,15 @@ public class ScriptAction {
         else nextAction.then(action);
         return this;
     }
+
+    public void emitDebugLog(string action)
+    {
+        Debug.Log(getDebugId() + ":" + action);
+    }
+
+    protected virtual string getDebugId() {
+        return "null";
+    }
+
+    
 }

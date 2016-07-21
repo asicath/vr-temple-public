@@ -8,6 +8,11 @@ public class VoiceAction : ScriptAction {
 
     private AudioSource audioSource;
 
+    protected override string getDebugId()
+    {
+        return "play " + clip.name + " from " + actor.name;
+    }
+
     // Use this for initialization
     protected override void StartAction() {
         audioSource = actor.GetComponent<AudioSource>();

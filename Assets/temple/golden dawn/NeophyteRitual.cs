@@ -10,32 +10,34 @@ public class NeophyteRitual : MonoBehaviour
 
     public AudioClip knock;
     public AudioClip[] clips;
+    public AudioClip[] receptionClips;
     
     public GameObject hierophantPrefab, hiereusPrefab, hegemonPrefab, keruxPrefab, stolistesPrefab, dadouchosPrefab;
-    public GameObject imperatorPrefab, cancellariusPrefab, pastHierophantPrefab, praemonstratorPrefab;
+    public GameObject imperatorPrefab, cancellariusPrefab, pastHierophantPrefab, praemonstratorPrefab, candidatePrefab;
 
 
     public GameObject doorPrefab, thronePrefab, altarPrefab;
     public GameObject blackPillarPrefab, whitePillarPrefab, bannerOfTheEastPrefab, bannerOfTheWestPrefab;
 
-    private GameObject hierophant, hiereus, hegemon, kerux, stolistes, dadouchos;
+    private GameObject hierophant, hiereus, hegemon, kerux, stolistes, dadouchos, candidate;
     private Transform marks;
+    private GameObject hegemonChair;
 
     private ScriptActionQueue queue = new ScriptActionQueue();
-
-    private AudioClip getClip(int id)
-    {
-        return clips[id-1];
-    }
 
     // Use this for initialization
     void Start()
     {
         hideMarks();
 
-        var ground = transform.Find("Ground");
-        marks = ground.transform.FindChild("Marks");
+        initOpening();
+        queueOpening();
 
+        queueReception();
+    }
+
+    void initOpening()
+    {
         hierophant = addActor(hierophantPrefab, "Hierophant Start");
         hiereus = addActor(hiereusPrefab, "Hiereus Start");
         hegemon = addActor(hegemonPrefab, "Hegemon Start");
@@ -52,7 +54,7 @@ public class NeophyteRitual : MonoBehaviour
 
         addThrone(thronePrefab, "Hierophant Start");
         addThrone(thronePrefab, "Hiereus Start");
-        addThrone(thronePrefab, "Hegemon Start");
+        hegemonChair = addThrone(thronePrefab, "Hegemon Start");
         addThrone(thronePrefab, "Stolistes Start");
         addThrone(thronePrefab, "Dadouchos Start");
 
@@ -65,6 +67,10 @@ public class NeophyteRitual : MonoBehaviour
         addActor(cancellariusPrefab, "Cancellarius Start");
         addActor(pastHierophantPrefab, "Past Hierophant Start");
         addActor(praemonstratorPrefab, "Praemonstrator Start");
+    }
+
+    void queueOpening()
+    {
 
         //var camera = "OVRCameraRig"
         //Camera.main.transform.parent = kerux.transform.FindChild("Head").transform;
@@ -136,7 +142,7 @@ public class NeophyteRitual : MonoBehaviour
         queueVoiceAction(011, hiereus, 1);
         queueVoiceAction(012, hierophant, 1);
         queueVoiceAction(013, hiereus, 1);
-        
+
 
         queueVoiceAction(014, hierophant, 1);
         queueVoiceAction(015, hiereus, 1);
@@ -155,11 +161,11 @@ public class NeophyteRitual : MonoBehaviour
         queueVoiceAction(027, hierophant, 1);
         queue.add(all(new ScriptAction[] {
             createCircleMoveAction("East", stolistes),
-            createCircleMoveAction("North", dadouchos) } ));
-        queue.add(all(new ScriptAction[] { createCircleMoveAction("South", stolistes), createCircleMoveAction("East", dadouchos) } ));
-        queue.add(all(new ScriptAction[] { createCircleMoveAction("West", stolistes), createCircleMoveAction("South", dadouchos) } ));
-        queue.add(all(new ScriptAction[] { createCircleMoveAction("North", stolistes), createCircleMoveAction("West", dadouchos) } ));
-        queue.add(all(new ScriptAction[] { createCircleMoveAction("East", stolistes), createCircleMoveAction("North", dadouchos) } ));
+            createCircleMoveAction("North", dadouchos) }));
+        queue.add(all(new ScriptAction[] { createCircleMoveAction("South", stolistes), createCircleMoveAction("East", dadouchos) }));
+        queue.add(all(new ScriptAction[] { createCircleMoveAction("West", stolistes), createCircleMoveAction("South", dadouchos) }));
+        queue.add(all(new ScriptAction[] { createCircleMoveAction("North", stolistes), createCircleMoveAction("West", dadouchos) }));
+        queue.add(all(new ScriptAction[] { createCircleMoveAction("East", stolistes), createCircleMoveAction("North", dadouchos) }));
 
 
         queue.add(all(new ScriptAction[] {
@@ -168,7 +174,7 @@ public class NeophyteRitual : MonoBehaviour
             createCircleMoveAction("East", dadouchos, 2)
                 .then(createVoiceAction(035, dadouchos, 1)
                 .then(createCircleMoveAction("Dadouchos Start Throne Stand", dadouchos)))
-        } ));
+        }));
 
         //fastForwardTo = 
         queueVoiceAction(036, hierophant, 1);
@@ -177,7 +183,7 @@ public class NeophyteRitual : MonoBehaviour
         queue.add(createCircleMoveToDegreeAction(300, hegemon, 60));
         queue.add(createCircleMoveToDegreeAction(285, hiereus));
         queue.add(createCircleMoveToDegreeAction(270, stolistes));
-        fastForwardTo = queue.add(createCircleMoveToDegreeAction(255, dadouchos));
+        queue.add(createCircleMoveToDegreeAction(255, dadouchos));
 
         queue.add(all(new ScriptAction[] {
             createCircleMoveToDegreeAction(314.9f, kerux, null, 0, 0),
@@ -220,9 +226,65 @@ public class NeophyteRitual : MonoBehaviour
         queueVoiceAction(050, hegemon, 1);
         queueVoiceAction(051, hierophant, 1);
         queueVoiceAction(052, hiereus, 1);
+    }
 
+    void initReception()
+    {
 
     }
+
+    void queueReception()
+    {
+        queueVoiceActionR(001, hierophant, 1);
+
+        // hegemon rises and removes his chair from between the pillars
+        fastForwardTo = new HideAction { actor = hegemonChair };
+        queue.add(fastForwardTo);
+
+        
+        queue.add(createCircleMoveDirectedAction("Outside Door", hegemon, 60));
+        candidate = addActor(candidatePrefab, "Candidate Start");
+
+        // and goes out followed by the sentinal, who carries the hoodwink and rope
+        // hegemon sees that the candidate is properly robed and hood winked and that the rope goes three times about his waist
+
+        queueVoiceActionR(002, hierophant, 1);
+        queueVoiceAction(knock, hegemon, 1);
+        queueVoiceAction(knock, kerux, 1);
+        queueVoiceActionR(003, kerux, 1);
+        queueVoiceActionR(004, hierophant, 1);
+        queueVoiceActionR(005, hierophant, 1);
+        queueVoiceActionR(006, hierophant, 1);
+
+        // S and D stand behind K who is facing the entrance, ready to open the door
+        // as soon as candidate is well in the hall, these three officers stand before him in a triangular fashion, and sentinal is behind him.
+
+        queueVoiceActionR(007, hegemon, 1);
+        queueVoiceActionR(008, stolistes, 1);
+        queueVoiceActionR(009, dadouchos, 1);
+        queueVoiceActionR(010, hierophant, 1);
+        queueVoiceActionR(011, kerux, 1);
+
+        // S comes forward and dipping his thumb in the lustral water, makes with it a cross on the candidate's brow and sprikles him three times, saying:
+        queueVoiceActionR(012, stolistes, 1);
+
+        // D comes forward and makes a Cross over candidate with his censer, and waving it three times says:
+        queueVoiceActionR(013, dadouchos, 1);
+        queueVoiceActionR(014, hierophant, 1);
+        queueVoiceActionR(015, hierophant, 1);
+        queueVoiceActionR(016, hegemon, 1);
+        queueVoiceActionR(017, hierophant, 1);
+        queueVoiceActionR(018, hegemon, 1);
+        queueVoiceActionR(019, hierophant, 1);
+        queueVoiceActionR(020, hegemon, 1);
+        queueVoiceActionR(021, hierophant, 1);
+        queueVoiceActionR(022, hierophant, 1);
+        queueVoiceActionR(023, hierophant, 1);
+        queueVoiceActionR(024, hierophant, 1);
+        queueVoiceActionR(025, hierophant, 1);
+        queueVoiceActionR(026, hierophant, 1);
+    }
+
 
     void Update()
     {
@@ -242,6 +304,7 @@ public class NeophyteRitual : MonoBehaviour
     {
         var actor = Instantiate(prefab);
         actor.transform.parent = this.transform;
+        actor.SetActive(false);
 
         queue.add(new SetPositionAction { markName = markName, actor = actor, waitAfter = 0 });
         return actor;
@@ -268,7 +331,10 @@ public class NeophyteRitual : MonoBehaviour
         }
     }
 
-
+    private ScriptAction queueVoiceActionR(int clipId, GameObject actor, float waitAfter = 1f, float waitBefore = 0)
+    {
+        return queueVoiceAction(getClipR(clipId), actor, waitAfter, waitBefore);
+    }
     private ScriptAction queueVoiceAction(int clipId, GameObject actor, float waitAfter = 1f, float waitBefore = 0)
     {
         return queueVoiceAction(getClip(clipId), actor, waitAfter, waitBefore);
@@ -276,6 +342,19 @@ public class NeophyteRitual : MonoBehaviour
     private ScriptAction queueVoiceAction(AudioClip clip, GameObject actor, float waitAfter = 1f, float waitBefore = 0)
     {
         return queue.add(new VoiceAction { clip = clip, actor = actor, waitAfter = waitAfter, waitBefore = waitBefore });
+    }
+
+    private AudioClip getClip(int id)
+    {
+        return getClip(id, clips);
+    }
+    private AudioClip getClipR(int id)
+    {
+        return getClip(id, receptionClips);
+    }
+    private AudioClip getClip(int id, AudioClip[] source)
+    {
+        return source[id - 1];
     }
 
     private ScriptAction createVoiceAction(int clipId, GameObject actor, float waitAfter = 1f, float waitBefore = 0)
@@ -308,6 +387,11 @@ public class NeophyteRitual : MonoBehaviour
     {
         return new CircleMoveAction { actor = actor, waitBefore = waitBefore, waitAfter = waitAfter, centerMarkName = "Altar", targetDegree = targetDegree, radiusMarkName = "Circumabulation", speed = speed, entryDegree = entryDegree };
         //return new CircleMoveToDegreeAction { actor = actor, waitAfter = waitAfter, centerMarkName = "Altar", targetDegree = targetDegree, radiusMarkName = "Circumabulation", speed = speed };
+    }
+
+    private CircleMoveAction createCircleMoveDirectedAction(string targetMarkName, GameObject actor, float entryDegree)
+    {
+        return new CircleMoveAction { actor = actor, waitBefore = 0, waitAfter = 1f, centerMarkName = "Altar", targetMarkName = targetMarkName, radiusMarkName = "Circumabulation", speed = 2, entryDegree = entryDegree };
     }
 
     private AllAction all(ScriptAction[] actions)
