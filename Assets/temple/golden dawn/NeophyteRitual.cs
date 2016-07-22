@@ -241,6 +241,7 @@ public class NeophyteRitual : MonoBehaviour
         queue.add(new HideAction { actor = hegemonChair });
 
         candidate = addActor(candidatePrefab, "Candidate Start");
+        //Camera.main.transform.parent = candidate.transform.FindChild("Head").transform;
 
         queue.add(new AllAction
         {
@@ -263,31 +264,60 @@ public class NeophyteRitual : MonoBehaviour
         queueVoiceActionR(005, hierophant, 1);
         queueVoiceActionR(006, hierophant, 1);
 
+
+
         // S and D stand behind K who is facing the entrance, ready to open the door
         // as soon as candidate is well in the hall, these three officers stand before him in a triangular fashion, and sentinal is behind him.
 
         
 
         queue.add(all(new ScriptAction[] {
-            createCircleMoveAction("Kerux Flank Right", stolistes, 1, 0),
-            createCircleMoveAction("Kerux Flank Left", dadouchos, 2, 0)
+            createCircleMoveAction("enter kerux", kerux),
+            createCircleMoveAction("enter stolistes", stolistes),
+            createCircleMoveAction("enter dadouchos", dadouchos)
         }));
 
         // fastForwardTo = 
         queue.add(createCircleMoveAroundAction("Behind Candidate", hegemon, "Candidate Center", "Behind Candidate"));
         queueVoiceActionR(007, hegemon, 1);
 
+        queue.add(all(new ScriptAction[] {
+            createMoveAction("Inside Door 1", candidate),
+            createMoveAction("Inside Door 2", hegemon)
+        }));
+
+
         queueVoiceActionR(008, stolistes, 1);
         queueVoiceActionR(009, dadouchos, 1);
         queueVoiceActionR(010, hierophant, 1);
-        queueVoiceActionR(011, kerux, 1);
+        fastForwardTo = queueVoiceActionR(011, kerux, 1);
 
         // S comes forward and dipping his thumb in the lustral water, makes with it a cross on the candidate's brow and sprikles him three times, saying:
+        queue.add(createMoveAction("Facing Candidate", stolistes));
         queueVoiceActionR(012, stolistes, 1);
+        queue.add(createMoveAction("enter stolistes", stolistes));
 
         // D comes forward and makes a Cross over candidate with his censer, and waving it three times says:
+        queue.add(createMoveAction("Facing Candidate", dadouchos));
         queueVoiceActionR(013, dadouchos, 1);
+        queue.add(createMoveAction("enter dadouchos", dadouchos));
+
         queueVoiceActionR(014, hierophant, 1);
+
+        queue.add(all(new ScriptAction[] {
+            createMoveAction("altar candidate", candidate),
+            createMoveAction("altar candidate led", hegemon)
+        }));
+
+        queue.add(all(new ScriptAction[] {
+            createCircleMoveAction("altar kerux", kerux),
+            createCircleMoveAction("altar stolistes", stolistes),
+            createCircleMoveAction("altar dadouchos", dadouchos),
+            createCircleMoveAction("altar hiereus", hiereus)
+        }));
+
+        queue.add(createMoveAction("altar hegemon", hegemon));
+
         queueVoiceActionR(015, hierophant, 1);
         queueVoiceActionR(016, hegemon, 1);
         queueVoiceActionR(017, hierophant, 1);
@@ -295,6 +325,9 @@ public class NeophyteRitual : MonoBehaviour
         queueVoiceActionR(019, hierophant, 1);
         queueVoiceActionR(020, hegemon, 1);
         queueVoiceActionR(021, hierophant, 1);
+
+        queue.add(createMoveAction("altar hierophant", hierophant));
+
         queueVoiceActionR(022, hierophant, 1);
         queueVoiceActionR(023, hierophant, 1);
         queueVoiceActionR(024, hierophant, 1);
@@ -344,7 +377,7 @@ public class NeophyteRitual : MonoBehaviour
         foreach (var mark in marks)
         {
             var mr = mark.GetComponentInChildren<MeshRenderer>();
-            Destroy(mr.gameObject);
+            if (mr != null) Destroy(mr.gameObject);
         }
     }
 

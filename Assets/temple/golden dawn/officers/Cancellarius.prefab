@@ -163,6 +163,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 457546}
   - 82: {fileID: 8252958}
+  - 114: {fileID: 11476868}
   m_Layer: 0
   m_Name: Cancellarius
   m_TagString: Untagged
@@ -930,6 +931,17 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
+--- !u!114 &11476868
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 142552}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f16e2e3121b59c48806ec9a39ef80ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!135 &13592108
 SphereCollider:
   m_ObjectHideFlags: 1
