@@ -3,12 +3,12 @@ using System.Collections;
 
 public class MoveAction : ScriptAction {
 
-    public static ScriptAction create(string markName, GameObject actor, float waitAfter = 1f)
+    public static ScriptAction create(string markName, GameObject actor, float waitAfter = 1f, float waitBefore = 0f)
     {
-        return new MoveAction { markName = markName, actor = actor, speed = 2.0f, waitAfter = waitAfter };
+        return new MoveAction { markName = markName, actor = actor, speed = 2.0f, waitBefore = waitBefore, waitAfter = waitAfter };
     }
 
-    public static ScriptAction createNoRotate(string markName, GameObject actor, float waitAfter = 1f)
+    public static ScriptAction createNoRotate(string markName, GameObject actor, float waitAfter = 1f, float waitBefore = 0f)
     {
         return new MoveAction { markName = markName, actor = actor, speed = 2.0f, waitAfter = waitAfter, noRotate = true };
     }

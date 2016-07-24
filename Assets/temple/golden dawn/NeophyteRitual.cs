@@ -21,7 +21,7 @@ public class NeophyteRitual : MonoBehaviour
 
     private GameObject hierophant, hiereus, hegemon, kerux, stolistes, dadouchos, candidate, sentinel;
     private Transform marks;
-    private GameObject hegemonChair, door;
+    private GameObject hegemonChair, door, antiDoor;
 
     private GameObject follow, rig, blindfold;
 
@@ -45,7 +45,8 @@ public class NeophyteRitual : MonoBehaviour
     void initOpening()
     {
 
-        door = GameObject.Find("Door");
+        door = GameObject.Find("Temple Door");
+        antiDoor = GameObject.Find("Anti Door");
 
         hierophant = addActor(hierophantPrefab, "Hierophant Start");
         hiereus = addActor(hiereusPrefab, "Hiereus Start");
@@ -245,32 +246,51 @@ public class NeophyteRitual : MonoBehaviour
     void queueReception()
     {
         queueVoiceActionR(001, hierophant, 1);
+        queueVoiceActionR(002, hierophant, 1);
 
         // hegemon rises and removes his chair from between the pillars
         queue.add(new HideAction { actor = hegemonChair });
 
+        // add the candidate in the anitochamber
         candidate = addActor(candidatePrefab, "Candidate Start");
         follow = candidate.transform.FindChild("Head").gameObject;
-        //Camera.main.transform.parent = candidate.transform.FindChild("Head").transform;
+        
 
-        fastForwardTo = queue.add(new AllAction
+        // hegemon enters the antichamber and kerux shuts the door
+        queue.add(new AllAction
         {
             actions = new ScriptAction[] {
                 MoveAction.create("Kerux Standby", kerux),
-                createCircleMoveDirectedAction("Facing Door", hegemon, 70).then(MoveAction.createNoRotate("Door Open", door)).then(MoveAction.createNoRotate("Sentinel Aside", sentinel)).then(MoveAction.create("Outside Door", hegemon))
+                createCircleMoveDirectedAction("Facing Door", hegemon, 70)
+                    .then(MoveAction.createNoRotate("Door Open", door))
+                    .then(MoveAction.createNoRotate("Sentinel Aside", sentinel))
             }
         });
 
-        queue.add(MoveAction.createNoRotate("Door Close", door));
+        queue.add(new AllAction
+        {
+            actions = new ScriptAction[] {
+                MoveAction.create("Facing Anti Door", hegemon),
+                MoveAction.create("Facing Door", kerux).then(MoveAction.createNoRotate("Door Close", door))
+            }
+        });
+
+        // hegemon opens antichamber door, admits candidate, puts blind fold on
+
+        fastForwardTo = queue.add(MoveAction.createNoRotate("Anti Door Open", antiDoor));
+
+        queue.add(all(new ScriptAction[] {
+            MoveAction.createNoRotate("Inside Anti Door 1", hegemon),
+            MoveAction.createNoRotate("Inside Anti Door 2", candidate, 0f, 2f)
+        }));
+
 
         putOnBlindfold();
 
-        queue.add(MoveAction.create("Facing Door", kerux));
-        
         // and goes out followed by the sentinal, who carries the hoodwink and rope
         // hegemon sees that the candidate is properly robed and hood winked and that the rope goes three times about his waist
 
-        queueVoiceActionR(002, hierophant, 1);
+        
         queueVoiceAction(knock, hegemon, 1);
         queueVoiceAction(knock, kerux, 1);
         
@@ -292,7 +312,7 @@ public class NeophyteRitual : MonoBehaviour
             createCircleMoveAction("enter dadouchos", dadouchos)
         }));
 
-        // fastForwardTo = 
+        // 
         queue.add(createCircleMoveAroundAction("Behind Candidate", hegemon, "Candidate Center", "Behind Candidate"));
         queueVoiceActionR(007, hegemon, 1);
 
