@@ -2556,9 +2556,9 @@ MonoBehaviour:
   altarPrefab: {fileID: 154380, guid: f1900e92ae9b2c344b5f8edfb342d8f5, type: 2}
   blackPillarPrefab: {fileID: 126500, guid: 955a825f08cd04e4bb9bafb900616957, type: 2}
   whitePillarPrefab: {fileID: 132198, guid: d1c789eff7f86c345bbbdda950162e6b, type: 2}
-  bannerOfTheEastPrefab: {fileID: 155608, guid: a42c86f8dd1785a46a659e787df78d8d,
+  bannerOfTheEastPrefab: {fileID: 189694, guid: 03605264b4c66ea4c93d0f88ff39e648,
     type: 2}
-  bannerOfTheWestPrefab: {fileID: 199250, guid: 641c1280ca2fd1443951d97a9272f78c,
+  bannerOfTheWestPrefab: {fileID: 166336, guid: a1ece3643fc83b94fa96e6811a9d5de4,
     type: 2}
 --- !u!4 &1337866568
 Transform:
