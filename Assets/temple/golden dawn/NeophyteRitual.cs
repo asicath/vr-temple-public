@@ -253,11 +253,11 @@ public class NeophyteRitual : MonoBehaviour
 
         // add the candidate in the anitochamber
         candidate = addActor(candidatePrefab, "Candidate Start");
-        follow = candidate.transform.FindChild("Head").gameObject;
-        
+        //follow = candidate.transform.FindChild("Head").gameObject;
+        follow = hegemon.transform.FindChild("Head").gameObject;
 
         // hegemon enters the antichamber and kerux shuts the door
-        queue.add(new AllAction
+        fastForwardTo = queue.add(new AllAction
         {
             actions = new ScriptAction[] {
                 MoveAction.create("Kerux Standby", kerux),
@@ -277,11 +277,11 @@ public class NeophyteRitual : MonoBehaviour
 
         // hegemon opens antichamber door, admits candidate, puts blind fold on
 
-        fastForwardTo = queue.add(MoveAction.createNoRotate("Anti Door Open", antiDoor));
+        queue.add(MoveAction.createNoRotate("Anti Door Open", antiDoor));
 
         queue.add(all(new ScriptAction[] {
             MoveAction.createNoRotate("Inside Anti Door 1", hegemon),
-            MoveAction.createNoRotate("Inside Anti Door 2", candidate, 0f, 2f)
+            MoveAction.create("Inside Anti Door 2", candidate, 2f, 4f)
         }));
 
 

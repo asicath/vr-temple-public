@@ -26,7 +26,7 @@ public class MoveAction : ScriptAction {
     private float rotation;
     private bool moveComplete = false;
     private bool rotateComplete = false;
-    private bool beforeRotateComplete = false;
+    //private bool beforeRotateComplete = false;
 
     protected override string getDebugId()
     {
@@ -45,7 +45,9 @@ public class MoveAction : ScriptAction {
 
         if (!moveComplete)
         {
+
             if (noRotate) moveComplete = Move.moveToMark(actor, mark, speed);
+            //else if (!beforeRotateComplete) beforeRotateComplete = Move.rotateToFaceMark(actor, mark, rotationSpeed);
             else moveComplete = Move.rotateAndMoveToMark(actor, mark, speed, rotationSpeed);
         }
         else if (!rotateComplete) rotateComplete = Move.rotateToMatchMark(actor, mark, rotationSpeed);
