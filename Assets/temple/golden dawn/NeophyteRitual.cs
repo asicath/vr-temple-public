@@ -23,11 +23,14 @@ public class NeophyteRitual : MonoBehaviour
     private Transform marks;
     private GameObject hegemonChair, door;
 
+    private GameObject follow, rig;
+
     private ScriptActionQueue queue = new ScriptActionQueue();
 
     // Use this for initialization
     void Start()
     {
+        rig = GameObject.Find("OVRCameraRig");
         hideMarks();
 
         initOpening();
@@ -244,9 +247,10 @@ public class NeophyteRitual : MonoBehaviour
         queue.add(new HideAction { actor = hegemonChair });
 
         candidate = addActor(candidatePrefab, "Candidate Start");
+        follow = candidate.transform.FindChild("Head").gameObject;
         //Camera.main.transform.parent = candidate.transform.FindChild("Head").transform;
 
-        fastForwardTo = queue.add(new AllAction
+        queue.add(new AllAction
         {
             actions = new ScriptAction[] {
                 MoveAction.create("Kerux Standby", kerux),
@@ -285,7 +289,7 @@ public class NeophyteRitual : MonoBehaviour
 
         // fastForwardTo = 
         queue.add(createCircleMoveAroundAction("Behind Candidate", hegemon, "Candidate Center", "Behind Candidate"));
-        queueVoiceActionR(007, hegemon, 1);
+        fastForwardTo = queueVoiceActionR(007, hegemon, 1);
 
         queue.add(all(new ScriptAction[] {
             MoveAction.create("Inside Door 1", candidate),
@@ -354,7 +358,13 @@ public class NeophyteRitual : MonoBehaviour
             queue.fastForwardTo(fastForwardTo);
             fastForwardTo = null;
         }
-        
+
+        if (follow != null)
+        {
+            rig.transform.position = follow.transform.position;
+            rig.transform.rotation = follow.transform.rotation;
+            //Debug.Log("setting position" + follow.transform.position);
+        }
     }
 
 
