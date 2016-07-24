@@ -23,7 +23,7 @@ public class NeophyteRitual : MonoBehaviour
     private Transform marks;
     private GameObject hegemonChair, door;
 
-    private GameObject follow, rig;
+    private GameObject follow, rig, blindfold;
 
     private ScriptActionQueue queue = new ScriptActionQueue();
 
@@ -31,6 +31,9 @@ public class NeophyteRitual : MonoBehaviour
     void Start()
     {
         rig = GameObject.Find("OVRCameraRig");
+        blindfold = GameObject.Find("Blindfold");
+        blindfold.SetActive(false);
+
         hideMarks();
 
         initOpening();
@@ -250,7 +253,7 @@ public class NeophyteRitual : MonoBehaviour
         follow = candidate.transform.FindChild("Head").gameObject;
         //Camera.main.transform.parent = candidate.transform.FindChild("Head").transform;
 
-        queue.add(new AllAction
+        fastForwardTo = queue.add(new AllAction
         {
             actions = new ScriptAction[] {
                 MoveAction.create("Kerux Standby", kerux),
@@ -259,6 +262,8 @@ public class NeophyteRitual : MonoBehaviour
         });
 
         queue.add(MoveAction.createNoRotate("Door Close", door));
+
+        putOnBlindfold();
 
         queue.add(MoveAction.create("Facing Door", kerux));
         
@@ -289,7 +294,7 @@ public class NeophyteRitual : MonoBehaviour
 
         // fastForwardTo = 
         queue.add(createCircleMoveAroundAction("Behind Candidate", hegemon, "Candidate Center", "Behind Candidate"));
-        fastForwardTo = queueVoiceActionR(007, hegemon, 1);
+        queueVoiceActionR(007, hegemon, 1);
 
         queue.add(all(new ScriptAction[] {
             MoveAction.create("Inside Door 1", candidate),
@@ -345,6 +350,16 @@ public class NeophyteRitual : MonoBehaviour
         queueVoiceActionR(024, hierophant, 1);
         queueVoiceActionR(025, hierophant, 1);
         queueVoiceActionR(026, hierophant, 1);
+    }
+
+    void putOnBlindfold()
+    {
+        queue.add(SetActiveAction.create(blindfold, true));
+    }
+
+    void removeBlindfold()
+    {
+        queue.add(SetActiveAction.create(blindfold, false));
     }
 
 
