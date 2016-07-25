@@ -12,22 +12,28 @@ public class NeophyteRitual : MonoBehaviour
     public AudioClip[] clips;
     public AudioClip[] receptionClips;
     
-    public GameObject hierophantPrefab, hiereusPrefab, hegemonPrefab, keruxPrefab, stolistesPrefab, dadouchosPrefab;
+    public GameObject hierophantPrefab, hiereusPrefab, hegemonPrefab, keruxPrefab, stolistesPrefab, dadouchosPrefab, sentinelPrefab;
     public GameObject imperatorPrefab, cancellariusPrefab, pastHierophantPrefab, praemonstratorPrefab, candidatePrefab;
 
 
-    public GameObject doorPrefab, thronePrefab, altarPrefab;
+    public GameObject thronePrefab, altarPrefab;
     public GameObject blackPillarPrefab, whitePillarPrefab, bannerOfTheEastPrefab, bannerOfTheWestPrefab;
 
-    private GameObject hierophant, hiereus, hegemon, kerux, stolistes, dadouchos, candidate;
+    private GameObject hierophant, hiereus, hegemon, kerux, stolistes, dadouchos, candidate, sentinel;
     private Transform marks;
-    private GameObject hegemonChair;
+    private GameObject hegemonChair, door, antiDoor;
+
+    private GameObject follow, rig, blindfold;
 
     private ScriptActionQueue queue = new ScriptActionQueue();
 
     // Use this for initialization
     void Start()
     {
+        rig = GameObject.Find("OVRCameraRig");
+        blindfold = GameObject.Find("Blindfold");
+        blindfold.SetActive(false);
+
         hideMarks();
 
         initOpening();
@@ -38,14 +44,18 @@ public class NeophyteRitual : MonoBehaviour
 
     void initOpening()
     {
+
+        door = GameObject.Find("Temple Door");
+        antiDoor = GameObject.Find("Anti Door");
+
         hierophant = addActor(hierophantPrefab, "Hierophant Start");
         hiereus = addActor(hiereusPrefab, "Hiereus Start");
         hegemon = addActor(hegemonPrefab, "Hegemon Start");
         kerux = addActor(keruxPrefab, "Kerux Start");
         stolistes = addActor(stolistesPrefab, "Stolistes Start");
         dadouchos = addActor(dadouchosPrefab, "Dadouchos Start");
+        sentinel = addActor(sentinelPrefab, "Sentinel Start");
 
-        addActor(doorPrefab, "Door");
         addActor(altarPrefab, "Altar");
         addActor(bannerOfTheEastPrefab, "Banner of the East");
         addActor(bannerOfTheWestPrefab, "Banner of the West");
@@ -100,10 +110,10 @@ public class NeophyteRitual : MonoBehaviour
         queueVoiceAction(knock, hierophant, 1);
         queueVoiceAction(002, hierophant, 1);
 
-        queue.add(createMoveAction("Facing Door", kerux));
-        queueVoiceAction(knock, kerux, 1);
-        queueVoiceAction(knock, kerux, 1);
-        queue.add(createMoveAction("Kerux Start", kerux));
+        queue.add(MoveAction.create("Facing Door", kerux));
+        queueVoiceAction(knock, door, 1);
+        queueVoiceAction(knock, door, 1);
+        queue.add(MoveAction.create("Kerux Start", kerux));
         queueVoiceAction(003, kerux, 1);
         // he [kerux] salutes the hierophant's throne. Remains by door
 
@@ -111,12 +121,12 @@ public class NeophyteRitual : MonoBehaviour
 
         // hiereus goes to the door, stands before it with sword erect
         // kerux being on his right
-        queue.add(createMoveAction("Hiereus Start Throne Stand", hiereus));
+        queue.add(MoveAction.create("Hiereus Start Throne Stand", hiereus));
 
         queue.add(new AllAction
         {
             actions = new ScriptAction[] {
-                createMoveAction("Kerux Standby", kerux),
+                MoveAction.create("Kerux Standby", kerux),
                 createCircleMoveAction("Kerux Start", hiereus)
             }
         });
@@ -129,7 +139,7 @@ public class NeophyteRitual : MonoBehaviour
         queue.add(new AllAction
         {
             actions = new ScriptAction[] {
-                createMoveAction("Kerux Start", kerux),
+                MoveAction.create("Kerux Start", kerux),
                 createCircleMoveAction("Hiereus Start Throne Stand", hiereus)
             }
         });
@@ -195,7 +205,7 @@ public class NeophyteRitual : MonoBehaviour
 
         queue.add(all(new ScriptAction[] {
             createCircleMoveToDegreeAction(314.8f, kerux, null, 0, 0),
-            createCircleMoveToDegreeAction(70, hegemon, null, 1, 0).then(createMoveAction("Hegemon Start Throne Stand", hegemon)),
+            createCircleMoveToDegreeAction(70, hegemon, null, 1, 0).then(MoveAction.create("Hegemon Start Throne Stand", hegemon)),
             createCircleMoveToDegreeAction(284.8f, stolistes, null, 2, 0).then(createCircleMoveToDegreeAction(299.8f, stolistes, null, 0, 0)),
             createCircleMoveToDegreeAction(269.8f, dadouchos, null, 3, 0).then(createCircleMoveToDegreeAction(284.8f, dadouchos, null, 0, 0))
         }));
@@ -236,29 +246,54 @@ public class NeophyteRitual : MonoBehaviour
     void queueReception()
     {
         queueVoiceActionR(001, hierophant, 1);
+        queueVoiceActionR(002, hierophant, 1);
 
         // hegemon rises and removes his chair from between the pillars
         queue.add(new HideAction { actor = hegemonChair });
 
+        // add the candidate in the anitochamber
         candidate = addActor(candidatePrefab, "Candidate Start");
-        //Camera.main.transform.parent = candidate.transform.FindChild("Head").transform;
+        //follow = candidate.transform.FindChild("Head").gameObject;
+        follow = hegemon.transform.FindChild("Head").gameObject;
+
+        // hegemon enters the antichamber and kerux shuts the door
+        fastForwardTo = queue.add(new AllAction
+        {
+            actions = new ScriptAction[] {
+                MoveAction.create("Kerux Standby", kerux),
+                createCircleMoveDirectedAction("Facing Door", hegemon, 70)
+                    .then(MoveAction.createNoRotate("Door Open", door))
+                    .then(MoveAction.createNoRotate("Sentinel Aside", sentinel))
+            }
+        });
 
         queue.add(new AllAction
         {
             actions = new ScriptAction[] {
-                createMoveAction("Kerux Standby", kerux),
-                createCircleMoveDirectedAction("Outside Door", hegemon, 70)
+                MoveAction.create("Facing Anti Door", hegemon),
+                MoveAction.create("Facing Door", kerux).then(MoveAction.createNoRotate("Door Close", door))
             }
         });
 
-        queue.add(createMoveAction("Facing Door", kerux));
-        
+        // hegemon opens antichamber door, admits candidate, puts blind fold on
+
+        queue.add(MoveAction.createNoRotate("Anti Door Open", antiDoor));
+
+        queue.add(all(new ScriptAction[] {
+            MoveAction.createNoRotate("Inside Anti Door 1", hegemon),
+            MoveAction.create("Inside Anti Door 2", candidate, 2f, 4f)
+        }));
+
+
+        putOnBlindfold();
+
         // and goes out followed by the sentinal, who carries the hoodwink and rope
         // hegemon sees that the candidate is properly robed and hood winked and that the rope goes three times about his waist
 
-        queueVoiceActionR(002, hierophant, 1);
+        
         queueVoiceAction(knock, hegemon, 1);
         queueVoiceAction(knock, kerux, 1);
+        
         queueVoiceActionR(003, kerux, 1);
         queueVoiceActionR(004, hierophant, 1);
         queueVoiceActionR(005, hierophant, 1);
@@ -269,7 +304,7 @@ public class NeophyteRitual : MonoBehaviour
         // S and D stand behind K who is facing the entrance, ready to open the door
         // as soon as candidate is well in the hall, these three officers stand before him in a triangular fashion, and sentinal is behind him.
 
-        
+        queue.add(MoveAction.createNoRotate("Door Open", door));
 
         queue.add(all(new ScriptAction[] {
             createCircleMoveAction("enter kerux", kerux),
@@ -277,36 +312,38 @@ public class NeophyteRitual : MonoBehaviour
             createCircleMoveAction("enter dadouchos", dadouchos)
         }));
 
-        // fastForwardTo = 
+        // 
         queue.add(createCircleMoveAroundAction("Behind Candidate", hegemon, "Candidate Center", "Behind Candidate"));
         queueVoiceActionR(007, hegemon, 1);
 
         queue.add(all(new ScriptAction[] {
-            createMoveAction("Inside Door 1", candidate),
-            createMoveAction("Inside Door 2", hegemon)
+            MoveAction.create("Inside Door 1", candidate),
+            MoveAction.create("Inside Door 2", hegemon)
         }));
+
+        queue.add(MoveAction.createNoRotate("Door Close", door));
 
 
         queueVoiceActionR(008, stolistes, 1);
         queueVoiceActionR(009, dadouchos, 1);
         queueVoiceActionR(010, hierophant, 1);
-        fastForwardTo = queueVoiceActionR(011, kerux, 1);
+        queueVoiceActionR(011, kerux, 1);
 
         // S comes forward and dipping his thumb in the lustral water, makes with it a cross on the candidate's brow and sprikles him three times, saying:
-        queue.add(createMoveAction("Facing Candidate", stolistes));
+        queue.add(MoveAction.create("Facing Candidate", stolistes));
         queueVoiceActionR(012, stolistes, 1);
-        queue.add(createMoveAction("enter stolistes", stolistes));
+        queue.add(MoveAction.create("enter stolistes", stolistes));
 
         // D comes forward and makes a Cross over candidate with his censer, and waving it three times says:
-        queue.add(createMoveAction("Facing Candidate", dadouchos));
+        queue.add(MoveAction.create("Facing Candidate", dadouchos));
         queueVoiceActionR(013, dadouchos, 1);
-        queue.add(createMoveAction("enter dadouchos", dadouchos));
+        queue.add(MoveAction.create("enter dadouchos", dadouchos));
 
         queueVoiceActionR(014, hierophant, 1);
 
         queue.add(all(new ScriptAction[] {
-            createMoveAction("altar candidate", candidate),
-            createMoveAction("altar candidate led", hegemon)
+            MoveAction.create("altar candidate", candidate),
+            MoveAction.create("altar candidate led", hegemon)
         }));
 
         queue.add(all(new ScriptAction[] {
@@ -316,7 +353,7 @@ public class NeophyteRitual : MonoBehaviour
             createCircleMoveAction("altar hiereus", hiereus)
         }));
 
-        queue.add(createMoveAction("altar hegemon", hegemon));
+        queue.add(MoveAction.create("altar hegemon", hegemon));
 
         queueVoiceActionR(015, hierophant, 1);
         queueVoiceActionR(016, hegemon, 1);
@@ -326,13 +363,23 @@ public class NeophyteRitual : MonoBehaviour
         queueVoiceActionR(020, hegemon, 1);
         queueVoiceActionR(021, hierophant, 1);
 
-        queue.add(createMoveAction("altar hierophant", hierophant));
+        queue.add(MoveAction.create("altar hierophant", hierophant));
 
         queueVoiceActionR(022, hierophant, 1);
         queueVoiceActionR(023, hierophant, 1);
         queueVoiceActionR(024, hierophant, 1);
         queueVoiceActionR(025, hierophant, 1);
         queueVoiceActionR(026, hierophant, 1);
+    }
+
+    void putOnBlindfold()
+    {
+        queue.add(SetActiveAction.create(blindfold, true));
+    }
+
+    void removeBlindfold()
+    {
+        queue.add(SetActiveAction.create(blindfold, false));
     }
 
 
@@ -346,7 +393,13 @@ public class NeophyteRitual : MonoBehaviour
             queue.fastForwardTo(fastForwardTo);
             fastForwardTo = null;
         }
-        
+
+        if (follow != null)
+        {
+            rig.transform.position = follow.transform.position;
+            rig.transform.rotation = follow.transform.rotation;
+            //Debug.Log("setting position" + follow.transform.position);
+        }
     }
 
 
@@ -354,7 +407,10 @@ public class NeophyteRitual : MonoBehaviour
     {
         var actor = Instantiate(prefab);
         actor.transform.parent = this.transform;
+        hideMarks();
         actor.SetActive(false);
+
+        
 
         queue.add(new SetPositionAction { markName = markName, actor = actor, waitAfter = 0 });
         return actor;
@@ -416,11 +472,6 @@ public class NeophyteRitual : MonoBehaviour
         return new VoiceAction { clip = clip, actor = actor, waitAfter = waitAfter, waitBefore = waitBefore };
     }
 
-
-    private ScriptAction createMoveAction(string markName, GameObject actor, float waitAfter = 1f)
-    {
-        return new MoveAction { markName = markName, actor = actor, speed = 2.0f, waitAfter = waitAfter };
-    }
 
     private ScriptAction createStandAction(string markName, GameObject actor, float waitAfter = 1f)
     {

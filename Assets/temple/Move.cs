@@ -125,13 +125,17 @@ public static class Move
     public static bool rotateToFaceMark(GameObject actor, GameObject mark, float speed)
     {
         // get the degree from mark to the actor
-        var degrees = Move.convertAngleToUnity(Move.getAngle(actor, mark)) * Mathf.Rad2Deg;
+        var degrees = (Move.convertAngleToUnity(Move.getAngle(actor, mark)) * Mathf.Rad2Deg) % 360;
 
         // this is the angle that it should face
         var shouldFace = new Vector3(0, degrees, 0);
 
+        
+
         // determine the difference in angles
         var rotationAngleDelta = shouldFace - actor.transform.rotation.eulerAngles;
+
+        Debug.Log("rotate: " + degrees + " delta:" + rotationAngleDelta);
 
         var direction = rotationAngleDelta.normalized;
         if (rotationAngleDelta.magnitude > 180) direction *= -1;
@@ -140,6 +144,7 @@ public static class Move
 
         if (rotationAngleDelta.magnitude > rotationAmount)
         {
+            Debug.Log("part");
             //set a smaller angle and exit without moving
             var a = actor.transform.rotation.eulerAngles + direction * rotationAmount;
             actor.transform.rotation = Quaternion.Euler(a);
@@ -147,6 +152,7 @@ public static class Move
         }
         else
         {
+            Debug.Log("full");
             // set the rotation without incident
             actor.transform.rotation = Quaternion.Euler(shouldFace);
             return true;
