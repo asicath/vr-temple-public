@@ -3,6 +3,11 @@ using System.Collections;
 
 public class VoiceAction : ScriptAction {
 
+    public static VoiceAction create(AudioClip clip, GameObject actor, float waitAfter = 1f, float waitBefore = 0)
+    {
+        return new VoiceAction { clip = clip, actor = actor, waitAfter = waitAfter, waitBefore = waitBefore };
+    }
+
     public GameObject actor;
     public AudioClip clip;
 

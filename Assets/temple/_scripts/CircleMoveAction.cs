@@ -5,6 +5,28 @@ using System.Collections.Generic;
 public class CircleMoveAction : ScriptAction
 {
 
+    static public CircleMoveAction create(string targetMarkName, GameObject actor, float waitBefore = 0, float waitAfter = 1, float speed = 2)
+    {
+        return new CircleMoveAction { actor = actor, waitBefore = waitBefore, waitAfter = waitAfter, centerMarkName = "Altar", targetMarkName = targetMarkName, radiusMarkName = "Circumabulation", speed = speed };
+    }
+
+    static public CircleMoveAction createMoveAround(string targetMarkName, GameObject actor, string centerMarkName, string radiusMarkName, float waitBefore = 0, float waitAfter = 1, float speed = 2)
+    {
+        return new CircleMoveAction { actor = actor, waitBefore = waitBefore, waitAfter = waitAfter, centerMarkName = centerMarkName, targetMarkName = targetMarkName, radiusMarkName = radiusMarkName, speed = speed };
+    }
+
+    static public CircleMoveAction createMoveToDegree(float targetDegree, GameObject actor, float? entryDegree = null, float waitBefore = 0, float waitAfter = 1, float speed = 2)
+    {
+        return new CircleMoveAction { actor = actor, waitBefore = waitBefore, waitAfter = waitAfter, centerMarkName = "Altar", targetDegree = targetDegree, radiusMarkName = "Circumabulation", speed = speed, entryDegree = entryDegree };
+        //return new CircleMoveToDegreeAction { actor = actor, waitAfter = waitAfter, centerMarkName = "Altar", targetDegree = targetDegree, radiusMarkName = "Circumabulation", speed = speed };
+    }
+
+    static public CircleMoveAction createMoveDirected(string targetMarkName, GameObject actor, float entryDegree)
+    {
+        return new CircleMoveAction { actor = actor, waitBefore = 0, waitAfter = 1f, centerMarkName = "Altar", targetMarkName = targetMarkName, radiusMarkName = "Circumabulation", speed = 2, entryDegree = entryDegree };
+    }
+
+
     public GameObject actor;
     public string centerMarkName;
     public string radiusMarkName;

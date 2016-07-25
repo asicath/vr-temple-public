@@ -3,6 +3,11 @@ using System.Collections;
 
 public class AllAction : ScriptAction {
 
+    static public AllAction create(params ScriptAction[] actions)
+    {
+        return new AllAction { actions = actions };
+    }
+
     public ScriptAction[] actions;
     private int completed;
 

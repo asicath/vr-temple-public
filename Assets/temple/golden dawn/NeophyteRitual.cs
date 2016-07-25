@@ -87,25 +87,22 @@ public class NeophyteRitual : MonoBehaviour
 
         queueVoiceAction(knock, hierophant, 1, 2);
 
-        queue.add(createCircleMoveAction("Kerux Proclaim", kerux));
+        queue.add(CircleMoveAction.create("Kerux Proclaim", kerux));
 
         queueVoiceAction(001, kerux, 1);
 
-        queue.add(createCircleMoveAction("Kerux Start", kerux));
+        queue.add(CircleMoveAction.create("Kerux Start", kerux));
 
         //queueVoiceAction(knock, hierophant, 1);
         queueVoiceAction(knock, hierophant, 1);
 
-        queue.add(new AllAction
-        {
-            actions = new ScriptAction[] {
-                createStandAction("Hierophant Start Throne", hierophant),
-                createStandAction("Hegemon Start Throne", hegemon),
-                createStandAction("Hiereus Start Throne", hiereus),
-                createStandAction("Stolistes Start Throne", stolistes),
-                createStandAction("Dadouchos Start Throne", dadouchos)
-            }
-        });
+        queue.add(AllAction.create(
+            createStandAction("Hierophant Start Throne", hierophant),
+            createStandAction("Hegemon Start Throne", hegemon),
+            createStandAction("Hiereus Start Throne", hiereus),
+            createStandAction("Stolistes Start Throne", stolistes),
+            createStandAction("Dadouchos Start Throne", dadouchos)
+        ));
 
         queueVoiceAction(knock, hierophant, 1);
         queueVoiceAction(002, hierophant, 1);
@@ -123,26 +120,20 @@ public class NeophyteRitual : MonoBehaviour
         // kerux being on his right
         queue.add(MoveAction.create("Hiereus Start Throne Stand", hiereus));
 
-        queue.add(new AllAction
-        {
-            actions = new ScriptAction[] {
-                MoveAction.create("Kerux Standby", kerux),
-                createCircleMoveAction("Kerux Start", hiereus)
-            }
-        });
+        queue.add(AllAction.create(
+            MoveAction.create("Kerux Standby", kerux),
+            CircleMoveAction.create("Kerux Start", hiereus)
+        ));
 
         queueVoiceAction(005, hiereus, 1);
 
         queueVoiceAction(006, hiereus, 1);
 
         // hiereus and kerux return to their places
-        queue.add(new AllAction
-        {
-            actions = new ScriptAction[] {
+        queue.add(AllAction.create(
                 MoveAction.create("Kerux Start", kerux),
-                createCircleMoveAction("Hiereus Start Throne Stand", hiereus)
-            }
-        });
+                CircleMoveAction.create("Hiereus Start Throne Stand", hiereus)
+        ));
 
 
         queueVoiceAction(007, hierophant, 1);
@@ -169,52 +160,50 @@ public class NeophyteRitual : MonoBehaviour
         queueVoiceAction(026, hierophant, 1);
 
         queueVoiceAction(027, hierophant, 1);
-        queue.add(all(new ScriptAction[] {
-            createCircleMoveAction("East", stolistes),
-            createCircleMoveAction("North", dadouchos) }));
-        queue.add(all(new ScriptAction[] { createCircleMoveAction("South", stolistes), createCircleMoveAction("East", dadouchos) }));
-        queue.add(all(new ScriptAction[] { createCircleMoveAction("West", stolistes), createCircleMoveAction("South", dadouchos) }));
-        queue.add(all(new ScriptAction[] { createCircleMoveAction("North", stolistes), createCircleMoveAction("West", dadouchos) }));
-        queue.add(all(new ScriptAction[] { createCircleMoveAction("East", stolistes), createCircleMoveAction("North", dadouchos) }));
+        queue.add(AllAction.create(CircleMoveAction.create("East", stolistes), CircleMoveAction.create("North", dadouchos)));
+        queue.add(AllAction.create(CircleMoveAction.create("South", stolistes), CircleMoveAction.create("East", dadouchos)));
+        queue.add(AllAction.create(CircleMoveAction.create("West", stolistes), CircleMoveAction.create("South", dadouchos)));
+        queue.add(AllAction.create(CircleMoveAction.create("North", stolistes), CircleMoveAction.create("West", dadouchos)));
+        queue.add(AllAction.create(CircleMoveAction.create("East", stolistes), CircleMoveAction.create("North", dadouchos)));
 
 
-        queue.add(all(new ScriptAction[] {
+        queue.add(AllAction.create(
             createVoiceAction(031, stolistes, 1)
-                .then(createCircleMoveAction("Stolistes Start Throne Stand", stolistes)),
-            createCircleMoveAction("East", dadouchos, 2)
+                .then(CircleMoveAction.create("Stolistes Start Throne Stand", stolistes)),
+            CircleMoveAction.create("East", dadouchos, 2)
                 .then(createVoiceAction(035, dadouchos, 1)
-                .then(createCircleMoveAction("Dadouchos Start Throne Stand", dadouchos)))
-        }));
+                .then(CircleMoveAction.create("Dadouchos Start Throne Stand", dadouchos)))
+        ));
 
         //fastForwardTo = 
         queueVoiceAction(036, hierophant, 1);
 
-        queue.add(createCircleMoveToDegreeAction(315, kerux));
-        queue.add(createCircleMoveToDegreeAction(300, hegemon, 60));
-        queue.add(createCircleMoveToDegreeAction(285, hiereus));
-        queue.add(createCircleMoveToDegreeAction(270, stolistes));
-        queue.add(createCircleMoveToDegreeAction(255, dadouchos));
+        queue.add(CircleMoveAction.createMoveToDegree(315, kerux));
+        queue.add(CircleMoveAction.createMoveToDegree(300, hegemon, 60));
+        queue.add(CircleMoveAction.createMoveToDegree(285, hiereus));
+        queue.add(CircleMoveAction.createMoveToDegree(270, stolistes));
+        queue.add(CircleMoveAction.createMoveToDegree(255, dadouchos));
 
-        queue.add(all(new ScriptAction[] {
-            createCircleMoveToDegreeAction(314.9f, kerux, null, 0, 0),
-            createCircleMoveToDegreeAction(299.9f, hegemon, null, 1, 0),
-            createCircleMoveAction("Hiereus Start Throne Stand", hiereus, 2, 0),
-            createCircleMoveToDegreeAction(269.9f, stolistes, null, 3, 0).then(createCircleMoveToDegreeAction(284.9f, stolistes, null, 0, 0)),
-            createCircleMoveToDegreeAction(254.9f, dadouchos, null, 4, 0).then(createCircleMoveToDegreeAction(269.9f, dadouchos, null, 0, 0))
-        }));
+        queue.add(AllAction.create(
+            CircleMoveAction.createMoveToDegree(314.9f, kerux, null, 0, 0),
+            CircleMoveAction.createMoveToDegree(299.9f, hegemon, null, 1, 0),
+            CircleMoveAction.create("Hiereus Start Throne Stand", hiereus, 2, 0),
+            CircleMoveAction.createMoveToDegree(269.9f, stolistes, null, 3, 0).then(CircleMoveAction.createMoveToDegree(284.9f, stolistes, null, 0, 0)),
+            CircleMoveAction.createMoveToDegree(254.9f, dadouchos, null, 4, 0).then(CircleMoveAction.createMoveToDegree(269.9f, dadouchos, null, 0, 0))
+        ));
 
-        queue.add(all(new ScriptAction[] {
-            createCircleMoveToDegreeAction(314.8f, kerux, null, 0, 0),
-            createCircleMoveToDegreeAction(70, hegemon, null, 1, 0).then(MoveAction.create("Hegemon Start Throne Stand", hegemon)),
-            createCircleMoveToDegreeAction(284.8f, stolistes, null, 2, 0).then(createCircleMoveToDegreeAction(299.8f, stolistes, null, 0, 0)),
-            createCircleMoveToDegreeAction(269.8f, dadouchos, null, 3, 0).then(createCircleMoveToDegreeAction(284.8f, dadouchos, null, 0, 0))
-        }));
+        queue.add(AllAction.create(
+            CircleMoveAction.createMoveToDegree(314.8f, kerux, null, 0, 0),
+            CircleMoveAction.createMoveToDegree(70, hegemon, null, 1, 0).then(MoveAction.create("Hegemon Start Throne Stand", hegemon)),
+            CircleMoveAction.createMoveToDegree(284.8f, stolistes, null, 2, 0).then(CircleMoveAction.createMoveToDegree(299.8f, stolistes, null, 0, 0)),
+            CircleMoveAction.createMoveToDegree(269.8f, dadouchos, null, 3, 0).then(CircleMoveAction.createMoveToDegree(284.8f, dadouchos, null, 0, 0))
+        ));
 
-        queue.add(all(new ScriptAction[] {
-            createCircleMoveAction("Kerux Start", kerux, 0, 0),
-            createCircleMoveAction("Stolistes Start Throne Stand", stolistes, 1, 0),
-            createCircleMoveAction("Dadouchos Start Throne Stand", dadouchos, 2, 0)
-        }));
+        queue.add(AllAction.create(
+            CircleMoveAction.create("Kerux Start", kerux, 0, 0),
+            CircleMoveAction.create("Stolistes Start Throne Stand", stolistes, 1, 0),
+            CircleMoveAction.create("Dadouchos Start Throne Stand", dadouchos, 2, 0)
+        ));
 
         queueVoiceAction(037, hierophant, 1);
         queueVoiceAction(038, hierophant, 1);
@@ -257,32 +246,26 @@ public class NeophyteRitual : MonoBehaviour
         follow = hegemon.transform.FindChild("Head").gameObject;
 
         // hegemon enters the antichamber and kerux shuts the door
-        fastForwardTo = queue.add(new AllAction
-        {
-            actions = new ScriptAction[] {
+        fastForwardTo = queue.add(AllAction.create(
                 MoveAction.create("Kerux Standby", kerux),
-                createCircleMoveDirectedAction("Facing Door", hegemon, 70)
+                CircleMoveAction.createMoveDirected("Facing Door", hegemon, 70)
                     .then(MoveAction.createNoRotate("Door Open", door))
                     .then(MoveAction.createNoRotate("Sentinel Aside", sentinel))
-            }
-        });
+        ));
 
-        queue.add(new AllAction
-        {
-            actions = new ScriptAction[] {
-                MoveAction.create("Facing Anti Door", hegemon),
-                MoveAction.create("Facing Door", kerux).then(MoveAction.createNoRotate("Door Close", door))
-            }
-        });
+        queue.add(AllAction.create(
+            MoveAction.create("Facing Anti Door", hegemon),
+            MoveAction.create("Facing Door", kerux).then(MoveAction.createNoRotate("Door Close", door))
+        ));
 
         // hegemon opens antichamber door, admits candidate, puts blind fold on
 
         queue.add(MoveAction.createNoRotate("Anti Door Open", antiDoor));
 
-        queue.add(all(new ScriptAction[] {
+        queue.add(AllAction.create(
             MoveAction.createNoRotate("Inside Anti Door 1", hegemon),
             MoveAction.create("Inside Anti Door 2", candidate, 2f, 4f)
-        }));
+        ));
 
 
         putOnBlindfold();
@@ -306,20 +289,20 @@ public class NeophyteRitual : MonoBehaviour
 
         queue.add(MoveAction.createNoRotate("Door Open", door));
 
-        queue.add(all(new ScriptAction[] {
-            createCircleMoveAction("enter kerux", kerux),
-            createCircleMoveAction("enter stolistes", stolistes),
-            createCircleMoveAction("enter dadouchos", dadouchos)
-        }));
+        queue.add(AllAction.create(
+            CircleMoveAction.create("enter kerux", kerux),
+            CircleMoveAction.create("enter stolistes", stolistes),
+            CircleMoveAction.create("enter dadouchos", dadouchos)
+        ));
 
         // 
-        queue.add(createCircleMoveAroundAction("Behind Candidate", hegemon, "Candidate Center", "Behind Candidate"));
+        queue.add(CircleMoveAction.createMoveAround("Behind Candidate", hegemon, "Candidate Center", "Behind Candidate"));
         queueVoiceActionR(007, hegemon, 1);
 
-        queue.add(all(new ScriptAction[] {
+        queue.add(AllAction.create(
             MoveAction.create("Inside Door 1", candidate),
             MoveAction.create("Inside Door 2", hegemon)
-        }));
+        ));
 
         queue.add(MoveAction.createNoRotate("Door Close", door));
 
@@ -341,17 +324,17 @@ public class NeophyteRitual : MonoBehaviour
 
         queueVoiceActionR(014, hierophant, 1);
 
-        queue.add(all(new ScriptAction[] {
+        queue.add(AllAction.create(
             MoveAction.create("altar candidate", candidate),
             MoveAction.create("altar candidate led", hegemon)
-        }));
+        ));
 
-        queue.add(all(new ScriptAction[] {
-            createCircleMoveAction("altar kerux", kerux),
-            createCircleMoveAction("altar stolistes", stolistes),
-            createCircleMoveAction("altar dadouchos", dadouchos),
-            createCircleMoveAction("altar hiereus", hiereus)
-        }));
+        queue.add(AllAction.create(
+            CircleMoveAction.create("altar kerux", kerux),
+            CircleMoveAction.create("altar stolistes", stolistes),
+            CircleMoveAction.create("altar dadouchos", dadouchos),
+            CircleMoveAction.create("altar hiereus", hiereus)
+        ));
 
         queue.add(MoveAction.create("altar hegemon", hegemon));
 
@@ -447,7 +430,7 @@ public class NeophyteRitual : MonoBehaviour
     }
     private ScriptAction queueVoiceAction(AudioClip clip, GameObject actor, float waitAfter = 1f, float waitBefore = 0)
     {
-        return queue.add(new VoiceAction { clip = clip, actor = actor, waitAfter = waitAfter, waitBefore = waitBefore });
+        return queue.add(VoiceAction.create(clip = clip, actor = actor, waitAfter = waitAfter, waitBefore = waitBefore ));
     }
 
     private AudioClip getClip(int id)
@@ -465,44 +448,12 @@ public class NeophyteRitual : MonoBehaviour
 
     private ScriptAction createVoiceAction(int clipId, GameObject actor, float waitAfter = 1f, float waitBefore = 0)
     {
-        return createVoiceAction(getClip(clipId), actor, waitAfter, waitBefore);
+        return VoiceAction.create(getClip(clipId), actor, waitAfter, waitBefore);
     }
-    private ScriptAction createVoiceAction(AudioClip clip, GameObject actor, float waitAfter = 1f, float waitBefore = 0)
-    {
-        return new VoiceAction { clip = clip, actor = actor, waitAfter = waitAfter, waitBefore = waitBefore };
-    }
-
 
     private ScriptAction createStandAction(string markName, GameObject actor, float waitAfter = 1f)
     {
         return new MoveAction { markName = markName + " Stand", actor = actor, speed = UnityEngine.Random.RandomRange(0.5f, 1), waitAfter = waitAfter, waitBefore = UnityEngine.Random.RandomRange(0.1f, 1) };
-    }
-
-
-    private CircleMoveAction createCircleMoveAction(string targetMarkName, GameObject actor, float waitBefore = 0, float waitAfter = 1, float speed = 2)
-    {
-        return new CircleMoveAction { actor = actor, waitBefore = waitBefore, waitAfter = waitAfter, centerMarkName = "Altar", targetMarkName = targetMarkName, radiusMarkName = "Circumabulation", speed = speed };
-    }
-
-    private CircleMoveAction createCircleMoveAroundAction(string targetMarkName, GameObject actor, string centerMarkName, string radiusMarkName, float waitBefore = 0, float waitAfter = 1, float speed = 2)
-    {
-        return new CircleMoveAction { actor = actor, waitBefore = waitBefore, waitAfter = waitAfter, centerMarkName = centerMarkName, targetMarkName = targetMarkName, radiusMarkName = radiusMarkName, speed = speed };
-    }
-
-    private CircleMoveAction createCircleMoveToDegreeAction(float targetDegree, GameObject actor, float? entryDegree = null, float waitBefore = 0, float waitAfter = 1, float speed = 2)
-    {
-        return new CircleMoveAction { actor = actor, waitBefore = waitBefore, waitAfter = waitAfter, centerMarkName = "Altar", targetDegree = targetDegree, radiusMarkName = "Circumabulation", speed = speed, entryDegree = entryDegree };
-        //return new CircleMoveToDegreeAction { actor = actor, waitAfter = waitAfter, centerMarkName = "Altar", targetDegree = targetDegree, radiusMarkName = "Circumabulation", speed = speed };
-    }
-
-    private CircleMoveAction createCircleMoveDirectedAction(string targetMarkName, GameObject actor, float entryDegree)
-    {
-        return new CircleMoveAction { actor = actor, waitBefore = 0, waitAfter = 1f, centerMarkName = "Altar", targetMarkName = targetMarkName, radiusMarkName = "Circumabulation", speed = 2, entryDegree = entryDegree };
-    }
-
-    private AllAction all(ScriptAction[] actions)
-    {
-        return new AllAction { actions = actions };
     }
 
 }
