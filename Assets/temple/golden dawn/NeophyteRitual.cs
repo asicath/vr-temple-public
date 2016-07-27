@@ -23,7 +23,7 @@ public class NeophyteRitual : MonoBehaviour
     private Transform marks;
     private GameObject hegemonChair, door, antiDoor;
 
-    private GameObject follow, rig, blindfold;
+    private GameObject follow, rig, rigCenter, blindfold;
 
     private ScriptActionQueue queue = new ScriptActionQueue();
 
@@ -31,8 +31,7 @@ public class NeophyteRitual : MonoBehaviour
     void Start()
     {
         rig = GameObject.Find("OVRCameraRig");
-        blindfold = GameObject.Find("Blindfold");
-        blindfold.SetActive(false);
+        rigCenter = rig.transform.GetComponentInChildren<Camera>().gameObject;
 
         hideMarks();
 
@@ -242,8 +241,9 @@ public class NeophyteRitual : MonoBehaviour
 
         // add the candidate in the anitochamber
         candidate = addActor(candidatePrefab, "Candidate Start");
-        //follow = candidate.transform.FindChild("Head").gameObject;
-        follow = hegemon.transform.FindChild("Head").gameObject;
+        blindfold = candidate.transform.FindChild("Blindfold").gameObject;
+
+        attachCamera(candidate.transform.FindChild("Head").gameObject);
 
         // hegemon enters the antichamber and kerux shuts the door
         fastForwardTo = queue.add(AllAction.create(
@@ -357,11 +357,13 @@ public class NeophyteRitual : MonoBehaviour
 
     void putOnBlindfold()
     {
+        
         queue.add(SetActiveAction.create(blindfold, true));
     }
 
     void removeBlindfold()
     {
+
         queue.add(SetActiveAction.create(blindfold, false));
     }
 
@@ -379,10 +381,27 @@ public class NeophyteRitual : MonoBehaviour
 
         if (follow != null)
         {
-            rig.transform.position = follow.transform.position;
-            rig.transform.rotation = follow.transform.rotation;
+            
+            //Debug.Log(rigCenter.transform.localPosition);
+
+            // set the rig to the right position
+            rig.transform.position = follow.transform.parent.position + followBase;
+            rig.transform.rotation = follow.transform.parent.rotation;
+
+            follow.transform.position = rig.transform.position + rigCenter.transform.localPosition;
+            follow.transform.localRotation = rigCenter.transform.localRotation;
+
             //Debug.Log("setting position" + follow.transform.position);
         }
+    }
+
+    private Vector3 followBase;
+
+    void attachCamera(GameObject o)
+    {
+        followBase = o.transform.position;
+
+        follow = o;
     }
 
 
