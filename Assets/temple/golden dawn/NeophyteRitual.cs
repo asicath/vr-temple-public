@@ -231,6 +231,8 @@ public class NeophyteRitual : MonoBehaviour
 
     }
 
+
+
     void queueReception()
     {
         queueVoiceActionR(001, hierophant, 1);
@@ -241,9 +243,10 @@ public class NeophyteRitual : MonoBehaviour
 
         // add the candidate in the anitochamber
         candidate = addActor(candidatePrefab, "Candidate Start");
-        blindfold = candidate.transform.FindChild("Blindfold").gameObject;
 
-        attachCamera(candidate.transform.FindChild("Head").gameObject);
+        //queue.add(ExecuteVoidFunctionAction.create(attachCameraToCandidate, "attachCameraToCandidate"));
+
+        removeBlindfold();
 
         // hegemon enters the antichamber and kerux shuts the door
         fastForwardTo = queue.add(AllAction.create(
@@ -357,14 +360,12 @@ public class NeophyteRitual : MonoBehaviour
 
     void putOnBlindfold()
     {
-        
-        queue.add(SetActiveAction.create(blindfold, true));
+        queue.add(ExecuteVoidFunctionAction.create(Blindfold.putOn, "put blindfold on"));
     }
 
     void removeBlindfold()
     {
-
-        queue.add(SetActiveAction.create(blindfold, false));
+        queue.add(ExecuteVoidFunctionAction.create(Blindfold.takeOff, "take blindfold off"));
     }
 
 
@@ -397,11 +398,11 @@ public class NeophyteRitual : MonoBehaviour
 
     private Vector3 followBase;
 
-    void attachCamera(GameObject o)
+    void attachCameraToCandidate()
     {
-        followBase = o.transform.position;
-
-        follow = o;
+        var head = candidate.transform.FindChild("Head").gameObject;
+        followBase = head.transform.position;
+        follow = head;
     }
 
 

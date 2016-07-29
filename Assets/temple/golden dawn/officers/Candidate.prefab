@@ -55,6 +55,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 496128}
+  - 114: {fileID: 11417716}
   m_Layer: 0
   m_Name: Blindfold
   m_TagString: blindfold
@@ -790,6 +791,17 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
+--- !u!114 &11417716
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 126788}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1b59b82c6ad6a4448cc5103922274a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!135 &13596178
 SphereCollider:
   m_ObjectHideFlags: 1

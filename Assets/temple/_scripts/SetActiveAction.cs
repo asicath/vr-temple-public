@@ -26,7 +26,11 @@ public class SetActiveAction : ScriptAction
     // Use this for initialization
     protected override void StartAction()
     {
-        if (actorName != null) actor = GameObject.Find(actorName);
+        if (actorName != null)
+        {
+            actor = GameObject.Find(actorName);
+            if (actor == null) throw new System.Exception("Can't find actor to activate: " + actorName);
+        }
 
         Instant();
         complete();
