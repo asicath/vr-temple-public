@@ -244,7 +244,7 @@ public class NeophyteRitual : MonoBehaviour
         // add the candidate in the anitochamber
         candidate = addActor(candidatePrefab, "Candidate Start");
 
-        //queue.add(ExecuteVoidFunctionAction.create(attachCameraToCandidate, "attachCameraToCandidate"));
+        queue.add(ExecuteVoidFunctionAction.create(attachCameraToCandidate, "attachCameraToCandidate"));
 
         removeBlindfold();
 
@@ -401,7 +401,7 @@ public class NeophyteRitual : MonoBehaviour
     void attachCameraToCandidate()
     {
         var head = candidate.transform.FindChild("Head").gameObject;
-        followBase = head.transform.position;
+        followBase = head.transform.localPosition;
         follow = head;
     }
 
