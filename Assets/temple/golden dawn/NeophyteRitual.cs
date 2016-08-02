@@ -8,9 +8,7 @@ public class NeophyteRitual : MonoBehaviour
 
     public ScriptAction fastForwardTo;
 
-    public AudioClip knock;
-    public AudioClip[] clips;
-    public AudioClip[] receptionClips;
+    private AudioClip knock;
     
     public GameObject hierophantPrefab, hiereusPrefab, hegemonPrefab, keruxPrefab, stolistesPrefab, dadouchosPrefab, sentinelPrefab;
     public GameObject imperatorPrefab, cancellariusPrefab, pastHierophantPrefab, praemonstratorPrefab, candidatePrefab;
@@ -30,6 +28,9 @@ public class NeophyteRitual : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        var knock = Resources.Load<AudioClip>("knock");
+
+
         rig = GameObject.Find("OVRCameraRig");
         rigCenter = rig.transform.GetComponentInChildren<Camera>().gameObject;
 
@@ -88,7 +89,7 @@ public class NeophyteRitual : MonoBehaviour
 
         queue.add(CircleMoveAction.create("Kerux Proclaim", kerux));
 
-        queueVoiceAction(001, kerux, 1);
+        queueVoiceAction("o_001", kerux, 1);
 
         queue.add(CircleMoveAction.create("Kerux Start", kerux));
 
@@ -104,16 +105,16 @@ public class NeophyteRitual : MonoBehaviour
         ));
 
         queueVoiceAction(knock, hierophant, 1);
-        queueVoiceAction(002, hierophant, 1);
+        queueVoiceAction("o_002", hierophant, 1);
 
         queue.add(MoveAction.create("Facing Door", kerux));
         queueVoiceAction(knock, door, 1);
         queueVoiceAction(knock, door, 1);
         queue.add(MoveAction.create("Kerux Start", kerux));
-        queueVoiceAction(003, kerux, 1);
+        queueVoiceAction("o_003", kerux, 1);
         // he [kerux] salutes the hierophant's throne. Remains by door
 
-        queueVoiceAction(004, hierophant, 1);
+        queueVoiceAction("o_004", hierophant, 1);
 
         // hiereus goes to the door, stands before it with sword erect
         // kerux being on his right
@@ -124,9 +125,9 @@ public class NeophyteRitual : MonoBehaviour
             CircleMoveAction.create("Kerux Start", hiereus)
         ));
 
-        queueVoiceAction(005, hiereus, 1);
+        queueVoiceAction("o_005", hiereus, 1);
 
-        queueVoiceAction(006, hiereus, 1);
+        queueVoiceAction("o_006", hiereus, 1);
 
         // hiereus and kerux return to their places
         queue.add(AllAction.create(
@@ -135,30 +136,30 @@ public class NeophyteRitual : MonoBehaviour
         ));
 
 
-        queueVoiceAction(007, hierophant, 1);
-        queueVoiceAction(008, hierophant, 1);
-        queueVoiceAction(009, hiereus, 1);
-        queueVoiceAction(010, hierophant, 1);
-        queueVoiceAction(011, hiereus, 1);
-        queueVoiceAction(012, hierophant, 1);
-        queueVoiceAction(013, hiereus, 1);
+        queueVoiceAction("o_007", hierophant, 1);
+        queueVoiceAction("o_008", hierophant, 1);
+        queueVoiceAction("o_009", hiereus, 1);
+        queueVoiceAction("o_010", hierophant, 1);
+        queueVoiceAction("o_011", hiereus, 1);
+        queueVoiceAction("o_012", hierophant, 1);
+        queueVoiceAction("o_013", hiereus, 1);
 
 
-        queueVoiceAction(014, hierophant, 1);
-        queueVoiceAction(015, hiereus, 1);
-        queueVoiceAction(016, hierophant, 1);
-        queueVoiceAction(017, dadouchos, 1);
-        queueVoiceAction(018, hierophant, 1);
-        queueVoiceAction(019, stolistes, 1);
-        queueVoiceAction(020, hierophant, 1);
-        queueVoiceAction(021, kerux, 1);
-        queueVoiceAction(022, hierophant, 1);
-        queueVoiceAction(023, hegemon, 1);
-        queueVoiceAction(024, hierophant, 1);
-        queueVoiceAction(025, hiereus, 1);
-        queueVoiceAction(026, hierophant, 1);
+        queueVoiceAction("o_014", hierophant, 1);
+        queueVoiceAction("o_015", hiereus, 1);
+        queueVoiceAction("o_016", hierophant, 1);
+        queueVoiceAction("o_017", dadouchos, 1);
+        queueVoiceAction("o_018", hierophant, 1);
+        queueVoiceAction("o_019", stolistes, 1);
+        queueVoiceAction("o_020", hierophant, 1);
+        queueVoiceAction("o_021", kerux, 1);
+        queueVoiceAction("o_022", hierophant, 1);
+        queueVoiceAction("o_023", hegemon, 1);
+        queueVoiceAction("o_024", hierophant, 1);
+        queueVoiceAction("o_025", hiereus, 1);
+        queueVoiceAction("o_026", hierophant, 1);
 
-        queueVoiceAction(027, hierophant, 1);
+        queueVoiceAction("o_027", hierophant, 1);
         queue.add(AllAction.create(CircleMoveAction.create("East", stolistes), CircleMoveAction.create("North", dadouchos)));
         queue.add(AllAction.create(CircleMoveAction.create("South", stolistes), CircleMoveAction.create("East", dadouchos)));
         queue.add(AllAction.create(CircleMoveAction.create("West", stolistes), CircleMoveAction.create("South", dadouchos)));
@@ -167,15 +168,15 @@ public class NeophyteRitual : MonoBehaviour
 
 
         queue.add(AllAction.create(
-            createVoiceAction(031, stolistes, 1)
+            createVoiceAction("o_031", stolistes, 1)
                 .then(CircleMoveAction.create("Stolistes Start Throne Stand", stolistes)),
             CircleMoveAction.create("East", dadouchos, 2)
-                .then(createVoiceAction(035, dadouchos, 1)
+                .then(createVoiceAction("o_035", dadouchos, 1)
                 .then(CircleMoveAction.create("Dadouchos Start Throne Stand", dadouchos)))
         ));
 
         //fastForwardTo = 
-        queueVoiceAction(036, hierophant, 1);
+        queueVoiceAction("o_036", hierophant, 1);
 
         queue.add(CircleMoveAction.createMoveToDegree(315, kerux));
         queue.add(CircleMoveAction.createMoveToDegree(300, hegemon, 60));
@@ -204,26 +205,26 @@ public class NeophyteRitual : MonoBehaviour
             CircleMoveAction.create("Dadouchos Start Throne Stand", dadouchos, 2, 0)
         ));
 
-        queueVoiceAction(037, hierophant, 1);
-        queueVoiceAction(038, hierophant, 1);
-        queueVoiceAction(039, hierophant, 1);
-        queueVoiceAction(040, hierophant, 1);
-        queueVoiceAction(041, hierophant, 1);
+        queueVoiceAction("o_037", hierophant, 1);
+        queueVoiceAction("o_038", hierophant, 1);
+        queueVoiceAction("o_039", hierophant, 1);
+        queueVoiceAction("o_040", hierophant, 1);
+        queueVoiceAction("o_041", hierophant, 1);
 
-        queueVoiceAction(042, hierophant, 1);
-        queueVoiceAction(043, kerux, 1);
+        queueVoiceAction("o_042", hierophant, 1);
+        queueVoiceAction("o_043", kerux, 1);
 
-        queueVoiceAction(044, hierophant, 1);
-        queueVoiceAction(045, hiereus, 1);
-        queueVoiceAction(046, hegemon, 1);
+        queueVoiceAction("o_044", hierophant, 1);
+        queueVoiceAction("o_045", hiereus, 1);
+        queueVoiceAction("o_046", hegemon, 1);
 
-        queueVoiceAction(047, hiereus, 1);
-        queueVoiceAction(048, hegemon, 1);
-        queueVoiceAction(049, hierophant, 1);
+        queueVoiceAction("o_047", hiereus, 1);
+        queueVoiceAction("o_048", hegemon, 1);
+        queueVoiceAction("o_049", hierophant, 1);
 
-        queueVoiceAction(050, hegemon, 1);
-        queueVoiceAction(051, hierophant, 1);
-        queueVoiceAction(052, hiereus, 1);
+        queueVoiceAction("o_050", hegemon, 1);
+        queueVoiceAction("o_051", hierophant, 1);
+        queueVoiceAction("o_052", hiereus, 1);
     }
 
     void initReception()
@@ -235,8 +236,8 @@ public class NeophyteRitual : MonoBehaviour
 
     void queueReception()
     {
-        queueVoiceActionR(001, hierophant, 1);
-        queueVoiceActionR(002, hierophant, 1);
+        queueVoiceAction("r_001", hierophant, 1);
+        queueVoiceAction("r_002", hierophant, 1);
 
         // hegemon rises and removes his chair from between the pillars
         queue.add(new HideAction { actor = hegemonChair });
@@ -249,7 +250,7 @@ public class NeophyteRitual : MonoBehaviour
         removeBlindfold();
 
         // hegemon enters the antichamber and kerux shuts the door
-        fastForwardTo = queue.add(AllAction.create(
+        queue.add(AllAction.create(
                 MoveAction.create("Kerux Standby", kerux),
                 CircleMoveAction.createMoveDirected("Facing Door", hegemon, 70)
                     .then(MoveAction.createNoRotate("Door Open", door))
@@ -280,10 +281,10 @@ public class NeophyteRitual : MonoBehaviour
         queueVoiceAction(knock, hegemon, 1);
         queueVoiceAction(knock, kerux, 1);
         
-        queueVoiceActionR(003, kerux, 1);
-        queueVoiceActionR(004, hierophant, 1);
-        queueVoiceActionR(005, hierophant, 1);
-        queueVoiceActionR(006, hierophant, 1);
+        queueVoiceAction("r_003", kerux, 1);
+        queueVoiceAction("r_004", hierophant, 1);
+        queueVoiceAction("r_005", hierophant, 1);
+        queueVoiceAction("r_006", hierophant, 1);
 
 
 
@@ -300,7 +301,7 @@ public class NeophyteRitual : MonoBehaviour
 
         // 
         queue.add(CircleMoveAction.createMoveAround("Behind Candidate", hegemon, "Candidate Center", "Behind Candidate"));
-        queueVoiceActionR(007, hegemon, 1);
+        queueVoiceAction("r_007", hegemon, 1);
 
         queue.add(AllAction.create(
             MoveAction.create("Inside Door 1", candidate),
@@ -310,22 +311,22 @@ public class NeophyteRitual : MonoBehaviour
         queue.add(MoveAction.createNoRotate("Door Close", door));
 
 
-        queueVoiceActionR(008, stolistes, 1);
-        queueVoiceActionR(009, dadouchos, 1);
-        queueVoiceActionR(010, hierophant, 1);
-        queueVoiceActionR(011, kerux, 1);
+        queueVoiceAction("r_008", stolistes, 1);
+        queueVoiceAction("r_009", dadouchos, 1);
+        queueVoiceAction("r_010", hierophant, 1);
+        queueVoiceAction("r_011", kerux, 1);
 
         // S comes forward and dipping his thumb in the lustral water, makes with it a cross on the candidate's brow and sprikles him three times, saying:
         queue.add(MoveAction.create("Facing Candidate", stolistes));
-        queueVoiceActionR(012, stolistes, 1);
+        queueVoiceAction("r_012", stolistes, 1);
         queue.add(MoveAction.create("enter stolistes", stolistes));
 
         // D comes forward and makes a Cross over candidate with his censer, and waving it three times says:
         queue.add(MoveAction.create("Facing Candidate", dadouchos));
-        queueVoiceActionR(013, dadouchos, 1);
+        queueVoiceAction("r_013", dadouchos, 1);
         queue.add(MoveAction.create("enter dadouchos", dadouchos));
 
-        queueVoiceActionR(014, hierophant, 1);
+        queueVoiceAction("r_014", hierophant, 1);
 
         queue.add(AllAction.create(
             MoveAction.create("altar candidate", candidate),
@@ -341,21 +342,21 @@ public class NeophyteRitual : MonoBehaviour
 
         queue.add(MoveAction.create("altar hegemon", hegemon));
 
-        queueVoiceActionR(015, hierophant, 1);
-        queueVoiceActionR(016, hegemon, 1);
-        queueVoiceActionR(017, hierophant, 1);
-        queueVoiceActionR(018, hegemon, 1);
-        queueVoiceActionR(019, hierophant, 1);
-        queueVoiceActionR(020, hegemon, 1);
-        queueVoiceActionR(021, hierophant, 1);
+        queueVoiceAction("r_015", hierophant, 1);
+        queueVoiceAction("r_016", hegemon, 1);
+        queueVoiceAction("r_017", hierophant, 1);
+        queueVoiceAction("r_018", hegemon, 1);
+        queueVoiceAction("r_019", hierophant, 1);
+        queueVoiceAction("r_020", hegemon, 1);
+        queueVoiceAction("r_021", hierophant, 1);
 
         queue.add(MoveAction.create("altar hierophant", hierophant));
 
-        queueVoiceActionR(022, hierophant, 1);
-        queueVoiceActionR(023, hierophant, 1);
-        queueVoiceActionR(024, hierophant, 1);
-        queueVoiceActionR(025, hierophant, 1);
-        queueVoiceActionR(026, hierophant, 1);
+        queueVoiceAction("r_022", hierophant, 1);
+        queueVoiceAction("r_023", hierophant, 1);
+        queueVoiceAction("r_024", hierophant, 1);
+        queueVoiceAction("r_025", hierophant, 1);
+        queueVoiceAction("r_026", hierophant, 1);
     }
 
     void putOnBlindfold()
@@ -440,33 +441,23 @@ public class NeophyteRitual : MonoBehaviour
         }
     }
 
-    private ScriptAction queueVoiceActionR(int clipId, GameObject actor, float waitAfter = 1f, float waitBefore = 0)
+    private ScriptAction queueVoiceAction(string name, GameObject actor, float waitAfter = 1f, float waitBefore = 0)
     {
-        return queueVoiceAction(getClipR(clipId), actor, waitAfter, waitBefore);
-    }
-    private ScriptAction queueVoiceAction(int clipId, GameObject actor, float waitAfter = 1f, float waitBefore = 0)
-    {
-        return queueVoiceAction(getClip(clipId), actor, waitAfter, waitBefore);
+        return queueVoiceAction(getClip(name), actor, waitAfter, waitBefore);
     }
     private ScriptAction queueVoiceAction(AudioClip clip, GameObject actor, float waitAfter = 1f, float waitBefore = 0)
     {
         return queue.add(VoiceAction.create(clip = clip, actor = actor, waitAfter = waitAfter, waitBefore = waitBefore ));
     }
 
-    private AudioClip getClip(int id)
+    private AudioClip getClip(string name)
     {
-        return getClip(id, clips);
-    }
-    private AudioClip getClipR(int id)
-    {
-        return getClip(id, receptionClips);
-    }
-    private AudioClip getClip(int id, AudioClip[] source)
-    {
-        return source[id - 1];
+        return Resources.Load<AudioClip>("golden-dawn/neophyte/o_" + name);
     }
 
-    private ScriptAction createVoiceAction(int clipId, GameObject actor, float waitAfter = 1f, float waitBefore = 0)
+
+
+    private ScriptAction createVoiceAction(string clipId, GameObject actor, float waitAfter = 1f, float waitBefore = 0)
     {
         return VoiceAction.create(getClip(clipId), actor, waitAfter, waitBefore);
     }
