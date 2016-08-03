@@ -70,10 +70,20 @@ public static class Move
     public static Vector3 getTangentPoint(GameObject center, GameObject radiusMark, GameObject o)
     {
         var radius = (center.transform.position - radiusMark.transform.position).magnitude;
+        //var angle = getAngle(center, o);
+        //var d = (o.transform.position - center.transform.position).magnitude;
+        //var a = Mathf.Acos(radius / d);
+        //return new Vector3(Mathf.Cos(angle - a) * radius + center.transform.position.x, 0, Mathf.Sin(angle - a) * radius + center.transform.position.z);
+
+        return getTangentPoint(center.transform.position, radius, o.transform.position);
+    }
+
+    public static Vector3 getTangentPoint(Vector3 center, float radius, Vector3 o)
+    {
         var angle = getAngle(center, o);
-        var d = (o.transform.position - center.transform.position).magnitude;
+        var d = (o - center).magnitude;
         var a = Mathf.Acos(radius / d);
-        return new Vector3(Mathf.Cos(angle - a) * radius + center.transform.position.x, 0, Mathf.Sin(angle - a) * radius + center.transform.position.z);
+        return new Vector3(Mathf.Cos(angle - a) * radius + center.x, 0, Mathf.Sin(angle - a) * radius + center.z);
     }
 
     public static Vector3 getTangentPointCounter(GameObject center, GameObject radiusMark, GameObject o)
