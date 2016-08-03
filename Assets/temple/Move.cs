@@ -135,7 +135,7 @@ public static class Move
         // determine the difference in angles
         var rotationAngleDelta = shouldFace - actor.transform.rotation.eulerAngles;
 
-        Debug.Log("rotate: " + degrees + " delta:" + rotationAngleDelta);
+        //Debug.Log("rotate: " + degrees + " delta:" + rotationAngleDelta);
 
         var direction = rotationAngleDelta.normalized;
         if (rotationAngleDelta.magnitude > 180) direction *= -1;
@@ -144,7 +144,7 @@ public static class Move
 
         if (rotationAngleDelta.magnitude > rotationAmount)
         {
-            Debug.Log("part");
+            //Debug.Log("part");
             //set a smaller angle and exit without moving
             var a = actor.transform.rotation.eulerAngles + direction * rotationAmount;
             actor.transform.rotation = Quaternion.Euler(a);
@@ -152,7 +152,7 @@ public static class Move
         }
         else
         {
-            Debug.Log("full");
+            //Debug.Log("full");
             // set the rotation without incident
             actor.transform.rotation = Quaternion.Euler(shouldFace);
             return true;

@@ -15,6 +15,7 @@ public class VoiceAction : ScriptAction {
 
     protected override string getDebugId()
     {
+        if (clip == null) return "no clip found";
         return "play " + clip.name + " from " + actor.name;
     }
 
@@ -27,6 +28,7 @@ public class VoiceAction : ScriptAction {
 
     // Update is called once per frame
     protected override void UpdateAction() {
+        if (audioSource == null) complete();
         if (!audioSource.isPlaying) complete();
     }
 

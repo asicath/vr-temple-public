@@ -25,11 +25,15 @@ public class NeophyteRitual : MonoBehaviour
 
     private ScriptActionQueue queue = new ScriptActionQueue();
 
+    private float[] lineUp = { 315, 300, 285, 270, 255, 240, 225 };
+
+
+
     // Use this for initialization
     void Start()
     {
-        var knock = Resources.Load<AudioClip>("knock");
-
+        knock = Resources.Load<AudioClip>("knock");
+        if (knock == null) throw new Exception("can't load knock");
 
         rig = GameObject.Find("OVRCameraRig");
         rigCenter = rig.transform.GetComponentInChildren<Camera>().gameObject;
@@ -40,6 +44,7 @@ public class NeophyteRitual : MonoBehaviour
         queueOpening();
 
         queueReception();
+
     }
 
     void initOpening()
@@ -272,7 +277,7 @@ public class NeophyteRitual : MonoBehaviour
         ));
 
 
-        putOnBlindfold();
+        //putOnBlindfold();
 
         // and goes out followed by the sentinal, who carries the hoodwink and rope
         // hegemon sees that the candidate is properly robed and hood winked and that the rope goes three times about his waist
@@ -293,10 +298,10 @@ public class NeophyteRitual : MonoBehaviour
 
         queue.add(MoveAction.createNoRotate("Door Open", door));
 
-        queue.add(AllAction.create(
+        fastForwardTo = queue.add(AllAction.create(
             CircleMoveAction.create("enter kerux", kerux),
             CircleMoveAction.create("enter stolistes", stolistes),
-            CircleMoveAction.create("enter dadouchos", dadouchos)
+            MoveAction.create("enter dadouchos", dadouchos)
         ));
 
         // 
@@ -357,6 +362,158 @@ public class NeophyteRitual : MonoBehaviour
         queueVoiceAction("r_024", hierophant);
         queueVoiceAction("r_025", hierophant);
         queueVoiceAction("r_026", hierophant);
+
+        // hierophant returns to his throne
+        queue.add(MoveAction.create("Hierophant Start Throne Stand", hierophant));
+
+        // hiereus removes hassock and returns to his throne
+        queue.add(CircleMoveAction.create("Hiereus Start Throne Stand", hiereus));
+
+        // hegemon assists the candidate to rise
+        queue.add(MoveAction.create("Candidate Right Side", hegemon));
+
+        // the other officers resume their seats
+        queue.add(AllAction.create(
+            CircleMoveAction.create("Kerux Start", kerux),
+            CircleMoveAction.create("Stolistes Start Throne Stand", stolistes),
+            CircleMoveAction.create("Dadouchos Start Throne Stand", dadouchos)
+        ));
+
+        queueVoiceAction("r_027", hierophant);
+
+        // Hegemon takes candidate to the north and faces him east
+        // Kerux goes with lamp to NE
+        // S and D stand ready to follow in the procession
+        queue.add(AllAction.create(
+            CircleMoveAction.createMoveToDegree(lineUp[2], kerux),
+            CircleMoveAction.createMoveToDegree(lineUp[3], candidate),
+            CircleMoveAction.createMoveToDegree(lineUp[4], hegemon),
+            CircleMoveAction.createMoveToDegree(lineUp[5], stolistes),
+            CircleMoveAction.createMoveToDegree(lineUp[6], dadouchos)
+        ));
+
+        queueVoiceAction("r_028", hierophant);
+
+        // Kerux leads forward, followed by hegemon with candidate, S and D coming last
+        
+        queue.add(AllAction.create(
+            CircleMoveAction.createMoveToDegree(lineUp[2]+90, kerux, null, 0, 0),
+            CircleMoveAction.createMoveToDegree(lineUp[3]+90, candidate, null, 0, 0),
+            CircleMoveAction.createMoveToDegree(lineUp[4]+90, hegemon, null, 0, 0),
+            CircleMoveAction.createMoveToDegree(lineUp[5]+90, stolistes, null, 0, 0),
+            CircleMoveAction.createMoveToDegree(lineUp[6]+90, dadouchos, null, 0, 0)
+        ));
+
+
+        // they pass on by south and west
+        queue.add(AllAction.create(
+            VoiceAction.create(knock, hierophant),// as they pass hierophant gives one knock, just as Candidate passes
+            CircleMoveAction.createMoveToDegree(lineUp[2] + 270, kerux, null, 0, 0),
+            CircleMoveAction.createMoveToDegree(lineUp[3] + 270, candidate, null, 0, 0),
+            CircleMoveAction.createMoveToDegree(lineUp[4] + 270, hegemon, null, 0, 0),
+            CircleMoveAction.createMoveToDegree(lineUp[5] + 270, stolistes, null, 0, 0),
+            CircleMoveAction.createMoveToDegree(lineUp[6] + 270, dadouchos, null, 0, 0)
+        ));
+
+        // they pass on by the north
+        queue.add(AllAction.create(
+            VoiceAction.create(knock, hiereus), // and passing hiereus he also gives one knock as candidate passes
+            CircleMoveAction.createMoveToDegree(lineUp[2] + 90, kerux, null, 0, 0),
+            CircleMoveAction.createMoveToDegree(lineUp[3] + 90, candidate, null, 0, 0),
+            CircleMoveAction.createMoveToDegree(lineUp[4] + 90, hegemon, null, 0, 0),
+            CircleMoveAction.createMoveToDegree(lineUp[5] + 90, stolistes, null, 0, 0),
+            CircleMoveAction.createMoveToDegree(lineUp[6] + 90, dadouchos, null, 0, 0)
+        ));
+
+        //and on passing east
+        queue.add(AllAction.create(
+            VoiceAction.create(knock, hierophant),//  again hierophant gives one knock and candidate passes
+            CircleMoveAction.createMoveToDegree(lineUp[2] + 180, kerux, null, 0, 0),
+            CircleMoveAction.createMoveToDegree(lineUp[3] + 180, candidate, null, 0, 0),
+            CircleMoveAction.createMoveToDegree(lineUp[4] + 180, hegemon, null, 0, 0),
+            CircleMoveAction.createMoveToDegree(lineUp[5] + 180, stolistes, null, 0, 0),
+            CircleMoveAction.createMoveToDegree(lineUp[6] + 180, dadouchos, null, 0, 0)
+        ));
+
+
+        // kerux stops in the south after the second passing of hierophant and barring the way with his wand says:
+        queueVoiceAction("r_029", kerux);
+
+        queueVoiceAction("r_30", stolistes);
+        queueVoiceAction("r_31", dadouchos);
+        queueVoiceAction("r_32", hegemon);
+        queueVoiceAction("r_33", hiereus);
+        queueVoiceAction("r_34", hegemon);
+        queueVoiceAction("r_35", hiereus);
+        queueVoiceAction("r_36", kerux);
+        queueVoiceAction("r_37", stolistes);
+        queueVoiceAction("r_37.1", dadouchos);
+        queueVoiceAction("r_38", hegemon);
+        queueVoiceAction("r_39", hierophant);
+
+        queueVoiceAction("r_40", hegemon);
+        queueVoiceAction("r_41", hierophant);
+        queueVoiceAction("r_42", hierophant);
+        queueVoiceAction("r_43", hierophant);
+        queueVoiceAction("r_44", hegemon);
+        queueVoiceAction("r_45", hiereus);
+        queueVoiceAction("r_46", hierophant);
+
+        queueVoiceAction("r_47", hegemon);
+        queueVoiceAction("r_48", hiereus);
+        queueVoiceAction("r_49", hierophant);
+
+        queueVoiceAction("r_50", hierophant);
+        queueVoiceAction("r_51", hiereus);
+        queueVoiceAction("r_52", hegemon);
+
+        queueVoiceAction("r_53", hiereus);
+        queueVoiceAction("r_54", hegemon);
+        queueVoiceAction("r_55", hierophant);
+        queueVoiceAction("r_56", hegemon);
+        queueVoiceAction("r_57", hierophant);
+        queueVoiceAction("r_58", hiereus);
+        queueVoiceAction("r_59", hierophant);
+
+        queueVoiceAction("r_60", hierophant);
+        queueVoiceAction("r_61", hierophant);
+        queueVoiceAction("r_62", hiereus);
+        queueVoiceAction("r_63", hiereus);
+        queueVoiceAction("r_64", hiereus);
+        queueVoiceAction("r_65", hiereus);
+        queueVoiceAction("r_66", hiereus);
+        queueVoiceAction("r_67", hiereus);
+        queueVoiceAction("r_68", hiereus);
+        queueVoiceAction("r_69", hiereus);
+
+        queueVoiceAction("r_70", hiereus);
+        queueVoiceAction("r_71", hiereus);
+        queueVoiceAction("r_72", hiereus);
+        queueVoiceAction("r_73", hiereus);
+        queueVoiceAction("r_74", hiereus);
+        queueVoiceAction("r_75", hiereus);
+        queueVoiceAction("r_76", stolistes);
+        queueVoiceAction("r_77", dadouchos);
+        queueVoiceAction("r_78", hierophant);
+        queueVoiceAction("r_79", hegemon);
+
+        queueVoiceAction("r_80", hierophant);
+        queueVoiceAction("r_81", hierophant);
+        queueVoiceAction("r_82", hierophant);
+        queueVoiceAction("r_83", hierophant);
+        queueVoiceAction("r_84", hierophant);
+        queueVoiceAction("r_85", hierophant);
+        queueVoiceAction("r_86", kerux);
+        queueVoiceAction("r_87", kerux);
+        queueVoiceAction("r_88", kerux);
+        queueVoiceAction("r_89", hierophant);
+
+        queueVoiceAction("r_90", hiereus);
+        queueVoiceAction("r_91", hiereus);
+        queueVoiceAction("r_92", hierophant);
+        queueVoiceAction("r_93", kerux);
+        queueVoiceAction("r_94", kerux);
+        queueVoiceAction("r_95", hierophant);
     }
 
     void putOnBlindfold()
@@ -452,7 +609,12 @@ public class NeophyteRitual : MonoBehaviour
 
     private AudioClip getClip(string name)
     {
-        return Resources.Load<AudioClip>("golden-dawn/neophyte/o_" + name);
+        var path = "golden-dawn/neophyte/" + name;
+        var clip = Resources.Load<AudioClip>(path);
+
+        if (clip == null) throw new Exception("can't find resource: " + path);
+
+        return clip;
     }
 
 
