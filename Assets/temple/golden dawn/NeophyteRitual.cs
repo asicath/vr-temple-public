@@ -18,10 +18,12 @@ public class NeophyteRitual : MonoBehaviour
     public GameObject blackPillarPrefab, whitePillarPrefab, bannerOfTheEastPrefab, bannerOfTheWestPrefab;
 
     private GameObject hierophant, hiereus, hegemon, kerux, stolistes, dadouchos, candidate, sentinel;
-    private Transform marks;
+
     private GameObject hegemonChair, door, antiDoor;
 
     private GameObject follow, rig, rigCenter, blindfold;
+
+    public GameObject[] markPrefabs;
 
     private ScriptActionQueue queue = new ScriptActionQueue();
 
@@ -32,13 +34,16 @@ public class NeophyteRitual : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        addMarks();
+        hideMarks();
+
         knock = Resources.Load<AudioClip>("knock");
         if (knock == null) throw new Exception("can't load knock");
 
         rig = GameObject.Find("OVRCameraRig");
         rigCenter = rig.transform.GetComponentInChildren<Camera>().gameObject;
 
-        hideMarks();
+        
 
         initOpening();
         queueOpening();
@@ -439,29 +444,134 @@ public class NeophyteRitual : MonoBehaviour
         // kerux stops in the south after the second passing of hierophant and barring the way with his wand says:
         queueVoiceAction("r_029", kerux);
 
+        queue.add(CreateMarkAction.create(stolistes, "stol proc 1"));
+        queue.add(MoveAction.create("Candidate Proc Blessing Left", stolistes));
         queueVoiceAction("r_30", stolistes);
+
+        queue.add(CreateMarkAction.create(dadouchos, "dad proc 1"));
+        queue.add(MoveAction.create("Candidate Proc Blessing Right", dadouchos));
         queueVoiceAction("r_31", dadouchos);
+
+        // S and D then step back to their places in the procession
+        queue.add(MoveAction.create("stol proc 1", stolistes));
+        queue.add(MoveAction.create("dad proc 1", dadouchos));
+
+        // Kerux leads the procession to throne of hiereus.
+        // they pass on by south and west
+        queue.add(AllAction.create(
+            CircleMoveAction.createMoveToDegree(lineUp[2] + 270, kerux, null, 0, 0),
+            CircleMoveAction.createMoveToDegree(lineUp[3] + 270, candidate, null, 0, 0),
+            CircleMoveAction.createMoveToDegree(lineUp[4] + 270, hegemon, null, 0, 0),
+            CircleMoveAction.createMoveToDegree(lineUp[5] + 270, stolistes, null, 0, 0),
+            CircleMoveAction.createMoveToDegree(lineUp[6] + 270, dadouchos, null, 0, 0)
+        ));
+
+
+        // Hegemon raises the hoodwink for a moment
+        // Hiereus stands threatening with his sword
+
+
         queueVoiceAction("r_32", hegemon);
         queueVoiceAction("r_33", hiereus);
         queueVoiceAction("r_34", hegemon);
         queueVoiceAction("r_35", hiereus);
+
+        // Kerux leads on.
+        queue.add(AllAction.create(
+            CircleMoveAction.createMoveToDegree(lineUp[2] + 90, kerux, null, 0, 0),
+            CircleMoveAction.createMoveToDegree(lineUp[3] + 90, candidate, null, 0, 0),
+            CircleMoveAction.createMoveToDegree(lineUp[4] + 90, hegemon, null, 0, 0),
+            CircleMoveAction.createMoveToDegree(lineUp[5] + 90, stolistes, null, 0, 0),
+            CircleMoveAction.createMoveToDegree(lineUp[6] + 90, dadouchos, null, 0, 0)
+        ));
+
+        // They pass the hierophant who gives one knock
+        queue.add(AllAction.create(
+            VoiceAction.create(knock, hierophant),//  again hierophant gives one knock and candidate passes
+            CircleMoveAction.createMoveToDegree(lineUp[2] + 270, kerux, null, 0, 0),
+            CircleMoveAction.createMoveToDegree(lineUp[3] + 270, candidate, null, 0, 0),
+            CircleMoveAction.createMoveToDegree(lineUp[4] + 270, hegemon, null, 0, 0),
+            CircleMoveAction.createMoveToDegree(lineUp[5] + 270, stolistes, null, 0, 0),
+            CircleMoveAction.createMoveToDegree(lineUp[6] + 270, dadouchos, null, 0, 0)
+        ));
+
+        // hiereus gives one knock as they pass
+        queue.add(AllAction.create(
+            VoiceAction.create(knock, hiereus), // and passing hiereus he also gives one knock as candidate passes
+            CircleMoveAction.createMoveToDegree(lineUp[2], kerux, null, 0, 0),
+            CircleMoveAction.createMoveToDegree(lineUp[3], candidate, null, 0, 0),
+            CircleMoveAction.createMoveToDegree(lineUp[4], hegemon, null, 0, 0),
+            CircleMoveAction.createMoveToDegree(lineUp[5], stolistes, null, 0, 0),
+            CircleMoveAction.createMoveToDegree(lineUp[6], dadouchos, null, 0, 0)
+        ));
+
+        // After this passing kerux halts in the north and raises his wand
         queueVoiceAction("r_36", kerux);
+
+        queue.add(CreateMarkAction.create(stolistes, "stol proc 2"));
+        queue.add(MoveAction.create("Candidate Proc Blessing Left", stolistes));
         queueVoiceAction("r_37", stolistes);
+
+        queue.add(CreateMarkAction.create(dadouchos, "dad proc 2"));
+        queue.add(MoveAction.create("Candidate Proc Blessing Right", dadouchos));
         queueVoiceAction("r_37.1", dadouchos);
+
+        // S and D then step back to their places in the procession
+        queue.add(MoveAction.create("stol proc 2", stolistes));
+        queue.add(MoveAction.create("dad proc 2", dadouchos));
+
         queueVoiceAction("r_38", hegemon);
+
+        queue.add(AllAction.create(
+            CircleMoveAction.createMoveToDegree(lineUp[2] + 90, kerux, null, 0, 0),
+            CircleMoveAction.createMoveToDegree(lineUp[3] + 90, candidate, null, 0, 0),
+            CircleMoveAction.createMoveToDegree(lineUp[4] + 90, hegemon, null, 0, 0),
+            CircleMoveAction.createMoveToDegree(lineUp[5] + 90, stolistes, null, 0, 0),
+            CircleMoveAction.createMoveToDegree(lineUp[6] + 90, dadouchos, null, 0, 0)
+        ));
+
         queueVoiceAction("r_39", hierophant);
 
         queueVoiceAction("r_40", hegemon);
         queueVoiceAction("r_41", hierophant);
+
+        // assemble about the altar again
+        fastForwardTo = queue.add(AllAction.create(
+            CircleMoveAction.create("altar candidate", candidate),
+            CircleMoveAction.create("altar candidate led", hegemon)
+        ));
+
+        queue.add(AllAction.create(
+            CircleMoveAction.create("altar kerux", kerux),
+            CircleMoveAction.create("altar stolistes", stolistes),
+            CircleMoveAction.create("altar dadouchos", dadouchos),
+            CircleMoveAction.create("altar hiereus", hiereus),
+            MoveAction.create("altar hegemon", hegemon)
+        ));
+
+        queue.add(MoveAction.create("altar hierophant", hierophant));
+
         queueVoiceAction("r_42", hierophant);
         queueVoiceAction("r_43", hierophant);
         queueVoiceAction("r_44", hegemon);
         queueVoiceAction("r_45", hiereus);
         queueVoiceAction("r_46", hierophant);
 
-        queueVoiceAction("r_47", hegemon);
-        queueVoiceAction("r_48", hiereus);
-        queueVoiceAction("r_49", hierophant);
+        queue.add(AllAction.create(
+            createVoiceAction("r_47-1", hegemon, 0),
+            createVoiceAction("r_48-1", hiereus, 0),
+            createVoiceAction("r_49-1", hierophant, 0)
+        ));
+        queue.add(AllAction.create(
+            createVoiceAction("r_47-2", hegemon, 0),
+            createVoiceAction("r_48-2", hiereus, 0),
+            createVoiceAction("r_49-2", hierophant, 0)
+        ));
+        queue.add(AllAction.create(
+            createVoiceAction("r_47-3", hegemon),
+            createVoiceAction("r_48-3", hiereus),
+            createVoiceAction("r_49-3", hierophant)
+        ));
 
         queueVoiceAction("r_50", hierophant);
         queueVoiceAction("r_51", hiereus);
@@ -563,6 +673,13 @@ public class NeophyteRitual : MonoBehaviour
         follow = head;
     }
 
+    private void addMarks()
+    {
+        foreach (var markSet in markPrefabs)
+        {
+            Instantiate(markSet);
+        }
+    }
 
     private GameObject addActor(GameObject prefab, string markName)
     {
