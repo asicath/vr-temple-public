@@ -536,7 +536,7 @@ public class NeophyteRitual : MonoBehaviour
         queueVoiceAction("r_41", hierophant);
 
         // assemble about the altar again
-        fastForwardTo = queue.add(AllAction.create(
+        queue.add(AllAction.create(
             CircleMoveAction.create("altar candidate", candidate),
             CircleMoveAction.create("altar candidate led", hegemon)
         ));
@@ -552,6 +552,18 @@ public class NeophyteRitual : MonoBehaviour
         queue.add(MoveAction.create("altar hierophant", hierophant));
 
         queueVoiceAction("r_42", hierophant);
+
+        queue.add(AllAction.create(
+            MoveAction.create("hex kerux", kerux),
+            MoveAction.create("hex stolistes", stolistes),
+            MoveAction.create("hex dadouchos", dadouchos),
+            MoveAction.create("hex hiereus", hiereus),
+            MoveAction.create("hex hegemon", hegemon),
+            MoveAction.create("hex hierophant", hierophant),
+            MoveAction.create("hex candidate", candidate)
+        ));
+
+
         queueVoiceAction("r_43", hierophant);
         queueVoiceAction("r_44", hegemon);
         queueVoiceAction("r_45", hiereus);
@@ -582,11 +594,39 @@ public class NeophyteRitual : MonoBehaviour
         queueVoiceAction("r_55", hierophant);
         queueVoiceAction("r_56", hegemon);
         queueVoiceAction("r_57", hierophant);
-        queueVoiceAction("r_58", hiereus);
+        fastForwardTo = queueVoiceAction("r_58", hiereus);
+
+        // kerux moves to ne of altar and raises his lamp
+        queue.add(MoveAction.create("hex ne", kerux));
+
         queueVoiceAction("r_59", hierophant);
 
+        // The officers return to their places, hierophant to his throne
+        // hegemon and candidate remain west of altar
+
+        // the other officers resume their seats
+        queue.add(AllAction.create(
+            MoveAction.create("Hierophant Start Throne Stand", hierophant),
+            CircleMoveAction.create("Hiereus Start Throne Stand", hiereus),
+            CircleMoveAction.create("Kerux Start", kerux),
+            CircleMoveAction.create("Stolistes Start Throne Stand", stolistes),
+            CircleMoveAction.create("Dadouchos Start Throne Stand", dadouchos),
+            MoveAction.create("Candidate Right Side", hegemon)
+        ));
+
         queueVoiceAction("r_60", hierophant);
+
+        // hegemon places candidate to the east, near but not between the pillars
+        // then takes his place outside [east of] the white pillar
+
         queueVoiceAction("r_61", hierophant);
+
+        // hiereus passes by the north to the black pillar
+        // he comes round to the east
+        // hegemon advances to meet him and take from him his sword and banner
+        // hiereus step between the pillars and facing candidate says:
+
+
         queueVoiceAction("r_62", hiereus);
         queueVoiceAction("r_63", hiereus);
         queueVoiceAction("r_64", hiereus);
@@ -595,19 +635,36 @@ public class NeophyteRitual : MonoBehaviour
         queueVoiceAction("r_67", hiereus);
         queueVoiceAction("r_68", hiereus);
         queueVoiceAction("r_69", hiereus);
-
         queueVoiceAction("r_70", hiereus);
+        // they exchange the word
         queueVoiceAction("r_71", hiereus);
         queueVoiceAction("r_72", hiereus);
         queueVoiceAction("r_73", hiereus);
         queueVoiceAction("r_74", hiereus);
+
+        // hiereus leads neophyte forward and then takes back the sword and banner as hegemon hands them to him
+        // he stands northeast of the black pillar
+
         queueVoiceAction("r_75", hiereus);
+
+        // S and D purify hall as in beginning,
+        // but on returning to the east, S turns round to N, makes a cross of Water on his brow, sprinkles three times
         queueVoiceAction("r_76", stolistes);
+
+        // D likewise turns round from the east and makes a cross and censes three times
         queueVoiceAction("r_77", dadouchos);
+
         queueVoiceAction("r_78", hierophant);
+        // hegemon comes forward and hands his sceptre and Ritual[blindfold?] to hiereus
+        // he removes the rope and puts on the sash over the left shoulder
+
         queueVoiceAction("r_79", hegemon);
 
+        // hegemon takes Sceptre, etc. and returns to White Pillar
+
         queueVoiceAction("r_80", hierophant);
+        // circumambulation as beginning with 
+
         queueVoiceAction("r_81", hierophant);
         queueVoiceAction("r_82", hierophant);
         queueVoiceAction("r_83", hierophant);
