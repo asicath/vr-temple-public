@@ -151,7 +151,7 @@ public class Pathfind : MonoBehaviour {
     void Update()
     {
 
-        if (path == null) calculatePath(5, 0);
+        if (path == null) calculatePath(5, 3);
 
         if (path != null)
         {
