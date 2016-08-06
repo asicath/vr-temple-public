@@ -1,23 +1,59 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 
+static public class Direction
+{
+    public const int N = 0, NE = 1, E = 2, SE = 3, S = 4, SW = 5, W = 6, NW = 7;
 
+    public static readonly int[] All = new int[] { N, NE, E, SE, S, SW, W, NW };
+
+    static public int getXVector(int direction)
+    {
+        switch (direction)
+        {
+            case Direction.E:
+            case Direction.NE:
+            case Direction.SE:
+                return 1;
+            case Direction.W:
+            case Direction.NW:
+            case Direction.SW:
+                return -1;
+            default:
+                return 0;
+        }
+    }
+
+    static public int getZVector(int direction)
+    {
+        switch (direction)
+        {
+            case Direction.N:
+            case Direction.NE:
+            case Direction.NW:
+                return 1;
+            case Direction.S:
+            case Direction.SW:
+            case Direction.SE:
+                return -1;
+            default:
+                return 0;
+        }
+    }
+}
 
 public class Position
 {
 
-    static public class Direction
-    {
-        public const int N = 0, NE = 1, E = 2, SE = 3, S = 4, SW = 5, W = 6, NW = 7;
-    }
-
-    static public readonly float StraightBaseCost = 1;
-    static public readonly float DiagonalBaseCost = Mathf.Sqrt(2);
+    static private readonly float StraightBaseCost = 1;
+    static private readonly float DiagonalBaseCost = Mathf.Sqrt(2);
 
     public float x, z;
     public int xIndex, zIndex;
     public bool invalid = false;
-    public float[] moveCost = new float[8];
+    private float[] moveCost = new float[8];
+    public PathInfo pathInfo;
 
     public Position()
     {
@@ -31,26 +67,28 @@ public class Position
         return moveCost[direction];
     }
 
-    public float calculateBaseDistanceCost(Position p)
+    static public float calculateBaseDistanceCost(Position p0, Position p1)
     {
-        var xD = Mathf.Abs(p.xIndex - this.xIndex);
-        var zD = Mathf.Abs(p.zIndex - this.zIndex);
+        var xD = Mathf.Abs(p0.xIndex - p1.xIndex);
+        var zD = Mathf.Abs(p0.zIndex - p1.zIndex);
         var diagonal = Mathf.Min(xD, zD);
         var straight = xD - diagonal + zD - diagonal;
         return diagonal * DiagonalBaseCost + straight * StraightBaseCost;
     }
 }
 
-public class PathNode
+
+public class PathInfo
 {
-    public Position position;
+    public Position parent;
     public float gCost, hCost; // distance from start, distance from end
-    public PathNode parent;
+    public float cost { get { return gCost + hCost; } }
+    public bool expanded = false;
 }
 
 public class PositionGrid
 {
-    private float unitSize = 0.1f;
+    private float unitSize = 0.01f;
     public float xSize = 12, zSize = 12;
 
     private Position[,] positions;
@@ -85,7 +123,9 @@ public class PositionGrid
                 var p = positions[x, z] = new Position()
                 {
                     x = x * unitSize - (xPositions - 1) * unitSize * 0.5f,
-                    z = z * unitSize - (zPositions - 1) * unitSize * 0.5f
+                    z = z * unitSize - (zPositions - 1) * unitSize * 0.5f,
+                    xIndex = x,
+                    zIndex = z
                 };
                 //Debug.Log(x + "," + z + " : " + p.x + ", " + p.z);
             }
@@ -110,17 +150,131 @@ public class PositionGrid
         return positions[xIndex, zIndex];
     }
 
+    public Position getPositionByIndex(int xIndex, int zIndex)
+    {
+        if (xIndex > positions.GetLength(0)) return null;
+        if (zIndex > positions.GetLength(1)) return null;
+        if (xIndex < 0) return null;
+        if (zIndex < 0) return null;
+
+        return positions[xIndex, zIndex];
+    }
+
+    public Position getPositionByDirection(Position p, int direction)
+    {
+        int x = Direction.getXVector(direction);
+        int z = Direction.getZVector(direction);
+        return getPositionByIndex(p.xIndex + x, p.zIndex + z);
+    }
+
     public List<Position> findPath(float xStart, float zStart, float xEnd, float zEnd)
     {
         var start = getClosestPosition(xStart, zStart);
         var end = getClosestPosition(xEnd, zEnd);
+        var unexplored = new List<Position>();
+
+        // create the initial pathinfo
+        start.pathInfo = new PathInfo() { parent = null, gCost = 0, hCost = Position.calculateBaseDistanceCost(start, end) };
+        unexplored.Add(start);
+
+        bool found = false;
+        while (!found)
+        {
+
+
+            unexplored = unexplored.OrderBy(o => o.pathInfo.cost).ToList();
+
+            Position p = null;
+
+            while (p == null || p.pathInfo.expanded)
+            {
+                p = unexplored[0];
+                unexplored.RemoveAt(0);
+            }
+
+            //Debug.Log("expanding " + p.xIndex + "," + p.zIndex);
+
+            found = expand(p, end, unexplored);
+        }
+
+        
 
         var list = new List<Position>();
-        list.Add(end);
+        getShortestPathBack(end, list);
 
         return list;
     }
+
+    private void getShortestPathBack(Position p, List<Position> path)
+    {
+        Position best = null;
+
+        foreach (int d in Direction.All)
+        {
+            var pos = getPositionByDirection(p, d);
+            if (pos == null || pos.pathInfo == null) continue;
+            if (best == null || best.pathInfo.gCost > pos.pathInfo.gCost) best = pos;
+        }
+
+        if (best.pathInfo.gCost > 0) getShortestPathBack(best, path);
+        path.Add(best);
+    }
+
+    // attempts to create pathInfo for all connected nodes
+    private bool expand(Position p, Position end, List<Position> unexplored)
+    {
+        p.pathInfo.expanded = true;
+
+        var found = false;
+        found = found || attemptPath(Direction.N, p, end, unexplored);
+        found = found || attemptPath(Direction.NW, p, end, unexplored);
+        found = found || attemptPath(Direction.NE, p, end, unexplored);
+        found = found || attemptPath(Direction.S, p, end, unexplored);
+        found = found || attemptPath(Direction.SW, p, end, unexplored);
+        found = found || attemptPath(Direction.SE, p, end, unexplored);
+        found = found || attemptPath(Direction.E, p, end, unexplored);
+        found = found || attemptPath(Direction.W, p, end, unexplored);
+        return found;
+    }
+
+
+
+    private bool attemptPath(int direction, Position parent, Position end, List<Position> unexplored)
+    {
+        var p = getPositionByDirection(parent, direction);
+
+        // no need to process parent
+        //if (p == parent) return false;
+
+        // can't move that direction
+        if (p == null || p.invalid) return false;
+
+        if (p == end) return true;
+
+        var info = new PathInfo()
+        {
+            parent = parent,
+            gCost = parent.pathInfo.gCost + parent.getMoveCost(direction),
+            hCost = Position.calculateBaseDistanceCost(p, end)
+        };
+
+        // if this is more expensive than the existing path info, discard it
+        if (p.pathInfo != null && p.pathInfo.cost <= info.cost) return false;
+
+        // otherwise save and add to queue
+        p.pathInfo = info;
+
+        unexplored.Add(p);
+
+        return false;
+    }
+
+
 }
+
+
+
+
 
 public class Pathfind : MonoBehaviour {
 
