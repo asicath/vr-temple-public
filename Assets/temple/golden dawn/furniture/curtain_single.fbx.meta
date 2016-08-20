@@ -13,10 +13,13 @@ ModelImporter:
     400004: //RootNode
     2300000: curtain_MeshPart0
     2300002: curtain_MeshPart1
+    2300004: //RootNode
     3300000: curtain_MeshPart0
     3300002: curtain_MeshPart1
+    3300004: //RootNode
     4300000: curtain_MeshPart0
     4300002: curtain_MeshPart1
+    4300004: curtain
   materials:
     importMaterials: 1
     materialName: 0
@@ -24,7 +27,7 @@ ModelImporter:
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
-    resampleRotations: 1
+    resampleCurves: 1
     optimizeGameObjects: 0
     motionNodeName: 
     animationImportErrors: 
