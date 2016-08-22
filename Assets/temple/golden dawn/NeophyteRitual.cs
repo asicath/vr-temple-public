@@ -12,13 +12,11 @@ public class NeophyteRitual : MonoBehaviour
     
     public GameObject hierophantPrefab, hiereusPrefab, hegemonPrefab, keruxPrefab, stolistesPrefab, dadouchosPrefab, sentinelPrefab;
     public GameObject imperatorPrefab, cancellariusPrefab, pastHierophantPrefab, praemonstratorPrefab, candidatePrefab;
-
-
     public GameObject thronePrefab, altarPrefab;
     public GameObject blackPillarPrefab, whitePillarPrefab, bannerOfTheEastPrefab, bannerOfTheWestPrefab;
+    public GameObject hierophantWandPrefab, hegemonWandPrefab;
 
     private GameObject hierophant, hiereus, hegemon, kerux, stolistes, dadouchos, candidate, sentinel;
-
     private GameObject hegemonChair, door, antiDoor;
 
     private GameObject follow, rig, rigCenter, blindfold;
@@ -65,6 +63,12 @@ public class NeophyteRitual : MonoBehaviour
         stolistes = addActor(stolistesPrefab, "Stolistes Start");
         dadouchos = addActor(dadouchosPrefab, "Dadouchos Start");
         sentinel = addActor(sentinelPrefab, "Sentinel Start");
+
+        var hierophantWand = addActor(hierophantWandPrefab, "Hierophant Start");
+        queue.add(GiveWeaponAction.create(hierophant, hierophantWand));
+
+        var hegemonWand = addActor(hegemonWandPrefab, "Hierophant Start");
+        queue.add(GiveWeaponAction.create(hegemon, hegemonWand));
 
         addActor(altarPrefab, "Altar");
         addActor(bannerOfTheEastPrefab, "Banner of the East");
@@ -303,7 +307,8 @@ public class NeophyteRitual : MonoBehaviour
 
         queue.add(MoveAction.createNoRotate("Door Open", door));
 
-        fastForwardTo = queue.add(AllAction.create(
+        //fastForwardTo =
+        queue.add(AllAction.create(
             CircleMoveAction.create("enter kerux", kerux),
             CircleMoveAction.create("enter stolistes", stolistes),
             MoveAction.create("enter dadouchos", dadouchos)
@@ -594,7 +599,7 @@ public class NeophyteRitual : MonoBehaviour
         queueVoiceAction("r_55", hierophant);
         queueVoiceAction("r_56", hegemon);
         queueVoiceAction("r_57", hierophant);
-        fastForwardTo = queueVoiceAction("r_58", hiereus);
+        queueVoiceAction("r_58", hiereus);
 
         // kerux moves to ne of altar and raises his lamp
         queue.add(MoveAction.create("hex ne", kerux));

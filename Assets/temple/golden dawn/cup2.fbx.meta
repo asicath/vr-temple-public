@@ -8,18 +8,23 @@ ModelImporter:
     100000: //RootNode
     100002: Glass
     100004: Petals
+    100006: Liquid
     400000: //RootNode
     400002: Glass
     400004: Petals
+    400006: Liquid
     2300000: //RootNode
     2300002: Glass
     2300004: Petals
+    2300006: Liquid
     3300000: //RootNode
     3300002: Glass
     3300004: Petals
+    3300006: Liquid
     4300000: Plane
     4300002: Petals
     4300004: Glass
+    4300006: Liquid
   materials:
     importMaterials: 1
     materialName: 0

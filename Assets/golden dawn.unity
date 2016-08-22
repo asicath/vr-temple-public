@@ -1693,6 +1693,10 @@ MonoBehaviour:
     type: 2}
   bannerOfTheWestPrefab: {fileID: 166336, guid: a1ece3643fc83b94fa96e6811a9d5de4,
     type: 2}
+  hierophantWandPrefab: {fileID: 1000011759380022, guid: 753ee27b0d3391d4c9c5373d9ea56c1f,
+    type: 2}
+  hegemonWandPrefab: {fileID: 1000012176653208, guid: c0268016323e8f849ac3b726ce89c1b0,
+    type: 2}
   markPrefabs:
   - {fileID: 1000012762260070, guid: 20beeec0db05a5d4c9db25958f9ddc1e, type: 2}
   - {fileID: 1000013163429076, guid: 7f6c872fdd8d58543b8008938b51184f, type: 2}
@@ -1814,34 +1818,6 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 873d70c6fc1fdfe489eebb157428ffec, type: 2}
   m_IsPrefabParent: 0
---- !u!1 &1626947485
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 1626947486}
-  m_Layer: 0
-  m_Name: GameObject
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1626947486
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1626947485}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 7
 --- !u!1 &1724960278
 GameObject:
   m_ObjectHideFlags: 0
