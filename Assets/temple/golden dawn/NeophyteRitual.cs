@@ -253,7 +253,7 @@ public class NeophyteRitual : MonoBehaviour
         queue.add(CircleMoveAction.createMoveToDegree(270, stolistes));
         queue.add(CircleMoveAction.createMoveToDegree(255, dadouchos));
 
-        queue.add(AllAction.create(
+        fastForwardTo = queue.add(AllAction.create(
             CircleMoveAction.createMoveToDegree(314.9f, kerux, null, 0, 0),
             CircleMoveAction.createMoveToDegree(299.9f, hegemon, null, 1, 0),
             CircleMoveAction.create("Hiereus Start Throne Stand", hiereus, 2, 0),
