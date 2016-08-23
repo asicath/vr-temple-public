@@ -161,6 +161,10 @@ Prefab:
       propertyPath: m_Name
       value: curtain_single (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 2300004, guid: d73913d2999cfa041b929f2922108ccd, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: e62fbb2a4b33e3a4b8a5679d2b5e4401, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d73913d2999cfa041b929f2922108ccd, type: 3}
   m_IsPrefabParent: 0
@@ -498,6 +502,10 @@ Prefab:
       propertyPath: m_Name
       value: curtain_single (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 2300004, guid: d73913d2999cfa041b929f2922108ccd, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: e62fbb2a4b33e3a4b8a5679d2b5e4401, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d73913d2999cfa041b929f2922108ccd, type: 3}
   m_IsPrefabParent: 0
@@ -692,6 +700,10 @@ Prefab:
       propertyPath: m_Name
       value: curtain_single (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 2300004, guid: d73913d2999cfa041b929f2922108ccd, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: e62fbb2a4b33e3a4b8a5679d2b5e4401, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d73913d2999cfa041b929f2922108ccd, type: 3}
   m_IsPrefabParent: 0
@@ -766,6 +778,10 @@ Prefab:
       propertyPath: m_Name
       value: curtain_single (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 2300004, guid: d73913d2999cfa041b929f2922108ccd, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: e62fbb2a4b33e3a4b8a5679d2b5e4401, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d73913d2999cfa041b929f2922108ccd, type: 3}
   m_IsPrefabParent: 0
@@ -898,6 +914,10 @@ Prefab:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: ca2936aa82baf2d45a567d6633b97927, type: 2}
+    - target: {fileID: 2300004, guid: d73913d2999cfa041b929f2922108ccd, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: e62fbb2a4b33e3a4b8a5679d2b5e4401, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d73913d2999cfa041b929f2922108ccd, type: 3}
   m_IsPrefabParent: 0
@@ -1042,6 +1062,10 @@ Prefab:
       propertyPath: m_Name
       value: curtain_single (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 2300004, guid: d73913d2999cfa041b929f2922108ccd, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: e62fbb2a4b33e3a4b8a5679d2b5e4401, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d73913d2999cfa041b929f2922108ccd, type: 3}
   m_IsPrefabParent: 0
@@ -1335,6 +1359,10 @@ Prefab:
       propertyPath: m_Name
       value: curtain_single (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 2300004, guid: d73913d2999cfa041b929f2922108ccd, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: e62fbb2a4b33e3a4b8a5679d2b5e4401, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d73913d2999cfa041b929f2922108ccd, type: 3}
   m_IsPrefabParent: 0
@@ -1537,6 +1565,10 @@ Prefab:
       propertyPath: m_Name
       value: curtain_single (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 2300004, guid: d73913d2999cfa041b929f2922108ccd, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: e62fbb2a4b33e3a4b8a5679d2b5e4401, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d73913d2999cfa041b929f2922108ccd, type: 3}
   m_IsPrefabParent: 0
@@ -1611,6 +1643,10 @@ Prefab:
       propertyPath: m_Name
       value: curtain_single (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 2300004, guid: d73913d2999cfa041b929f2922108ccd, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: e62fbb2a4b33e3a4b8a5679d2b5e4401, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d73913d2999cfa041b929f2922108ccd, type: 3}
   m_IsPrefabParent: 0
@@ -1673,30 +1709,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74486831a846a9242b0919da1c360de7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hierophantPrefab: {fileID: 139684, guid: e3c3409c2d39a9c4e9ec3e1b378ae1b3, type: 2}
-  hiereusPrefab: {fileID: 138028, guid: 44a9662c5a55e0d40bb390babb3eb0a7, type: 2}
-  hegemonPrefab: {fileID: 110886, guid: fc436a9bc8049aa4ebbb786644fe513c, type: 2}
-  keruxPrefab: {fileID: 175764, guid: 5d6118a4129d6804abbb01cd9a27f294, type: 2}
-  stolistesPrefab: {fileID: 179982, guid: 8b6309fdfc6417f40bffc46918d92f70, type: 2}
-  dadouchosPrefab: {fileID: 113254, guid: c9c990b626a9cea469ef5063e294717d, type: 2}
-  sentinelPrefab: {fileID: 176890, guid: db705fa5d239a26498f3beca6d7c945d, type: 2}
-  imperatorPrefab: {fileID: 179142, guid: 1a58c89d0cc9e8b4dbd264cb3de9bd0b, type: 2}
-  cancellariusPrefab: {fileID: 142552, guid: 40cfb58566dec234fb9b7b92e4498c85, type: 2}
-  pastHierophantPrefab: {fileID: 104632, guid: 32e6f15975c927a4db97a8758644eb9f, type: 2}
-  praemonstratorPrefab: {fileID: 197574, guid: dee25a96160c18c4f96a425fc03bbd0c, type: 2}
-  candidatePrefab: {fileID: 192308, guid: 148f3fb61749b1f418a27781d0c168f0, type: 2}
-  thronePrefab: {fileID: 179292, guid: e8028534d23327e498836eaf60c10399, type: 2}
-  altarPrefab: {fileID: 154380, guid: f1900e92ae9b2c344b5f8edfb342d8f5, type: 2}
-  blackPillarPrefab: {fileID: 126500, guid: 955a825f08cd04e4bb9bafb900616957, type: 2}
-  whitePillarPrefab: {fileID: 132198, guid: d1c789eff7f86c345bbbdda950162e6b, type: 2}
-  bannerOfTheEastPrefab: {fileID: 189694, guid: 03605264b4c66ea4c93d0f88ff39e648,
-    type: 2}
-  bannerOfTheWestPrefab: {fileID: 166336, guid: a1ece3643fc83b94fa96e6811a9d5de4,
-    type: 2}
-  hierophantWandPrefab: {fileID: 1000011759380022, guid: 753ee27b0d3391d4c9c5373d9ea56c1f,
-    type: 2}
-  hegemonWandPrefab: {fileID: 1000012176653208, guid: c0268016323e8f849ac3b726ce89c1b0,
-    type: 2}
   markPrefabs:
   - {fileID: 1000012762260070, guid: 20beeec0db05a5d4c9db25958f9ddc1e, type: 2}
   - {fileID: 1000013163429076, guid: 7f6c872fdd8d58543b8008938b51184f, type: 2}
@@ -2186,7 +2198,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2111903716
 Transform:
   m_ObjectHideFlags: 0

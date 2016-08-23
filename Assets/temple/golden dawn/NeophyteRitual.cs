@@ -1,20 +1,16 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 using System;
 using System.Linq;
 
 public class NeophyteRitual : MonoBehaviour
 {
 
+    private Dictionary<string, GameObject> actors = new Dictionary<string, GameObject>();
+
     public ScriptAction fastForwardTo;
 
     private AudioClip knock;
-    
-    public GameObject hierophantPrefab, hiereusPrefab, hegemonPrefab, keruxPrefab, stolistesPrefab, dadouchosPrefab, sentinelPrefab;
-    public GameObject imperatorPrefab, cancellariusPrefab, pastHierophantPrefab, praemonstratorPrefab, candidatePrefab;
-    public GameObject thronePrefab, altarPrefab;
-    public GameObject blackPillarPrefab, whitePillarPrefab, bannerOfTheEastPrefab, bannerOfTheWestPrefab;
-    public GameObject hierophantWandPrefab, hegemonWandPrefab;
 
     private GameObject hierophant, hiereus, hegemon, kerux, stolistes, dadouchos, candidate, sentinel;
     private GameObject hegemonChair, door, antiDoor;
@@ -50,47 +46,106 @@ public class NeophyteRitual : MonoBehaviour
 
     }
 
+    private GameObject loadPrefabFromResource(string name)
+    {
+        var path = "golden-dawn/" + name;
+        var prefab = Resources.Load<GameObject>(path);
+
+        if (prefab == null) throw new Exception("can't find resource: " + path);
+
+        return prefab;
+    }
+
+    private string initPrefab(GameObject prefab)
+    {
+        var o = Instantiate(prefab);
+        o.name = o.name.Replace("(Clone)", "");
+        actors[o.name] = o;
+        o.transform.parent = this.transform;
+        hideMarks();
+        o.SetActive(false);
+        return o.name;
+    }
+
+    private string initPrefabFromResource(string name)
+    {
+        var prefab = loadPrefabFromResource(name);
+        return initPrefab(prefab);
+    }
+
+    private GameObject addActor(string prefab, string markName)
+    {
+        var name = initPrefabFromResource(prefab);
+        if (!actors.ContainsKey(name)) throw new Exception("invalid prefab: " + name);
+        queue.add(new SetPositionAction { markName = markName, actor = actors[name], waitAfter = 0 });
+        return actors[name];
+    }
+
+    private GameObject addWeapon(string prefab, string actorName)
+    {
+        var name = initPrefabFromResource(prefab);
+        if (!actors.ContainsKey(name)) throw new Exception("invalid prefab: " + name);
+        if (!actors.ContainsKey(actorName)) throw new Exception("invalid actor: " + actorName);
+        queue.add(GiveWeaponAction.create(actors[actorName], actors[name]));
+        return actors[name];
+    }
+
+    private GameObject addThrone(string markName)
+    {
+        var prefab = loadPrefabFromResource("furniture/Throne");
+
+        var actor = Instantiate(prefab);
+        actor.transform.parent = this.transform;
+
+        actor.name = markName + " Throne";
+
+        queue.add(new SetPositionAction { markName = markName, actor = actor, waitAfter = 0, offset = new Vector3(0, 0, -0.05f) });
+        return actor;
+    }
+
     void initOpening()
     {
+        initPrefabFromResource("furniture/Malkuth Altar");
+
+
+
 
         door = GameObject.Find("Temple Door");
         antiDoor = GameObject.Find("Anti Door");
 
-        hierophant = addActor(hierophantPrefab, "Hierophant Start");
-        hiereus = addActor(hiereusPrefab, "Hiereus Start");
-        hegemon = addActor(hegemonPrefab, "Hegemon Start");
-        kerux = addActor(keruxPrefab, "Kerux Start");
-        stolistes = addActor(stolistesPrefab, "Stolistes Start");
-        dadouchos = addActor(dadouchosPrefab, "Dadouchos Start");
-        sentinel = addActor(sentinelPrefab, "Sentinel Start");
+        hierophant = addActor("officers/Hierophant", "Hierophant Start");
+        hiereus = addActor("officers/Hiereus", "Hiereus Start");
+        hegemon = addActor("officers/Hegemon", "Hegemon Start");
+        kerux = addActor("officers/Kerux", "Kerux Start");
+        stolistes = addActor("officers/Stolistes", "Stolistes Start");
+        dadouchos = addActor("officers/Dadouchos", "Dadouchos Start");
+        sentinel = addActor("officers/Sentinel", "Sentinel Start");
 
-        var hierophantWand = addActor(hierophantWandPrefab, "Hierophant Start");
-        queue.add(GiveWeaponAction.create(hierophant, hierophantWand));
+        addWeapon("weapons/Hierophant Wand", "Hierophant");
+        addWeapon("weapons/Hegemon Wand", "Hegemon");
 
-        var hegemonWand = addActor(hegemonWandPrefab, "Hierophant Start");
-        queue.add(GiveWeaponAction.create(hegemon, hegemonWand));
+        //addActor(altarPrefab, "Altar");
+        addActor("furniture/Malkuth Altar", "Altar");
+        addActor("weapons/Banner of the East", "Banner of the East");
+        addActor("weapons/Banner of the West", "Banner of the West");
+        addActor("furniture/Black Pillar", "Black Pillar");
+        addActor("furniture/Black Pillar", "White Pillar");
 
-        addActor(altarPrefab, "Altar");
-        addActor(bannerOfTheEastPrefab, "Banner of the East");
-        addActor(bannerOfTheWestPrefab, "Banner of the West");
-        addActor(blackPillarPrefab, "Black Pillar");
-        addActor(whitePillarPrefab, "White Pillar");
+        addThrone("Hierophant Start");
+        addThrone("Hiereus Start");
+        hegemonChair = addThrone("Hegemon Start");
+        addThrone("Stolistes Start");
+        addThrone("Dadouchos Start");
 
-        addThrone(thronePrefab, "Hierophant Start");
-        addThrone(thronePrefab, "Hiereus Start");
-        hegemonChair = addThrone(thronePrefab, "Hegemon Start");
-        addThrone(thronePrefab, "Stolistes Start");
-        addThrone(thronePrefab, "Dadouchos Start");
+        addThrone("Imperator Start");
+        addThrone("Cancellarius Start");
+        addThrone("Past Hierophant Start");
+        addThrone("Praemonstrator Start");
 
-        addThrone(thronePrefab, "Imperator Start");
-        addThrone(thronePrefab, "Cancellarius Start");
-        addThrone(thronePrefab, "Past Hierophant Start");
-        addThrone(thronePrefab, "Praemonstrator Start");
-
-        addActor(imperatorPrefab, "Imperator Start");
-        addActor(cancellariusPrefab, "Cancellarius Start");
-        addActor(pastHierophantPrefab, "Past Hierophant Start");
-        addActor(praemonstratorPrefab, "Praemonstrator Start");
+        addActor("officers/Imperator", "Imperator Start");
+        addActor("officers/Cancellarius", "Cancellarius Start");
+        addActor("officers/Past Hierophant", "Past Hierophant Start");
+        addActor("officers/Praemonstrator", "Praemonstrator Start");
     }
 
     void queueOpening()
@@ -257,7 +312,7 @@ public class NeophyteRitual : MonoBehaviour
         queue.add(new HideAction { actor = hegemonChair });
 
         // add the candidate in the anitochamber
-        candidate = addActor(candidatePrefab, "Candidate Start");
+        candidate = addActor("officers/Candidate", "Candidate Start");
 
         queue.add(ExecuteVoidFunctionAction.create(attachCameraToCandidate, "attachCameraToCandidate"));
 
@@ -743,29 +798,9 @@ public class NeophyteRitual : MonoBehaviour
         }
     }
 
-    private GameObject addActor(GameObject prefab, string markName)
-    {
-        var actor = Instantiate(prefab);
-        actor.transform.parent = this.transform;
-        hideMarks();
-        actor.SetActive(false);
 
-        
 
-        queue.add(new SetPositionAction { markName = markName, actor = actor, waitAfter = 0 });
-        return actor;
-    }
 
-    private GameObject addThrone(GameObject prefab, string markName)
-    {
-        var actor = Instantiate(prefab);
-        actor.transform.parent = this.transform;
-
-        actor.name = markName + " Throne";
-
-        queue.add(new SetPositionAction { markName = markName, actor = actor, waitAfter = 0, offset = new Vector3(0, 0, -0.05f) });
-        return actor;
-    }
 
     private void hideMarks()
     {
