@@ -247,31 +247,35 @@ public class NeophyteRitual : MonoBehaviour
         //fastForwardTo = 
         queueVoiceAction("o_036", hierophant);
 
-        queue.add(CircleMoveAction.createMoveToDegree(315, kerux));
-        queue.add(CircleMoveAction.createMoveToDegree(300, hegemon, 60));
-        queue.add(CircleMoveAction.createMoveToDegree(285, hiereus));
-        queue.add(CircleMoveAction.createMoveToDegree(270, stolistes));
-        queue.add(CircleMoveAction.createMoveToDegree(255, dadouchos));
+        queue.add(CircleMoveAction.createMoveToDegree(lineUp[0], kerux));
+        queue.add(CircleMoveAction.createMoveToDegree(lineUp[1], hegemon, 110));
+        queue.add(CircleMoveAction.createMoveToDegree(lineUp[2], hiereus));
+        queue.add(CircleMoveAction.createMoveToDegree(lineUp[3], stolistes));
+        queue.add(CircleMoveAction.createMoveToDegree(lineUp[4], dadouchos));
 
         fastForwardTo = queue.add(AllAction.create(
-            CircleMoveAction.createMoveToDegree(314.9f, kerux, null, 0, 0),
-            CircleMoveAction.createMoveToDegree(299.9f, hegemon, null, 1, 0),
+            
+            CircleMoveAction.createMoveToDegree(lineUp[0] - 0.001f, kerux, null, 0, 0)
+                .then(CircleMoveAction.createMoveToDegree(lineUp[0] - 0.002f, kerux, null, 0, 0))
+                .then(CircleMoveAction.create("Kerux Start", kerux, 0, 0)),
+
+            CircleMoveAction.createMoveToDegree(lineUp[1] - 0.001f, hegemon, null, 1, 0)
+                .then(CircleMoveAction.createMoveToDegree(110, hegemon, null, 0, 0))
+                .then(MoveAction.create("Hegemon Start Throne Stand", hegemon)),
+
             CircleMoveAction.create("Hiereus Start Throne Stand", hiereus, 2, 0),
-            CircleMoveAction.createMoveToDegree(269.9f, stolistes, null, 3, 0).then(CircleMoveAction.createMoveToDegree(284.9f, stolistes, null, 0, 0)),
-            CircleMoveAction.createMoveToDegree(254.9f, dadouchos, null, 4, 0).then(CircleMoveAction.createMoveToDegree(269.9f, dadouchos, null, 0, 0))
-        ));
 
-        queue.add(AllAction.create(
-            CircleMoveAction.createMoveToDegree(314.8f, kerux, null, 0, 0),
-            CircleMoveAction.createMoveToDegree(70, hegemon, null, 1, 0).then(MoveAction.create("Hegemon Start Throne Stand", hegemon)),
-            CircleMoveAction.createMoveToDegree(284.8f, stolistes, null, 2, 0).then(CircleMoveAction.createMoveToDegree(299.8f, stolistes, null, 0, 0)),
-            CircleMoveAction.createMoveToDegree(269.8f, dadouchos, null, 3, 0).then(CircleMoveAction.createMoveToDegree(284.8f, dadouchos, null, 0, 0))
-        ));
+            CircleMoveAction.createMoveToDegree(lineUp[3] - 0.001f, stolistes, null, 3, 0)
+                .then(CircleMoveAction.createMoveToDegree(lineUp[2], stolistes, null, 0, 0))
+                .then(CircleMoveAction.createMoveToDegree(lineUp[2] - 0.002f, stolistes, null, 0, 0))
+                .then(CircleMoveAction.createMoveToDegree(lineUp[1], stolistes, null, 0, 0))
+                .then(CircleMoveAction.create("Stolistes Start Throne Stand", stolistes, 0, 0)),
 
-        queue.add(AllAction.create(
-            CircleMoveAction.create("Kerux Start", kerux, 0, 0),
-            CircleMoveAction.create("Stolistes Start Throne Stand", stolistes, 1, 0),
-            CircleMoveAction.create("Dadouchos Start Throne Stand", dadouchos, 2, 0)
+            CircleMoveAction.createMoveToDegree(lineUp[4] - 0.001f, dadouchos, null, 4, 0)
+                .then(CircleMoveAction.createMoveToDegree(lineUp[3], dadouchos, null, 0, 0))
+                .then(CircleMoveAction.createMoveToDegree(lineUp[3] - 0.002f, dadouchos, null, 0, 0))
+                .then(CircleMoveAction.createMoveToDegree(lineUp[2], dadouchos, null, 0, 0))
+                .then(CircleMoveAction.create("Dadouchos Start Throne Stand", dadouchos, 0, 0))
         ));
 
         queueVoiceAction("o_037", hierophant);
