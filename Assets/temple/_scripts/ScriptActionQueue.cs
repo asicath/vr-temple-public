@@ -43,6 +43,7 @@ public class ScriptActionQueue {
             top.onComplete = completeAction;
             isRunning = true;
             top.Start();
+            top.Update();
         }
     }
 

@@ -232,19 +232,37 @@ public class CircleMoveAction : ScriptAction
         {
             moveToCircleComplete = Move.rotateAndMoveToMark(actor, entry, speed, rotationSpeed);
         }
-        else if (!moveOnCircleComplete)
+
+        if (moveToCircleComplete && !moveOnCircleComplete)
         {
             moveOnCircleComplete = setPositionOnCircle();
         }
-        else if (!targetDegree.HasValue && !moveFromCircleComplete)
+
+        if (moveOnCircleComplete && !moveFromCircleComplete)
         {
-            moveFromCircleComplete = Move.rotateAndMoveToMark(actor, target, speed, rotationSpeed);
+            if (targetDegree.HasValue)
+            {
+                moveFromCircleComplete = true;
+            }
+            else
+            {
+                moveFromCircleComplete = Move.rotateAndMoveToMark(actor, target, speed, rotationSpeed);
+            }
         }
-        else if (!targetDegree.HasValue && !finalRotateComplete)
+
+        if (moveFromCircleComplete && !finalRotateComplete)
         {
-            finalRotateComplete = Move.rotateToMatchMark(actor, target, rotationSpeed);
+            if (targetDegree.HasValue)
+            {
+                finalRotateComplete = true;
+            }
+            else
+            {
+                finalRotateComplete = Move.rotateToMatchMark(actor, target, rotationSpeed);
+            }
         }
-        else
+
+        if (finalRotateComplete)
         {
             // and complete the action
             complete();

@@ -32,6 +32,7 @@ public class AllAction : ScriptAction {
                 actions[i] = actions[i].nextAction;
                 actions[i].onComplete = completeChildAction;
                 actions[i].Start();
+                actions[i].Update();
             }
         }
     }
