@@ -3,13 +3,19 @@ using System.Collections;
 
 public class GiveWeaponAction : ScriptAction {
 
-    public static GiveWeaponAction create(GameObject actor, GameObject weapon)
+    public static GiveWeaponAction createRight(GameObject actor, GameObject weapon)
     {
-        return new GiveWeaponAction() { actor = actor, weapon = weapon };
+        return new GiveWeaponAction() { actor = actor, weapon = weapon, hand = "right" };
+    }
+
+    public static GiveWeaponAction createLeft(GameObject actor, GameObject weapon)
+    {
+        return new GiveWeaponAction() { actor = actor, weapon = weapon, hand = "left" };
     }
 
     public GameObject actor;
     public GameObject weapon;
+    public string hand;
 
     protected override string getDebugId()
     {
@@ -26,7 +32,8 @@ public class GiveWeaponAction : ScriptAction {
     public override void Instant()
     {
         weapon.SetActive(true);
-        actor.GetComponent<Ritualist>().inRightHand = weapon;
+        if (hand == "right") actor.GetComponent<Ritualist>().inRightHand = weapon;
+        if (hand == "left") actor.GetComponent<Ritualist>().inLeftHand = weapon;
     }
 
 }

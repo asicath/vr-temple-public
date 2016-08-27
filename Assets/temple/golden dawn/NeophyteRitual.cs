@@ -81,12 +81,21 @@ public class NeophyteRitual : MonoBehaviour
         return actors[name];
     }
 
-    private GameObject addWeapon(string prefab, string actorName)
+    private GameObject addWeaponRight(string prefab, string actorName)
     {
         var name = initPrefabFromResource(prefab);
         if (!actors.ContainsKey(name)) throw new Exception("invalid prefab: " + name);
         if (!actors.ContainsKey(actorName)) throw new Exception("invalid actor: " + actorName);
-        queue.add(GiveWeaponAction.create(actors[actorName], actors[name]));
+        queue.add(GiveWeaponAction.createRight(actors[actorName], actors[name]));
+        return actors[name];
+    }
+
+    private GameObject addWeaponLeft(string prefab, string actorName)
+    {
+        var name = initPrefabFromResource(prefab);
+        if (!actors.ContainsKey(name)) throw new Exception("invalid prefab: " + name);
+        if (!actors.ContainsKey(actorName)) throw new Exception("invalid actor: " + actorName);
+        queue.add(GiveWeaponAction.createLeft(actors[actorName], actors[name]));
         return actors[name];
     }
 
@@ -107,9 +116,6 @@ public class NeophyteRitual : MonoBehaviour
     {
         initPrefabFromResource("furniture/Malkuth Altar");
 
-
-
-
         door = GameObject.Find("Temple Door");
         antiDoor = GameObject.Find("Anti Door");
 
@@ -121,15 +127,23 @@ public class NeophyteRitual : MonoBehaviour
         dadouchos = addActor("officers/Dadouchos", "Dadouchos Start");
         sentinel = addActor("officers/Sentinel", "Sentinel Start");
 
-        addWeapon("weapons/Hierophant Wand", "Hierophant");
-        addWeapon("weapons/Hegemon Wand", "Hegemon");
+        addWeaponRight("weapons/Hierophant Wand", "Hierophant");
+        addWeaponRight("weapons/Hegemon Wand", "Hegemon");
+        addWeaponRight("weapons/Hiereus Sword", "Hiereus");
+        addWeaponRight("weapons/Censer", "Dadouchos");
+        addWeaponRight("weapons/Cup", "Stolistes");
 
-        //addActor(altarPrefab, "Altar");
+        addWeaponRight("weapons/Caduceus", "Kerux");
+        addWeaponLeft("weapons/Lamp", "Kerux");
+        addWeaponRight("weapons/Hiereus Sword", "Sentinel");
+
+
+        
         addActor("furniture/Malkuth Altar", "Altar");
         addActor("weapons/Banner of the East", "Banner of the East");
         addActor("weapons/Banner of the West", "Banner of the West");
         addActor("furniture/Black Pillar", "Black Pillar");
-        addActor("furniture/Black Pillar", "White Pillar");
+        addActor("furniture/White Pillar", "White Pillar");
 
         addThrone("Hierophant Start");
         addThrone("Hiereus Start");
@@ -146,6 +160,9 @@ public class NeophyteRitual : MonoBehaviour
         addActor("officers/Cancellarius", "Cancellarius Start");
         addActor("officers/Past Hierophant", "Past Hierophant Start");
         addActor("officers/Praemonstrator", "Praemonstrator Start");
+
+        addWeaponRight("weapons/Cancellarius Wand", "Cancellarius");
+        addWeaponRight("weapons/Hiereus Sword", "Imperator");
     }
 
     void queueOpening()

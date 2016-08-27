@@ -1,7 +1,26 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 
 public class Ritualist : MonoBehaviour {
+
+    private static GameObject handPrefab;
+    private static GameObject loadHand()
+    {
+
+        if (handPrefab != null) return Instantiate(handPrefab);
+
+        var path = "Hand";
+        var prefab = Resources.Load<GameObject>(path);
+
+        if (prefab == null) throw new Exception("can't find resource: " + path);
+
+        handPrefab = prefab;
+
+        return Instantiate(prefab);
+    }
+
+
 
     private GameObject _inRightHand;
     public GameObject inRightHand
@@ -35,6 +54,7 @@ public class Ritualist : MonoBehaviour {
     }
 
     private GameObject leftHand, rightHand;
+    private GameObject leftHandIcon, rightHandIcon;
 
     // Use this for initialization
     void Start () {
@@ -52,13 +72,25 @@ public class Ritualist : MonoBehaviour {
 
         rightHand = new GameObject("right hand");
         rightHand.transform.parent = gameObject.transform;
-        rightHand.transform.localPosition = new Vector3(0.2f, 0.71f, 0.3f);
+        rightHand.transform.localPosition = new Vector3(0.2f, 0.8f, 0.3f);
         rightHand.transform.localRotation = Quaternion.identity;
 
         leftHand = new GameObject("left hand");
         leftHand.transform.parent = gameObject.transform;
-        leftHand.transform.localPosition = new Vector3(-0.2f, 0.71f, 0.3f);
+        leftHand.transform.localPosition = new Vector3(-0.2f, 0.8f, 0.3f);
         leftHand.transform.localRotation = Quaternion.identity;
+
+        // now some icons for them
+        leftHandIcon = loadHand();
+        leftHandIcon.transform.parent = leftHand.transform;
+        leftHandIcon.transform.localPosition = new Vector3(0, 0, 0);
+
+        rightHandIcon = loadHand();
+        rightHandIcon.transform.parent = rightHand.transform;
+        rightHandIcon.transform.localPosition = new Vector3(0, 0, 0);
+
     }
-	
+
+
+
 }
