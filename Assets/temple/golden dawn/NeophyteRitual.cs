@@ -171,6 +171,8 @@ public class NeophyteRitual : MonoBehaviour
         //var camera = "OVRCameraRig"
         //Camera.main.transform.parent = kerux.transform.FindChild("Head").transform;
 
+        
+
         queueVoiceAction(knock, hierophant, 1, 2);
 
         queue.add(CircleMoveAction.create("Kerux Proclaim", kerux));
@@ -245,13 +247,21 @@ public class NeophyteRitual : MonoBehaviour
         queueVoiceAction("o_025", hiereus);
         queueVoiceAction("o_026", hierophant);
 
-        queueVoiceAction("o_027", hierophant);
+        fastForwardTo = queueVoiceAction("o_027", hierophant);
         queue.add(AllAction.create(CircleMoveAction.create("East", stolistes), CircleMoveAction.create("North", dadouchos)));
-        queue.add(AllAction.create(CircleMoveAction.create("South", stolistes), CircleMoveAction.create("East", dadouchos)));
-        queue.add(AllAction.create(CircleMoveAction.create("West", stolistes), CircleMoveAction.create("South", dadouchos)));
-        queue.add(AllAction.create(CircleMoveAction.create("North", stolistes), CircleMoveAction.create("West", dadouchos)));
-        queue.add(AllAction.create(CircleMoveAction.create("East", stolistes), CircleMoveAction.create("North", dadouchos)));
+        queue.add(HandMotionAction.raiseAndLower(stolistes, "right"));
 
+        queue.add(AllAction.create(CircleMoveAction.create("South", stolistes), CircleMoveAction.create("East", dadouchos)));
+        queue.add(AllAction.create(HandMotionAction.raiseAndLower(stolistes, "right"), HandMotionAction.raiseAndLower(dadouchos, "right")));
+
+        queue.add(AllAction.create(CircleMoveAction.create("West", stolistes), CircleMoveAction.create("South", dadouchos)));
+        queue.add(AllAction.create(HandMotionAction.raiseAndLower(stolistes, "right"), HandMotionAction.raiseAndLower(dadouchos, "right")));
+
+        queue.add(AllAction.create(CircleMoveAction.create("North", stolistes), CircleMoveAction.create("West", dadouchos)));
+        queue.add(AllAction.create(HandMotionAction.raiseAndLower(stolistes, "right"), HandMotionAction.raiseAndLower(dadouchos, "right")));
+
+        queue.add(AllAction.create(CircleMoveAction.create("East", stolistes), CircleMoveAction.create("North", dadouchos)));
+        queue.add(HandMotionAction.raiseAndLower(dadouchos, "right"));
 
         queue.add(AllAction.create(
             createVoiceAction("o_031", stolistes, 1)
@@ -270,7 +280,7 @@ public class NeophyteRitual : MonoBehaviour
         queue.add(CircleMoveAction.createMoveToDegree(lineUp[3], stolistes));
         queue.add(CircleMoveAction.createMoveToDegree(lineUp[4], dadouchos));
 
-        fastForwardTo = queue.add(AllAction.create(
+        queue.add(AllAction.create(
             
             CircleMoveAction.createMoveToDegree(lineUp[0] - 0.001f, kerux, null, 0, 0)
                 .then(CircleMoveAction.createMoveToDegree(lineUp[0] - 0.002f, kerux, null, 0, 0))

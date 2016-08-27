@@ -53,7 +53,7 @@ public class Ritualist : MonoBehaviour {
         }
     }
 
-    private GameObject leftHand, rightHand;
+    public GameObject leftHand, rightHand;
     private GameObject leftHandIcon, rightHandIcon;
 
     // Use this for initialization
@@ -66,18 +66,21 @@ public class Ritualist : MonoBehaviour {
         createHands();
     }
 
+    public static Vector3 leftHandNormal = new Vector3(-0.2f, 0.8f, 0.3f);
+    public static Vector3 rightHandNormal = new Vector3(0.2f, 0.8f, 0.3f);
+
     private void createHands()
     {
         if (rightHand != null) return;
 
         rightHand = new GameObject("right hand");
         rightHand.transform.parent = gameObject.transform;
-        rightHand.transform.localPosition = new Vector3(0.2f, 0.8f, 0.3f);
+        rightHand.transform.localPosition = rightHandNormal;
         rightHand.transform.localRotation = Quaternion.identity;
 
         leftHand = new GameObject("left hand");
         leftHand.transform.parent = gameObject.transform;
-        leftHand.transform.localPosition = new Vector3(-0.2f, 0.8f, 0.3f);
+        leftHand.transform.localPosition = leftHandNormal;
         leftHand.transform.localRotation = Quaternion.identity;
 
         // now some icons for them
