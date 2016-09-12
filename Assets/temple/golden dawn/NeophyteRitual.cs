@@ -247,7 +247,7 @@ public class NeophyteRitual : MonoBehaviour
         queueVoiceAction("o_025", hiereus);
         queueVoiceAction("o_026", hierophant);
 
-        fastForwardTo = queueVoiceAction("o_027", hierophant);
+        queueVoiceAction("o_027", hierophant);
         queue.add(AllAction.create(CircleMoveAction.create("East", stolistes), CircleMoveAction.create("North", dadouchos)));
         queue.add(HandMotionAction.raiseAndLower(stolistes, "right"));
 
