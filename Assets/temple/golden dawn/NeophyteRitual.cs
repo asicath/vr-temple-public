@@ -163,6 +163,7 @@ public class NeophyteRitual : MonoBehaviour
 
         addWeaponRight("weapons/Cancellarius Wand", "Cancellarius");
         addWeaponRight("weapons/Hiereus Sword", "Imperator");
+        addWeaponRight("weapons/Praemonstrator Wand", "Praemonstrator");
     }
 
     void queueOpening()

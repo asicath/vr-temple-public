@@ -1,17 +1,52 @@
 fileFormatVersion: 2
-guid: 222a5fefa9edd1d4c95e3e9978c56380
-timeCreated: 1466903656
+guid: 160a39ba510465b4fbd6300ff22bbe38
+timeCreated: 1473709819
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
     100000: //RootNode
+    100002: Shaft
+    100004: Sphere
+    100006: Sphere - Cross
+    100008: Sphere.001
+    100010: Triangle - Black
+    100012: Triangle - Blue
+    100014: Triangle - Red
+    100016: Triangle - Yellow
     400000: //RootNode
-    2300000: //RootNode
-    3300000: //RootNode
-    4300000: Cube_001
-    7400000: Default Take
-    9500000: //RootNode
+    400002: Shaft
+    400004: Sphere
+    400006: Sphere - Cross
+    400008: Sphere.001
+    400010: Triangle - Black
+    400012: Triangle - Blue
+    400014: Triangle - Red
+    400016: Triangle - Yellow
+    2300000: Shaft
+    2300002: Sphere
+    2300004: Sphere - Cross
+    2300006: Sphere.001
+    2300008: Triangle - Black
+    2300010: Triangle - Blue
+    2300012: Triangle - Red
+    2300014: Triangle - Yellow
+    3300000: Shaft
+    3300002: Sphere
+    3300004: Sphere - Cross
+    3300006: Sphere.001
+    3300008: Triangle - Black
+    3300010: Triangle - Blue
+    3300012: Triangle - Red
+    3300014: Triangle - Yellow
+    4300000: Triangle - Blue
+    4300002: Triangle - Yellow
+    4300004: Triangle - Red
+    4300006: Triangle - Black
+    4300008: Sphere.001
+    4300010: Sphere
+    4300012: Sphere - Cross
+    4300014: Shaft
   materials:
     importMaterials: 1
     materialName: 0
@@ -70,7 +105,7 @@ ModelImporter:
     rootMotionBoneName: 
     hasTranslationDoF: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 2
+  animationType: 0
   humanoidOversampling: 1
   additionalBone: 0
   userData: 
