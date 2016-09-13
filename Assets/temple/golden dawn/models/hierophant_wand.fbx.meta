@@ -23,6 +23,12 @@ ModelImporter:
     100030: Torus.005
     100032: Gold Parts
     100034: Red Parts
+    100036: Crown Base
+    100038: Diamonds
+    100040: Ring 1
+    100042: Ring 2
+    100044: Ring 3
+    100046: Shaft
     400000: Cube.000
     400002: Cube.001
     400004: Cube.002
@@ -41,6 +47,12 @@ ModelImporter:
     400030: Torus.005
     400032: Gold Parts
     400034: Red Parts
+    400036: Crown Base
+    400038: Diamonds
+    400040: Ring 1
+    400042: Ring 2
+    400044: Ring 3
+    400046: Shaft
     2300000: Cube.000
     2300002: Cube.001
     2300004: Cube.002
@@ -58,6 +70,12 @@ ModelImporter:
     2300028: Torus.005
     2300030: Gold Parts
     2300032: Red Parts
+    2300034: Crown Base
+    2300036: Diamonds
+    2300038: Ring 1
+    2300040: Ring 2
+    2300042: Ring 3
+    2300044: Shaft
     3300000: Cube.000
     3300002: Cube.001
     3300004: Cube.002
@@ -75,6 +93,12 @@ ModelImporter:
     3300028: Torus.005
     3300030: Gold Parts
     3300032: Red Parts
+    3300034: Crown Base
+    3300036: Diamonds
+    3300038: Ring 1
+    3300040: Ring 2
+    3300042: Ring 3
+    3300044: Shaft
     4300000: Cube.007
     4300002: Cube.006
     4300004: Cube.005
@@ -92,6 +116,12 @@ ModelImporter:
     4300028: Cylinder
     4300030: Gold Parts
     4300032: Red Parts
+    4300034: Diamonds
+    4300036: Crown Base
+    4300038: Ring 1
+    4300040: Ring 3
+    4300042: Ring 2
+    4300044: Shaft
   materials:
     importMaterials: 1
     materialName: 0
@@ -99,7 +129,7 @@ ModelImporter:
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
-    resampleRotations: 1
+    resampleCurves: 1
     optimizeGameObjects: 0
     motionNodeName: 
     animationImportErrors: 

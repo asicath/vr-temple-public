@@ -8,15 +8,25 @@ ModelImporter:
     100000: Gold Parts
     100002: //RootNode
     100004: Red Parts
+    100006: Cross
+    100008: Shaft
     400000: Gold Parts
     400002: //RootNode
     400004: Red Parts
+    400006: Cross
+    400008: Shaft
     2300000: Gold Parts
     2300002: Red Parts
+    2300004: Cross
+    2300006: Shaft
     3300000: Gold Parts
     3300002: Red Parts
+    3300004: Cross
+    3300006: Shaft
     4300000: Red Parts
     4300002: Gold Parts
+    4300004: Cross
+    4300006: Shaft
   materials:
     importMaterials: 1
     materialName: 0
@@ -24,7 +34,7 @@ ModelImporter:
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
-    resampleRotations: 1
+    resampleCurves: 1
     optimizeGameObjects: 0
     motionNodeName: 
     animationImportErrors: 
