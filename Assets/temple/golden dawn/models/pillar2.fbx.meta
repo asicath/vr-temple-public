@@ -8,15 +8,25 @@ ModelImporter:
     100000: Cube
     100002: //RootNode
     100004: Plane
+    100006: Pillar
+    100008: Tetrahedron
     400000: Cube
     400002: //RootNode
     400004: Plane
+    400006: Pillar
+    400008: Tetrahedron
     2300000: Cube
     2300002: Plane
+    2300004: Pillar
+    2300006: Tetrahedron
     3300000: Cube
     3300002: Plane
+    3300004: Pillar
+    3300006: Tetrahedron
     4300000: Cube
     4300002: Plane
+    4300004: Tetrahedron
+    4300006: Pillar
   materials:
     importMaterials: 1
     materialName: 0
