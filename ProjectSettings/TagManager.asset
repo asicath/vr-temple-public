@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Mark
   - Mark Icon
+  - selection
   layers:
   - Default
   - TransparentFX
