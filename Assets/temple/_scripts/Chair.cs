@@ -11,11 +11,13 @@ public class Chair : MonoBehaviour {
         standPosition.tag = "Mark";
         standPosition.name = gameObject.name + " Stand";
         standPosition.transform.parent = transform;
-        standPosition.transform.position += new Vector3(0, 0, 0.5f);
+        standPosition.transform.localPosition = new Vector3(0, 0, 0.5f);
+        //Debug.Log("set location");
 	}
 	
 	// Update is called once per frame
 	void Update () {
 	    
 	}
+
 }
