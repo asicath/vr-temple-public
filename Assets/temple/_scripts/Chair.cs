@@ -12,8 +12,9 @@ public class Chair : MonoBehaviour {
         standPosition.name = gameObject.name + " Stand";
         standPosition.transform.parent = transform;
         standPosition.transform.localPosition = new Vector3(0, 0, 0.5f);
+        standPosition.transform.localRotation = Quaternion.Euler(0, 0, 0);
         //Debug.Log("set location");
-	}
+    }
 	
 	// Update is called once per frame
 	void Update () {

@@ -34,7 +34,7 @@ public class NeophyteRitual : MonoBehaviour
         knock = Resources.Load<AudioClip>("knock");
         if (knock == null) throw new Exception("can't load knock");
 
-        rig = GameObject.Find("OVRCameraRig");
+        rig = GameObject.Find("Rig");
         rigCenter = rig.transform.GetComponentInChildren<Camera>().gameObject;
 
         

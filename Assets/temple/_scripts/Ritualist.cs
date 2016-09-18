@@ -48,8 +48,10 @@ public class Ritualist : MonoBehaviour {
             createHands();
             this._inLeftHand = value;
             value.transform.parent = leftHand.transform;
-            value.transform.localPosition = new Vector3(0, 0, 0);
-            //value.transform.localRotation = Quaternion.identity;
+            value.transform.position = Vector3.zero;
+
+            var hold = value.transform.FindChild("hold");
+            if (hold != null) value.transform.localPosition = Vector3.zero - hold.position;
         }
     }
 
