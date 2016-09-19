@@ -9,3 +9,5 @@ EditorBuildSettings:
     path: Assets/thelemic.unity
   - enabled: 1
     path: Assets/golden dawn.unity
+  - enabled: 1
+    path: Assets/lobby.unity

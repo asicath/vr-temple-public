@@ -2,20 +2,13 @@
 using System.Collections;
 using UnityEngine.SceneManagement;
 
-public class SceneIcon : Activatable {
-
-    static public bool loading = false;
-
-    public string sceneName;
+public class ExitIcon : Activatable {
 
     public override void onActivate()
     {
-        if (loading) return;
-
         var light = GetComponentInChildren<Light>();
         light.color = Color.green;
-        //loading = true;
-        SceneManager.LoadSceneAsync(sceneName);
+        SceneManager.LoadSceneAsync("lobby");
     }
 
     public override void onEnter()
@@ -27,4 +20,5 @@ public class SceneIcon : Activatable {
     {
         transform.GetChild(0).gameObject.SetActive(false);
     }
+
 }

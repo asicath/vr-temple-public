@@ -1,51 +1,37 @@
 ﻿using UnityEngine;
-using UnityEngine.SceneManagement;
+
 using System.Collections;
 using InControl;
 
 public class LookAt : MonoBehaviour {
 
-    private SceneIcon selected = null;
-    private bool loading = false;
-    private Light light;
+    private Activatable lastEntered = null;
 
     void Start()
     {
         //Debug.Log(InputManager.ActiveDevice.Name);
         //Debug.Log(InputManager.ActiveDevice.IsAttached);
-
-        foreach (var i in InputManager.Devices)
-        {
-            Debug.Log(i.Name + " controls:" + i.Controls.Count);
-            
-        }
     }
 
     void Update()
     {
-        if (loading)
-        {
-
-        }
-        else
-        {
-            checkForPress();
-        }
-
+        if (checkForPress()) doIt();
     }
 
-    void checkForPress()
+    bool checkForPress()
     {
+        if (InputManager.Devices == null) return false;
+
         foreach (var i in InputManager.Devices)
         {
-            if (i.Action1.WasPressed) doIt();
+            if (i.Action1.WasPressed) return true;
 
             foreach (var c in i.Controls)
             {
                 if (c.WasPressed)
                 {
                     //
-                    if (c.Handle == "Button 0") doIt();
+                    if (c.Handle == "Button 0") return true;
                     else
                     {
                         Debug.Log(c.Handle);
@@ -53,41 +39,37 @@ public class LookAt : MonoBehaviour {
                 }
             }
         }
+        return false;
     }
 
     void doIt()
     {
-        if (selected != null && !loading)
+        if (lastEntered != null)
         {
-            light = selected.GetComponentInChildren<Light>();
-            light.color = Color.green;
-            loading = true;
-            SceneManager.LoadSceneAsync(selected.sceneName);
+            Debug.Log("activating " + lastEntered.name);
+            lastEntered.onActivate();
+            lastEntered = null;
         }
     }
 
 
     void OnTriggerEnter(Collider col)
     {
-        // do nothing if we are loading
-        if (loading) return;
-
-        selected = col.GetComponent<SceneIcon>();
-        if (selected != null)
+        lastEntered = col.GetComponent<Activatable>();
+        if (lastEntered != null)
         {
-            col.transform.GetChild(0).gameObject.SetActive(true);
+            lastEntered.onEnter();
         }
     }
 
     void OnTriggerExit(Collider col)
     {
-        // do nothing if we are loading
-        if (loading) return;
+        var a = col.GetComponent<Activatable>();
 
-        if (selected != null)
+        if (a != null)
         {
-            col.transform.GetChild(0).gameObject.SetActive(false);
-            selected = null;
+            lastEntered = null;
+            a.onExit();
         }
         
     }

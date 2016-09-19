@@ -37,13 +37,10 @@ public class NeophyteRitual : MonoBehaviour
         rig = GameObject.Find("Rig");
         rigCenter = rig.transform.GetComponentInChildren<Camera>().gameObject;
 
-        
-
         initOpening();
         queueOpening();
 
         queueReception();
-
     }
 
     private GameObject loadPrefabFromResource(string name)
